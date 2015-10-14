@@ -19,16 +19,7 @@ package org.apache.poi.ss.formula.functions;
 
 import org.apache.poi.ss.formula.ThreeDEval;
 import org.apache.poi.ss.formula.TwoDEval;
-import org.apache.poi.ss.formula.eval.BlankEval;
-import org.apache.poi.ss.formula.eval.BoolEval;
-import org.apache.poi.ss.formula.eval.ErrorEval;
-import org.apache.poi.ss.formula.eval.EvaluationException;
-import org.apache.poi.ss.formula.eval.NumberEval;
-import org.apache.poi.ss.formula.eval.NumericValueEval;
-import org.apache.poi.ss.formula.eval.OperandResolver;
-import org.apache.poi.ss.formula.eval.RefEval;
-import org.apache.poi.ss.formula.eval.StringValueEval;
-import org.apache.poi.ss.formula.eval.ValueEval;
+import org.apache.poi.ss.formula.eval.*;
 
 /**
  * This is the super class for all excel function evaluator
@@ -85,18 +76,24 @@ public abstract class MultiOperandNumericFunction implements Function {
 
 	public final ValueEval evaluate(ValueEval[] args, int srcCellRow, int srcCellCol) {
 
-		double d;
-		try {
-			double[] values = getNumberArray(args);
-			d = evaluate(values);
-		} catch (EvaluationException e) {
-			return e.getErrorEval();
-		}
 
-		if (Double.isNaN(d) || Double.isInfinite(d))
-			return ErrorEval.NUM_ERROR;
+			double d;
+			try {
+				double[] values = getNumberArray(args);
+				d = evaluate(values);
+			} catch (EvaluationException e) {
+				return e.getErrorEval();
+			}
 
-		return new NumberEval(d);
+			if (Double.isNaN(d) || Double.isInfinite(d))
+				return ErrorEval.NUM_ERROR;
+
+			return new NumberEval(d);
+		//}
+	}
+
+	public final ValueEval evaluate(ArrayEval arg, int srcCellRow, int srcCellCol) {
+		return evaluate(arg.getValues(), srcCellRow, srcCellCol);
 	}
 
 	protected abstract double evaluate(double[] values) throws EvaluationException;
@@ -119,9 +116,11 @@ public abstract class MultiOperandNumericFunction implements Function {
 	 * @return never <code>null</code>
 	 */
 	protected final double[] getNumberArray(ValueEval[] operands) throws EvaluationException {
+
 		if (operands.length > getMaxNumOperands()) {
 			throw EvaluationException.invalidValue();
 		}
+
 		DoubleList retval = new DoubleList();
 
 		for (int i=0, iSize=operands.length; i<iSize; i++) {
@@ -141,6 +140,15 @@ public abstract class MultiOperandNumericFunction implements Function {
 	 * Collects values from a single argument
 	 */
 	private void collectValues(ValueEval operand, DoubleList temp) throws EvaluationException {
+
+		if (operand instanceof ArrayEval) {
+			ArrayEval ae = (ArrayEval) operand;
+			for (ValueEval ve : ae.getValues()) {
+				collectValue(ve, false, temp);
+			}
+			return;
+		}
+
         if (operand instanceof ThreeDEval) {
             ThreeDEval ae = (ThreeDEval) operand;
             for (int sIx=ae.getFirstSheetIndex(); sIx <= ae.getLastSheetIndex(); sIx++) {

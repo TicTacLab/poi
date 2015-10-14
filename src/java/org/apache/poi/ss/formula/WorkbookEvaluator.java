@@ -39,6 +39,8 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.util.POILogFactory;
 import org.apache.poi.util.POILogger;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
 
 /**
  * Evaluates formula cells.<p/>
@@ -372,8 +374,19 @@ public final class WorkbookEvaluator {
 	// current indent level for evalution; negative value for no output
 	private int dbgEvaluationOutputIndent = -1;
 
+	protected boolean isArrayFormula(OperationEvaluationContext ec) {
+		EvaluationWorkbook wb = ec.getWorkbook();
+		EvaluationSheet sheet = wb.getSheet(ec.getSheetIndex());
+		EvaluationCell ecell = sheet.getCell(ec.getRowIndex(), ec.getColumnIndex());
+		XSSFCell cell = (XSSFCell) ecell.getIdentityKey();
+		return cell.isPartOfArrayFormulaGroup();
+	}
+
 	// visibility raised for testing
 	/* package */ ValueEval evaluateFormula(OperationEvaluationContext ec, Ptg[] ptgs) {
+
+		boolean isArrayFormula = isArrayFormula(ec);
+
 
 		String dbgIndentStr = "";		// always init. to non-null just for defensive avoiding NPE
 		if (dbgEvaluationOutputForNextEval) {
@@ -395,9 +408,15 @@ public final class WorkbookEvaluator {
 
 		Stack<ValueEval> stack = new Stack<ValueEval>();
 		for (int i = 0, iSize = ptgs.length; i < iSize; i++) {
+			System.out.println(stack);
 
 			// since we don't know how to handle these yet :(
 			Ptg ptg = ptgs[i];
+
+			System.out.println(ptg);
+
+
+
 			if (dbgEvaluationOutputIndent > 0) {
 				EVAL_LOG.log(POILogger.INFO, dbgIndentStr + "  * ptg " + i + ": " + ptg);
 			}
@@ -500,7 +519,11 @@ public final class WorkbookEvaluator {
 					ops[j] = p;
 				}
 //				logDebug("invoke " + operation + " (nAgs=" + numops + ")");
-				opResult = OperationEvaluatorFactory.evaluate(optg, ops, ec);
+				if (isArrayFormula) {
+					opResult = OperationEvaluatorFactory.evaluate(optg, ops, ec);
+				} else {
+					opResult = OperationEvaluatorFactory.evaluate(optg, ops, ec);
+				}
 			} else {
 				opResult = getEvalForPtg(ptg, ec);
 			}

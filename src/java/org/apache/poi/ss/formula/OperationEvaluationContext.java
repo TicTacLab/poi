@@ -76,6 +76,10 @@ public final class OperationEvaluationContext {
 		return _columnIndex;
 	}
 
+	public int getSheetIndex() {
+		return _sheetIndex;
+	}
+
 	SheetRangeEvaluator createExternSheetRefEvaluator(ExternSheetReferenceToken ptg) {
 		return createExternSheetRefEvaluator(ptg.getExternSheetIndex());
 	}

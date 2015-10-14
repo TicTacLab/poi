@@ -25,10 +25,33 @@ import static org.junit.Assert.assertTrue;
 
 import org.apache.poi.poifs.crypt.CryptoFunctions;
 import org.apache.poi.poifs.crypt.HashAlgorithm;
+import org.apache.poi.ss.formula.eval.ValueEval;
+import org.apache.poi.ss.usermodel.CellValue;
+import org.apache.poi.ss.usermodel.FormulaError;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.junit.Test;
 
 public class TestWorkbookProtection {
+
+    @Test
+    public void testArrayFormulas() throws Exception {
+        XSSFWorkbook workbook;
+        XSSFCell cell;
+        FormulaEvaluator fe;
+
+        workbook = openSampleWorkbook("array.xlsx");
+        cell = workbook.getSheet("work").getRow(17).getCell(5);
+        fe = workbook.getCreationHelper().createFormulaEvaluator();
+
+        fe.setDebugEvaluationOutputForNextEval(true);
+        CellValue result = fe.evaluate(cell);
+
+
+        assertEquals(null, FormulaError.forInt(result.getErrorValue()).getString());
+
+    }
 
     @Test
     public void workbookAndRevisionPassword() throws Exception {

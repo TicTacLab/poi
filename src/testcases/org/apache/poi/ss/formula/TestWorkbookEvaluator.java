@@ -23,13 +23,7 @@ import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 
 import org.apache.poi.hssf.HSSFTestDataSamples;
-import org.apache.poi.ss.formula.ptg.AreaErrPtg;
-import org.apache.poi.ss.formula.ptg.AttrPtg;
-import org.apache.poi.ss.formula.ptg.DeletedArea3DPtg;
-import org.apache.poi.ss.formula.ptg.DeletedRef3DPtg;
-import org.apache.poi.ss.formula.ptg.IntPtg;
-import org.apache.poi.ss.formula.ptg.Ptg;
-import org.apache.poi.ss.formula.ptg.RefErrorPtg;
+import org.apache.poi.ss.formula.ptg.*;
 import org.apache.poi.ss.formula.eval.BlankEval;
 import org.apache.poi.ss.formula.eval.ErrorEval;
 import org.apache.poi.ss.formula.eval.MissingArgEval;
@@ -48,6 +42,7 @@ import org.apache.poi.ss.usermodel.Name;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.w3c.dom.Attr;
 
 /**
  * Tests {@link WorkbookEvaluator}.
@@ -74,6 +69,16 @@ public class TestWorkbookEvaluator extends TestCase {
 
 		ValueEval result = evaluateFormula(ptgs);
 		assertEquals(42, ((NumberEval)result).getNumberValue(), 0.0);
+	}
+
+	public void testSomething() {
+		Ptg[] ptgs = {
+				new AreaPtg("A2:A17"),
+				new AreaPtg("B2:B17"),
+				AttrPtg.SUM
+		};
+
+		ValueEval result = evaluateFormula(ptgs);
 	}
 
 	/**

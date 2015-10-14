@@ -31,6 +31,8 @@ import org.apache.poi.ss.formula.ptg.Ptg;
 import org.apache.poi.util.HexDump;
 import org.apache.poi.util.HexRead;
 
+import java.util.Arrays;
+
 public final class TestArrayRecord extends TestCase {
 
     public void testRead() {
@@ -52,6 +54,7 @@ public final class TestArrayRecord extends TestCase {
 
         //construct a new ArrayRecord with the same contents as r1
         Ptg[] fmlaPtg = FormulaParser.parse("MAX(C1:C2-D1:D2)", null, FormulaType.ARRAY, 0);
+        System.out.println(Arrays.asList(fmlaPtg));
         ArrayRecord r2 = new ArrayRecord(Formula.create(fmlaPtg), new CellRangeAddress8Bit(1, 1, 1, 1));
         byte[] ser = r2.serialize();
         //serialize and check that the data is the same as in r1
