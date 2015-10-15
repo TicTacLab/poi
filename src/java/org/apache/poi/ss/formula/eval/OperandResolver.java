@@ -59,7 +59,7 @@ public final class OperandResolver {
 			throws EvaluationException {
 		final ValueEval result;
 		if (arg instanceof ArrayEval) {
-			result = ((ArrayEval) arg).getValue(srcCellRow);
+			result = ((ArrayEval) arg).getOffsetValue(srcCellRow);
 		} else if (arg instanceof RefEval) {
 			result = chooseSingleElementFromRef((RefEval) arg);
 		} else if (arg instanceof AreaEval) {

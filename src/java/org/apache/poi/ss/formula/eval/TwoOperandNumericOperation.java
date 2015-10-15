@@ -32,7 +32,7 @@ public abstract class TwoOperandNumericOperation extends Fixed2ArgFunction {
 		return OperandResolver.coerceValueToDouble(ve);
 	}
 	public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
-		if (arg0 instanceof LazyAreaEval && arg1 instanceof  LazyAreaEval) {
+		if (arg0 instanceof LazyAreaEval && arg1 instanceof LazyAreaEval) {
 			LazyAreaEval l0 = (LazyAreaEval) arg0;
 			LazyAreaEval l1 = (LazyAreaEval) arg1;
 
@@ -41,7 +41,7 @@ public abstract class TwoOperandNumericOperation extends Fixed2ArgFunction {
 			for (int i = l0.getFirstRow(), j = 0; i <= l0.getLastRow(); i++, j++) {
 				results[j] = evaluateScalar(i, col, l0, l1);
 			}
-			return new ArrayEval(results);
+			return new ArrayEval(results, l0.getFirstRow(), l0.getLastRow());
 		} else {
 			return evaluateScalar(srcRowIndex, srcColumnIndex, arg0, arg1);
 		}

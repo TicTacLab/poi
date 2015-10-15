@@ -5,13 +5,21 @@ package org.apache.poi.ss.formula.eval;
  */
 public class ArrayEval implements ValueEval {
     private ValueEval[] _values;
+    int _firstRow;
+    int _lastRow;
 
-    public ArrayEval(ValueEval[] values) {
+    public ArrayEval(ValueEval[] values, int firstRow, int lastRow) {
         this._values = values;
+        this._firstRow = firstRow;
+        this._lastRow = lastRow;
     }
 
     public ValueEval getValue(int i) {
         return _values[i];
+    }
+
+    public ValueEval getOffsetValue(int i) {
+        return _values[i - _firstRow];
     }
 
     public ValueEval[] getValues() {
