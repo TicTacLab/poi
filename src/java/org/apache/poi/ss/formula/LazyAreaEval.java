@@ -19,6 +19,7 @@ package org.apache.poi.ss.formula;
 
 import org.apache.poi.ss.formula.eval.AreaEval;
 import org.apache.poi.ss.formula.eval.AreaEvalBase;
+import org.apache.poi.ss.formula.eval.IArrayEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.ptg.AreaI;
 import org.apache.poi.ss.formula.ptg.AreaI.OffsetArea;
@@ -27,7 +28,7 @@ import org.apache.poi.ss.util.CellReference;
 /**
  * Provides Lazy Evaluation to 3D Ranges
  */
-public final class LazyAreaEval extends AreaEvalBase {
+public final class LazyAreaEval extends AreaEvalBase implements IArrayEval {
 	private final SheetRangeEvaluator _evaluator;
 
 	LazyAreaEval(AreaI ptg, SheetRangeEvaluator evaluator) {
@@ -96,4 +97,27 @@ public final class LazyAreaEval extends AreaEvalBase {
         SheetRefEvaluator _sre = _evaluator.getSheetEvaluator(_evaluator.getFirstSheetIndex());
         return _sre.isSubTotal(getFirstRow() + rowIndex, getFirstColumn() + columnIndex);
     }
+
+	@Override
+	public ValueEval getValue(int x) {
+		return this.getRelativeValue(x, 0);
+	}
+
+	@Override
+	public ValueEval getOffsetValue(int row) {
+		return this.getValue(row, this.getFirstColumn());
+	}
+
+	@Override
+	public ValueEval[] getValues() {
+		ValueEval[] result = new ValueEval[this.getHeight()];
+		for (int i = 0; i < result.length; i++) {
+			result[i] = this.getValue(i);
+		}
+		return result;
+	}
+
+	public int getLength() {
+		return this.getHeight();
+	}
 }

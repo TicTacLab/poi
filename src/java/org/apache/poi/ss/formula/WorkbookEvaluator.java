@@ -408,14 +408,9 @@ public final class WorkbookEvaluator {
 
 		Stack<ValueEval> stack = new Stack<ValueEval>();
 		for (int i = 0, iSize = ptgs.length; i < iSize; i++) {
-			System.out.println(stack);
 
 			// since we don't know how to handle these yet :(
 			Ptg ptg = ptgs[i];
-
-			System.out.println(ptg);
-
-
 
 			if (dbgEvaluationOutputIndent > 0) {
 				EVAL_LOG.log(POILogger.INFO, dbgIndentStr + "  * ptg " + i + ": " + ptg);
@@ -590,7 +585,11 @@ public final class WorkbookEvaluator {
 	public static ValueEval dereferenceResult(ValueEval evaluationResult, int srcRowNum, int srcColNum) {
 		ValueEval value;
 		try {
-			value = OperandResolver.getSingleValue(evaluationResult, srcRowNum, srcColNum);
+			if (evaluationResult instanceof ArrayEval) {
+				value = evaluationResult;
+			} else {
+				value = OperandResolver.getSingleValue(evaluationResult, srcRowNum, srcColNum);
+			}
 		} catch (EvaluationException e) {
 			return e.getErrorEval();
 		}

@@ -3,7 +3,7 @@ package org.apache.poi.ss.formula.eval;
 /**
  * Created by serzh on 10/14/15.
  */
-public class ArrayEval implements ValueEval {
+public class ArrayEval implements ValueEval, IArrayEval {
     private ValueEval[] _values;
     int _firstRow;
     int _lastRow;
@@ -24,6 +24,10 @@ public class ArrayEval implements ValueEval {
 
     public ValueEval[] getValues() {
         return _values;
+    }
+
+    public int getLength() {
+        return _values.length;
     }
 
     public String toString() {
