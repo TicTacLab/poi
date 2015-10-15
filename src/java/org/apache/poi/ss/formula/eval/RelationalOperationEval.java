@@ -57,6 +57,20 @@ public abstract class RelationalOperationEval extends Fixed2ArgFunction {
 	 * </pre>
 	 */
 	public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
+		if (arg0 instanceof IArrayEval) {
+			IArrayEval a0 = (IArrayEval) arg0;
+			int height = a0.getLength();
+			ValueEval[] result = new ValueEval[height];
+			for (int i = 0; i < height; i++) {
+				result[i] = evaluateScalar(srcRowIndex, srcColumnIndex, a0.getValue(i), arg1);
+			}
+			return new ArrayEval(result, 0, 1);
+		} else {
+			return evaluate(srcRowIndex, srcColumnIndex, arg0, arg1);
+		}
+	}
+
+	public ValueEval evaluateScalar(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
 
 		ValueEval vA;
 		ValueEval vB;

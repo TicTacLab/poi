@@ -18,13 +18,7 @@
 package org.apache.poi.ss.formula.functions;
 
 import org.apache.poi.ss.formula.TwoDEval;
-import org.apache.poi.ss.formula.eval.BoolEval;
-import org.apache.poi.ss.formula.eval.ErrorEval;
-import org.apache.poi.ss.formula.eval.EvaluationException;
-import org.apache.poi.ss.formula.eval.MissingArgEval;
-import org.apache.poi.ss.formula.eval.OperandResolver;
-import org.apache.poi.ss.formula.eval.RefEval;
-import org.apache.poi.ss.formula.eval.ValueEval;
+import org.apache.poi.ss.formula.eval.*;
 
 /**
  * Here are the general rules concerning Boolean functions:
@@ -38,6 +32,10 @@ import org.apache.poi.ss.formula.eval.ValueEval;
  * @author Amol S. Deshmukh &lt; amolweb at ya hoo dot com &gt;
  */
 public abstract class BooleanFunction implements Function {
+
+	public final ValueEval evaluate(ArrayEval arg, int srcRow, int srcCol) {
+		return evaluate(arg.getValues(), srcRow, srcCol);
+	}
 
 	public final ValueEval evaluate(ValueEval[] args, int srcRow, int srcCol) {
 		if (args.length < 1) {
@@ -63,6 +61,17 @@ public abstract class BooleanFunction implements Function {
 		for (int i=0, iSize=args.length; i<iSize; i++) {
             Boolean tempVe;
 			ValueEval arg = args[i];
+			if (arg instanceof  ArrayEval) {
+				ArrayEval arev = (ArrayEval) arg;
+				for (ValueEval ve : arev.getValues()) {
+					tempVe = OperandResolver.coerceValueToBoolean(ve, true);
+					if (tempVe != null) {
+						result = partialEvaluate(result, tempVe.booleanValue());
+						atleastOneNonBlank = true;
+					}
+				}
+				continue;
+			}
 			if (arg instanceof TwoDEval) {
 				TwoDEval ae = (TwoDEval) arg;
 				int height = ae.getHeight();
@@ -143,6 +152,19 @@ public abstract class BooleanFunction implements Function {
 	};
 	public static final Function NOT = new Fixed1ArgFunction() {
 		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
+			if (arg0 instanceof IArrayEval) {
+				IArrayEval a0 = (IArrayEval) arg0;
+				int height = a0.getLength();
+				ValueEval[] result = new ValueEval[height];
+				for (int i = 0; i < height; i++) {
+					result[i] = evaluateScalar(srcRowIndex, srcColumnIndex, a0.getValue(i));
+				}
+				return new ArrayEval(result, 0, 1);
+			} else {
+				return evaluate(srcRowIndex, srcColumnIndex, arg0);
+			}
+		}
+		public ValueEval evaluateScalar(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
 			boolean boolArgVal;
 			try {
 				ValueEval ve = OperandResolver.getSingleValue(arg0, srcRowIndex, srcColumnIndex);

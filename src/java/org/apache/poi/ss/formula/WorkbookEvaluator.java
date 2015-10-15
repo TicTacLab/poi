@@ -374,18 +374,8 @@ public final class WorkbookEvaluator {
 	// current indent level for evalution; negative value for no output
 	private int dbgEvaluationOutputIndent = -1;
 
-	protected boolean isArrayFormula(OperationEvaluationContext ec) {
-		EvaluationWorkbook wb = ec.getWorkbook();
-		EvaluationSheet sheet = wb.getSheet(ec.getSheetIndex());
-		EvaluationCell ecell = sheet.getCell(ec.getRowIndex(), ec.getColumnIndex());
-		XSSFCell cell = (XSSFCell) ecell.getIdentityKey();
-		return cell.isPartOfArrayFormulaGroup();
-	}
-
 	// visibility raised for testing
 	/* package */ ValueEval evaluateFormula(OperationEvaluationContext ec, Ptg[] ptgs) {
-
-		boolean isArrayFormula = isArrayFormula(ec);
 
 
 		String dbgIndentStr = "";		// always init. to non-null just for defensive avoiding NPE
@@ -514,11 +504,7 @@ public final class WorkbookEvaluator {
 					ops[j] = p;
 				}
 //				logDebug("invoke " + operation + " (nAgs=" + numops + ")");
-				if (isArrayFormula) {
-					opResult = OperationEvaluatorFactory.evaluate(optg, ops, ec);
-				} else {
-					opResult = OperationEvaluatorFactory.evaluate(optg, ops, ec);
-				}
+				opResult = OperationEvaluatorFactory.evaluate(optg, ops, ec);
 			} else {
 				opResult = getEvalForPtg(ptg, ec);
 			}
