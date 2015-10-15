@@ -20,6 +20,7 @@ package org.apache.poi.ss.formula.eval;
 import org.apache.poi.ss.formula.LazyAreaEval;
 import org.apache.poi.ss.formula.functions.Fixed2ArgFunction;
 import org.apache.poi.ss.formula.functions.Function;
+import org.apache.poi.ss.formula.functions.Value;
 
 /**
  * @author Josh Micich
@@ -31,6 +32,21 @@ public abstract class TwoOperandNumericOperation extends Fixed2ArgFunction {
 		return OperandResolver.coerceValueToDouble(ve);
 	}
 	public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
+		if (arg0 instanceof LazyAreaEval && arg1 instanceof  LazyAreaEval) {
+			LazyAreaEval l0 = (LazyAreaEval) arg0;
+			LazyAreaEval l1 = (LazyAreaEval) arg1;
+
+			ValueEval[] results = new ValueEval[l0.getHeight()];
+			int col = l0.getFirstColumn();
+			for (int i = l0.getFirstRow(), j = 0; i <= l0.getLastRow(); i++, j++) {
+				results[j] = evaluateScalar(i, col, l0, l1);
+			}
+			return new ArrayEval(results);
+		} else {
+			return evaluateScalar(srcRowIndex, srcColumnIndex, arg0, arg1);
+		}
+	}
+	public ValueEval evaluateScalar(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
 		double result;
 		try {
 			double d0 = singleOperandEvaluate(arg0, srcRowIndex, srcColumnIndex);
@@ -69,31 +85,6 @@ public abstract class TwoOperandNumericOperation extends Fixed2ArgFunction {
 	public static final Function MultiplyEval = new TwoOperandNumericOperation() {
 		protected double evaluate(double d0, double d1) {
 			return d0*d1;
-		}
-		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
-			if (arg0 instanceof LazyAreaEval && arg1 instanceof  LazyAreaEval) {
-
-				ValueEval[] results = new ValueEval[((LazyAreaEval) arg0).getHeight()];
-				System.out.println(((LazyAreaEval) arg0).getFirstColumn());
-				for (int i = ((LazyAreaEval) arg0).getFirstRow(), j = 0; i <= ((LazyAreaEval) arg0).getLastRow(); i++, j++) {
-					double result;
-					try {
-						double d0 = singleOperandEvaluate(arg0, i, ((LazyAreaEval) arg0).getFirstColumn());
-						double d1 = singleOperandEvaluate(arg1, i, ((LazyAreaEval) arg1).getFirstColumn());
-						result = evaluate(d0, d1);
-						if (Double.isNaN(result) || Double.isInfinite(result)) {
-							return ErrorEval.NUM_ERROR;
-						}
-					} catch (EvaluationException e) {
-						System.out.println(e);
-						return e.getErrorEval();
-					}
-					results[j] = new NumberEval(result);
-				}
-
-				return new ArrayEval(results);
-			} else
-				return super.evaluate(srcRowIndex, srcColumnIndex, arg0, arg1);
 		}
 	};
 	public static final Function PowerEval = new TwoOperandNumericOperation() {
