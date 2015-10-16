@@ -152,19 +152,6 @@ public abstract class BooleanFunction implements Function {
 	};
 	public static final Function NOT = new Fixed1ArgFunction() {
 		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
-			if (arg0 instanceof IArrayEval) {
-				IArrayEval a0 = (IArrayEval) arg0;
-				int height = a0.getLength();
-				ValueEval[] result = new ValueEval[height];
-				for (int i = 0; i < height; i++) {
-					result[i] = evaluateScalar(srcRowIndex, srcColumnIndex, a0.getValue(i));
-				}
-				return new ArrayEval(result, 0, 1);
-			} else {
-				return evaluate(srcRowIndex, srcColumnIndex, arg0);
-			}
-		}
-		public ValueEval evaluateScalar(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
 			boolean boolArgVal;
 			try {
 				ValueEval ve = OperandResolver.getSingleValue(arg0, srcRowIndex, srcColumnIndex);

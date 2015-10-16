@@ -17,6 +17,8 @@
 
 package org.apache.poi.ss.formula.functions;
 
+import org.apache.poi.ss.formula.eval.AreaEval;
+import org.apache.poi.ss.formula.eval.IArrayEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
 /**
@@ -29,4 +31,6 @@ public interface Function1Arg extends Function {
 	 * see {@link Function#evaluate(ValueEval[], int, int)}
 	 */
 	ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0);
+
+    //ValueEval evaluate(int srcRowIndex, int srcColumnIndex, IArrayEval arg0);
 }

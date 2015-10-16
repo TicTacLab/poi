@@ -65,6 +65,11 @@ public class TestArrayFunctions extends TestCase {
         assertEquals(expected, evaluate(wb).getBooleanValue());
     }
 
+    public void assertFormulaResult(Workbook wb, String expected, String formula) {
+        setArrayFormula(wb, formula);
+        assertEquals(expected, evaluate(wb).getStringValue());
+    }
+
 	public void testAggregateOfBasicOperators() {
         assertFormulaResult(wb, 189691.0, "SUM(D2:D17+F2:F17)");
         assertFormulaResult(wb, -189509.0, "SUM(D2:D17-F2:F17)");
@@ -88,6 +93,11 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, true, "OR(NOT(C2:C17=\"Sedan\"))");
         //assertFormulaResult(wb, 0, "IF(C2<>\"Sedan\",1,0)");
         //assertFormulaResult(wb, 57600.0, "SUM(IF(C2:C17=\"Sedan\", INDEX(F2:F17, ROW(F2:F17), 1), \"\"))");
+    }
+
+    public void testFixed1ArgFunction() {
+        assertFormulaResult(wb, -136,"SUM(-A2:A17)");
+        assertFormulaResult(wb, "\u0001", "CHAR(A2:A17)");
     }
 	
 }

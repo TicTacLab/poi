@@ -23,14 +23,11 @@ import org.apache.poi.ss.formula.CollaboratingWorkbooksEnvironment;
 import org.apache.poi.ss.formula.EvaluationCell;
 import org.apache.poi.ss.formula.WorkbookEvaluator;
 import org.apache.poi.ss.formula.WorkbookEvaluatorProvider;
-import org.apache.poi.ss.formula.eval.BoolEval;
-import org.apache.poi.ss.formula.eval.ErrorEval;
-import org.apache.poi.ss.formula.eval.NumberEval;
-import org.apache.poi.ss.formula.eval.StringEval;
-import org.apache.poi.ss.formula.eval.ValueEval;
+import org.apache.poi.ss.formula.eval.*;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellValue;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 /**
  * Internal POI use only - parent of XSSF and SXSSF formula evaluators
@@ -52,13 +49,13 @@ public abstract class BaseXSSFFormulaEvaluator implements FormulaEvaluator, Work
         _bookEvaluator.clearAllCachedResultValues();
     }
     public void notifySetFormula(Cell cell) {
-        _bookEvaluator.notifyUpdateCell(new XSSFEvaluationCell((XSSFCell)cell));
+        _bookEvaluator.notifyUpdateCell(new XSSFEvaluationCell((XSSFCell) cell));
     }
     public void notifyDeleteCell(Cell cell) {
-        _bookEvaluator.notifyDeleteCell(new XSSFEvaluationCell((XSSFCell)cell));
+        _bookEvaluator.notifyDeleteCell(new XSSFEvaluationCell((XSSFCell) cell));
     }
     public void notifyUpdateCell(Cell cell) {
-        _bookEvaluator.notifyUpdateCell(new XSSFEvaluationCell((XSSFCell)cell));
+        _bookEvaluator.notifyUpdateCell(new XSSFEvaluationCell((XSSFCell) cell));
     }
 
     /**
@@ -180,13 +177,8 @@ public abstract class BaseXSSFFormulaEvaluator implements FormulaEvaluator, Work
      * Turns a XSSFCell / SXSSFCell into a XSSFEvaluationCell
      */
     protected abstract EvaluationCell toEvaluationCell(Cell cell);
-    
-    /**
-     * Returns a CellValue wrapper around the supplied ValueEval instance.
-     */
-    private CellValue evaluateFormulaCellValue(Cell cell) {
-        EvaluationCell evalCell = toEvaluationCell(cell);
-        ValueEval eval = _bookEvaluator.evaluate(evalCell);
+
+    private CellValue valueEvalToCellValue(ValueEval eval, Cell cell) {
         if (eval instanceof NumberEval) {
             NumberEval ne = (NumberEval) eval;
             return new CellValue(ne.getNumberValue());
@@ -202,7 +194,28 @@ public abstract class BaseXSSFFormulaEvaluator implements FormulaEvaluator, Work
         if (eval instanceof ErrorEval) {
             return CellValue.getError(((ErrorEval)eval).getErrorCode());
         }
+        if (eval instanceof IArrayEval) {
+            if (cell.isPartOfArrayFormulaGroup()) {
+                IArrayEval ae = (IArrayEval) eval;
+                CellRangeAddress cra = cell.getArrayFormulaRange();
+
+                int relativeRow = cell.getRowIndex() - cra.getFirstRow();
+                int relativeCol = cell.getColumnIndex() - cra.getFirstColumn();
+
+                return valueEvalToCellValue(ae.getValue(relativeRow), cell);
+            }
+        }
         throw new RuntimeException("Unexpected eval class (" + eval.getClass().getName() + ")");
+    }
+    
+    /**
+     * Returns a CellValue wrapper around the supplied ValueEval instance.
+     */
+    private CellValue evaluateFormulaCellValue(Cell cell) {
+        EvaluationCell evalCell = toEvaluationCell(cell);
+        ValueEval eval = _bookEvaluator.evaluate(evalCell);
+
+        return valueEvalToCellValue(eval, cell);
     }
 
     public void setupReferencedWorkbooks(Map<String, FormulaEvaluator> evaluators) {
