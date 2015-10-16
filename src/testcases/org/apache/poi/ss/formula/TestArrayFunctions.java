@@ -112,4 +112,12 @@ public class TestArrayFunctions extends TestCase {
     public void testFixed4ArgFunction() {
         assertFormulaResult(wb, "Mudan", "REPLACE(C2:C17,1,2,\"Mu\")");
     }
+
+    public void testVar1or2ArgFunction() {
+        assertFormulaResult(wb, 0.2, "TRUNC(A2:A17/D2:D17,1)");
+    }
+
+    public void testVar2or3ArgFunction() {
+
+    }
 }
