@@ -98,6 +98,7 @@ public class TestArrayFunctions extends TestCase {
     public void testFixed1ArgFunction() {
         assertFormulaResult(wb, -136,"SUM(-A2:A17)");
         assertFormulaResult(wb, "\u0001", "CHAR(A2:A17)");
+        assertFormulaResult(wb, 0.01, "A2:A17%");
     }
 	
 }
