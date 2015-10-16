@@ -108,4 +108,8 @@ public class TestArrayFunctions extends TestCase {
     public void testFixed3ArgFunction() {
         assertFormulaResult(wb, "Se", "MID(C2:C17,1,2)");
     }
+
+    public void testFixed4ArgFunction() {
+        assertFormulaResult(wb, "Mudan", "REPLACE(C2:C17,1,2,\"Mu\")");
+    }
 }
