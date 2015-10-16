@@ -106,6 +106,6 @@ public class TestArrayFunctions extends TestCase {
     }
 
     public void testFixed3ArgFunction() {
-
+        assertFormulaResult(wb, "Se", "MID(C2:C17,1,2)");
     }
 }
