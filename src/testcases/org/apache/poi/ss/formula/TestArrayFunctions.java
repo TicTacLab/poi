@@ -100,5 +100,12 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, "\u0001", "CHAR(A2:A17)");
         assertFormulaResult(wb, 0.01, "A2:A17%");
     }
-	
+
+    public void testFixed2ArgFunction() {
+        assertFormulaResult(wb, "I", "ROMAN(A2:A17,0)");
+    }
+
+    public void testFixed3ArgFunction() {
+
+    }
 }

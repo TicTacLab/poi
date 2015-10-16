@@ -17,7 +17,6 @@
 
 package org.apache.poi.ss.formula.functions;
 
-import org.apache.poi.ss.formula.LazyAreaEval;
 import org.apache.poi.ss.formula.eval.ArrayEval;
 import org.apache.poi.ss.formula.eval.ErrorEval;
 import org.apache.poi.ss.formula.eval.IArrayEval;
@@ -33,18 +32,19 @@ public abstract class Fixed1ArgFunction implements Function1Arg {
 		if (args.length != 1) {
 			return ErrorEval.VALUE_INVALID;
 		}
-        if (args[0] instanceof IArrayEval)
-            return evaluateArray(srcRowIndex, srcColumnIndex, (IArrayEval) args[0]);
+        if (ArrayFunctionsHelper.isAnyIArrayEval(args))
+            return evaluateArray(srcRowIndex, srcColumnIndex, args[0]);
         else
             return evaluate(srcRowIndex, srcColumnIndex, args[0]);
 	}
 
-    public final ValueEval evaluateArray(int srcRowIndex, int srcColumnIndex, IArrayEval arg0) {
-        int length = arg0.getLength();
+    public final ValueEval evaluateArray(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
+        IArrayEval a0 = ArrayFunctionsHelper.coerceToIArrayEval(arg0);
+        int length = a0.getLength();
         ValueEval[] result = new ValueEval[length];
 
         for (int i = 0; i < length; i++) {
-            result[i] = evaluate(srcRowIndex, srcColumnIndex, arg0.getValue(i));
+            result[i] = evaluate(srcRowIndex, srcColumnIndex, a0.getValue(i));
         }
 
         return new ArrayEval(result, 0, 1);

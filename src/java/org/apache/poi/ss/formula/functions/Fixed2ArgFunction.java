@@ -17,8 +17,11 @@
 
 package org.apache.poi.ss.formula.functions;
 
+import org.apache.poi.ss.formula.eval.ArrayEval;
 import org.apache.poi.ss.formula.eval.ErrorEval;
+import org.apache.poi.ss.formula.eval.IArrayEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
+import org.apache.poi.ss.usermodel.FormulaError;
 
 /**
  * Convenience base class for functions that must take exactly two arguments.
@@ -30,6 +33,23 @@ public abstract class Fixed2ArgFunction implements Function2Arg {
 		if (args.length != 2) {
 			return ErrorEval.VALUE_INVALID;
 		}
-		return evaluate(srcRowIndex, srcColumnIndex, args[0], args[1]);
+        if (ArrayFunctionsHelper.isAnyIArrayEval(args)) {
+           return evaluateArray(srcRowIndex, srcColumnIndex, args[0], args[1]);
+        } else {
+           return evaluate(srcRowIndex, srcColumnIndex, args[0], args[1]);
+        }
 	}
+
+   public final ValueEval evaluateArray(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
+      int length = ArrayFunctionsHelper.getIArrayArg(new ValueEval[] {arg0, arg1}).getLength();
+
+      IArrayEval a0 = ArrayFunctionsHelper.coerceToIArrayEval(arg0, length);
+      IArrayEval a1 = ArrayFunctionsHelper.coerceToIArrayEval(arg1, length);
+
+      ValueEval[] result = new ValueEval[length];
+      for (int i = 0; i < length; i++) {
+         result[i] = evaluate(srcRowIndex, srcColumnIndex, a0.getValue(i), a1.getValue(i));
+      }
+      return new ArrayEval(result, 0, 1);
+   }
 }

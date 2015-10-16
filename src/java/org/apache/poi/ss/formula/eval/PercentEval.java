@@ -32,7 +32,6 @@ public final class PercentEval extends Fixed1ArgFunction {
 	private PercentEval() {
 		// enforce singleton
 	}
-
 	public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
 		double d;
 		try {
