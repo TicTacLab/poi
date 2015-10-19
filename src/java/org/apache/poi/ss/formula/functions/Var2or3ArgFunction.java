@@ -49,30 +49,37 @@ abstract class Var2or3ArgFunction implements Function2Arg, Function3Arg {
 	}
 
    public final ValueEval evaluateArray(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
-      int length = ArrayFunctionsHelper.getIArrayArg(new ValueEval[] {arg0, arg1}).getLength();
+      ValueEval[] args = new ValueEval[] {arg0, arg1};
+      int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
 
       IArrayEval a0 = ArrayFunctionsHelper.coerceToIArrayEval(arg0, length);
       IArrayEval a1 = ArrayFunctionsHelper.coerceToIArrayEval(arg1, length);
-      System.out.println(a0);
-      System.out.println(a1);
+
+      int firstRow = ArrayFunctionsHelper.getFirstRow(args);
+      int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
+
       ValueEval[] result = new ValueEval[length];
       for (int i = 0; i < length; i++) {
-         result[i] = evaluate(srcRowIndex, srcColumnIndex, a0.getValue(i), a1.getValue(i));
+         result[i] = evaluate(firstRow+i, srcColumnIndex, a0.getValue(i), a1.getValue(i));
       }
-      return new ArrayEval(result, 0, 1);
+      return new ArrayEval(result, firstRow, lastRow);
    }
 
    public final ValueEval evaluateArray(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1, ValueEval arg2) {
-      int length = ArrayFunctionsHelper.getIArrayArg(new ValueEval[] {arg0, arg1, arg2}).getLength();
+      ValueEval[] args = new ValueEval[] {arg0, arg1, arg2};
+      int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
 
       IArrayEval a0 = ArrayFunctionsHelper.coerceToIArrayEval(arg0, length);
       IArrayEval a1 = ArrayFunctionsHelper.coerceToIArrayEval(arg1, length);
       IArrayEval a2 = ArrayFunctionsHelper.coerceToIArrayEval(arg2, length);
 
+      int firstRow = ArrayFunctionsHelper.getFirstRow(args);
+      int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
+
       ValueEval[] result = new ValueEval[length];
       for (int i = 0; i < length; i++) {
-         result[i] = evaluate(srcRowIndex, srcColumnIndex, a0.getValue(i), a1.getValue(i), a2.getValue(i));
+         result[i] = evaluate(firstRow+i, srcColumnIndex, a0.getValue(i), a1.getValue(i), a2.getValue(i));
       }
-      return new ArrayEval(result, 0, 1);
+      return new ArrayEval(result, firstRow, lastRow);
    }
 }
