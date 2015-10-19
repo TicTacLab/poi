@@ -20,13 +20,7 @@ package org.apache.poi.xssf.usermodel;
 import java.util.List;
 
 import org.apache.poi.ss.SpreadsheetVersion;
-import org.apache.poi.ss.formula.EvaluationName;
-import org.apache.poi.ss.formula.EvaluationWorkbook;
-import org.apache.poi.ss.formula.FormulaParser;
-import org.apache.poi.ss.formula.FormulaParsingWorkbook;
-import org.apache.poi.ss.formula.FormulaRenderingWorkbook;
-import org.apache.poi.ss.formula.FormulaType;
-import org.apache.poi.ss.formula.SheetIdentifier;
+import org.apache.poi.ss.formula.*;
 import org.apache.poi.ss.formula.functions.FreeRefFunction;
 import org.apache.poi.ss.formula.ptg.Area3DPxg;
 import org.apache.poi.ss.formula.ptg.NamePtg;
@@ -36,7 +30,10 @@ import org.apache.poi.ss.formula.ptg.Ptg;
 import org.apache.poi.ss.formula.ptg.Ref3DPxg;
 import org.apache.poi.ss.formula.udf.IndexedUDFFinder;
 import org.apache.poi.ss.formula.udf.UDFFinder;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.AreaReference;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.model.ExternalLinksTable;
 import org.openxmlformats.schemas.spreadsheetml.x2006.main.CTDefinedName;
@@ -293,6 +290,18 @@ public abstract class BaseXSSFEvaluationWorkbook implements FormulaRenderingWork
 	
     public UDFFinder getUDFFinder(){
         return _uBook.getUDFFinder();
+    }
+
+    public boolean isPartOfArrayFormula(int sheetIndex, int srcRowIndex, int srcColumnIndex) {
+        Sheet sheet = _uBook.getSheetAt(sheetIndex);
+        Cell cell = sheet.getRow(srcRowIndex).getCell(srcColumnIndex);
+        return cell.isPartOfArrayFormulaGroup();
+    }
+
+    public CellRangeAddress getArrayFormulaRangeAddress(int sheetIndex, int srcRowIndex, int srcColumnIndex) {
+        Sheet sheet = _uBook.getSheetAt(sheetIndex);
+        Cell cell = sheet.getRow(srcRowIndex).getCell(srcColumnIndex);
+        return cell.getArrayFormulaRange();
     }
 
 	private static final class Name implements EvaluationName {

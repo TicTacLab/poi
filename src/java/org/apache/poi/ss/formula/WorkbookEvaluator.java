@@ -17,12 +17,7 @@
 
 package org.apache.poi.ss.formula;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.IdentityHashMap;
-import java.util.Map;
-import java.util.Stack;
-import java.util.TreeSet;
+import java.util.*;
 
 import org.apache.poi.ss.formula.CollaboratingWorkbooksEnvironment.WorkbookNotFoundException;
 import org.apache.poi.ss.formula.atp.AnalysisToolPak;
@@ -375,8 +370,9 @@ public final class WorkbookEvaluator {
 	private int dbgEvaluationOutputIndent = -1;
 
 	// visibility raised for testing
-	/* package */ ValueEval evaluateFormula(OperationEvaluationContext ec, Ptg[] ptgs) {
+	public ValueEval evaluateFormula(OperationEvaluationContext ec, Ptg[] _ptgs) {
 
+		LinkedList<Ptg> ptgs = new LinkedList<Ptg>(Arrays.asList(_ptgs));
 
 		String dbgIndentStr = "";		// always init. to non-null just for defensive avoiding NPE
 		if (dbgEvaluationOutputForNextEval) {
@@ -390,14 +386,163 @@ public final class WorkbookEvaluator {
 			dbgIndentStr = "                                                                                                    ";
 			dbgIndentStr = dbgIndentStr.substring(0, Math.min(dbgIndentStr.length(), dbgEvaluationOutputIndent*2));
 			EVAL_LOG.log(POILogger.WARN, dbgIndentStr
-			                   + "- evaluateFormula('" + ec.getRefEvaluatorForCurrentSheet().getSheetNameRange()
-			                   + "'/" + new CellReference(ec.getRowIndex(), ec.getColumnIndex()).formatAsString()
-			                   + "): " + Arrays.toString(ptgs).replaceAll("\\Qorg.apache.poi.ss.formula.ptg.\\E", ""));
+					+ "- evaluateFormula('" + ec.getRefEvaluatorForCurrentSheet().getSheetNameRange()
+					+ "'/" + new CellReference(ec.getRowIndex(), ec.getColumnIndex()).formatAsString()
+					+ "): " + ptgs.toString().replaceAll("\\Qorg.apache.poi.ss.formula.ptg.\\E", ""));
 			dbgEvaluationOutputIndent++;
 		}
 
 		Stack<ValueEval> stack = new Stack<ValueEval>();
-		for (int i = 0, iSize = ptgs.length; i < iSize; i++) {
+		int i = 0;
+		while (!ptgs.isEmpty()) {
+			System.out.println(stack);
+			Ptg ptg = ptgs.peek();
+
+			if (dbgEvaluationOutputIndent > 0) {
+				EVAL_LOG.log(POILogger.INFO, dbgIndentStr + "  * ptg " + i + ": " + ptg);
+			}
+			if (ptg instanceof AttrPtg) {
+				AttrPtg attrPtg = (AttrPtg) ptg;
+				if (attrPtg.isSum()) {
+					// Excel prefers to encode 'SUM()' as a tAttr token, but this evaluator
+					// expects the equivalent function token
+					ptg = FuncVarPtg.SUM;
+				}
+				if (attrPtg.isOptimizedChoose()) {
+					ValueEval arg0 = stack.pop();
+					int[] jumpTable = attrPtg.getJumpTable();
+					int dist;
+					int nChoices = jumpTable.length;
+					try {
+						int switchIndex = Choose.evaluateFirstArg(arg0, ec.getRowIndex(), ec.getColumnIndex());
+						if (switchIndex<1 || switchIndex > nChoices) {
+							stack.push(ErrorEval.VALUE_INVALID);
+							dist = attrPtg.getChooseFuncOffset() + 4; // +4 for tFuncFar(CHOOSE)
+						} else {
+							dist = jumpTable[switchIndex-1];
+						}
+					} catch (EvaluationException e) {
+						stack.push(e.getErrorEval());
+						dist = attrPtg.getChooseFuncOffset() + 4; // +4 for tFuncFar(CHOOSE)
+					}
+					// Encoded dist for tAttrChoose includes size of jump table, but
+					// countTokensToBeSkipped() does not (it counts whole tokens).
+					dist -= nChoices*2+2; // subtract jump table size
+					int skip = countTokensToBeSkipped(ptgs, i, dist);
+					i+= skip;
+					for (int j = 0; j<skip; j++) ptgs.removeFirst();
+
+					continue;
+				}
+				if (attrPtg.isOptimizedIf()) {
+					ValueEval arg0 = stack.pop();
+					boolean evaluatedPredicate;
+					try {
+						evaluatedPredicate = IfFunc.evaluateFirstArg(arg0, ec.getRowIndex(), ec.getColumnIndex());
+					} catch (EvaluationException e) {
+						stack.push(e.getErrorEval());
+						int dist = attrPtg.getData();
+						int skip1 = countTokensToBeSkipped(ptgs, i, dist);
+						i+= skip1;
+						attrPtg = (AttrPtg) ptgs.get(i);
+						dist = attrPtg.getData()+1;
+						int skip2 = countTokensToBeSkipped(ptgs, i, dist);
+						i+= skip2;
+
+						for (int j = 0; j<skip1+skip2; j++) ptgs.removeFirst();
+
+						continue;
+					}
+					if (evaluatedPredicate) {
+						// nothing to skip - true param follows
+					} else {
+						int dist = attrPtg.getData();
+						i+= countTokensToBeSkipped(ptgs, i, dist);
+						Ptg nextPtg = ptgs.get(i+1);
+						if (ptgs.getFirst() instanceof AttrPtg && nextPtg instanceof FuncVarPtg &&
+								// in order to verify that there is no third param, we need to check
+								// if we really have the IF next or some other FuncVarPtg as third param, e.g. ROW()/COLUMN()!
+								((FuncVarPtg)nextPtg).getFunctionIndex() == FunctionMetadataRegistry.FUNCTION_INDEX_IF) {
+							// this is an if statement without a false param (as opposed to MissingArgPtg as the false param)
+							i++;
+							ptgs.removeFirst();
+							stack.push(BoolEval.FALSE);
+						}
+					}
+					continue;
+				}
+				if (attrPtg.isSkip()) {
+					int dist = attrPtg.getData()+1;
+					int skip = countTokensToBeSkipped(ptgs, i, dist);
+					i+= skip;
+					for (int j = 0; j<skip; j++) ptgs.removeFirst();
+					if (stack.peek() == MissingArgEval.instance) {
+						stack.pop();
+						stack.push(BlankEval.instance);
+					}
+					continue;
+				}
+			}
+			if (ptg instanceof ControlPtg) {
+				// skip Parentheses, Attr, etc
+				continue;
+			}
+			if (ptg instanceof MemFuncPtg || ptg instanceof MemAreaPtg) {
+				// can ignore, rest of tokens for this expression are in OK RPN order
+				continue;
+			}
+			if (ptg instanceof MemErrPtg) {
+				continue;
+			}
+
+			ValueEval opResult;
+			if (ptg instanceof OperationPtg) {
+				OperationPtg optg = (OperationPtg) ptg;
+
+				if (optg instanceof UnionPtg) { continue; }
+
+
+				int numops = optg.getNumberOfOperands();
+				ValueEval[] ops = new ValueEval[numops];
+
+				// storing the ops in reverse order since they are popping
+				for (int j = numops - 1; j >= 0; j--) {
+					ValueEval p = stack.pop();
+					ops[j] = p;
+				}
+//				logDebug("invoke " + operation + " (nAgs=" + numops + ")");
+				opResult = OperationEvaluatorFactory.evaluate(optg, ops, ec);
+			} else {
+				opResult = getEvalForPtg(ptg, ec);
+			}
+			if (opResult == null) {
+				throw new RuntimeException("Evaluation result must not be null");
+			}
+//			logDebug("push " + opResult);
+			stack.push(opResult);
+			if (dbgEvaluationOutputIndent > 0) {
+				EVAL_LOG.log(POILogger.INFO, dbgIndentStr + "    = " + opResult);
+			}
+			i++;
+			ptgs.removeFirst();
+		}
+
+		ValueEval value = stack.pop();
+		if (!stack.isEmpty()) {
+			throw new IllegalStateException("evaluation stack not empty");
+		}
+		ValueEval result = dereferenceResult(value, ec.getRowIndex(), ec.getColumnIndex());
+		if (dbgEvaluationOutputIndent > 0) {
+			EVAL_LOG.log(POILogger.INFO, dbgIndentStr + "finshed eval of "
+					+ new CellReference(ec.getRowIndex(), ec.getColumnIndex()).formatAsString()
+					+ ": " + result);
+			dbgEvaluationOutputIndent--;
+			if (dbgEvaluationOutputIndent == 1) {
+				// this evaluation is done, reset indent to stop logging
+				dbgEvaluationOutputIndent = -1;
+			}
+		} // if
+		/*for (int i = 0, iSize = ptgs.length; i < iSize; i++) {
 
 			// since we don't know how to handle these yet :(
 			Ptg ptg = ptgs[i];
@@ -532,7 +677,7 @@ public final class WorkbookEvaluator {
 				// this evaluation is done, reset indent to stop logging
 				dbgEvaluationOutputIndent = -1;
 			}
-		} // if
+		} // if*/
 		return result;
 
 	}
@@ -543,16 +688,16 @@ public final class WorkbookEvaluator {
 	 * @return the number of tokens (starting from <tt>startIndex+1</tt>) that need to be skipped
 	 * to achieve the specified <tt>distInBytes</tt> skip distance.
 	 */
-	private static int countTokensToBeSkipped(Ptg[] ptgs, int startIndex, int distInBytes) {
+	public static int countTokensToBeSkipped(LinkedList<Ptg> ptgs, int startIndex, int distInBytes) {
 		int remBytes = distInBytes;
 		int index = startIndex;
 		while (remBytes != 0) {
 			index++;
-			remBytes -= ptgs[index].getSize();
+			remBytes -= ptgs.get(index).getSize();
 			if (remBytes < 0) {
 				throw new RuntimeException("Bad skip distance (wrong token size calculation).");
 			}
-			if (index >= ptgs.length) {
+			if (index >= ptgs.size()) {
 				throw new RuntimeException("Skip distance too far (ran out of formula tokens).");
 			}
 		}
@@ -784,4 +929,5 @@ public final class WorkbookEvaluator {
     public void setDebugEvaluationOutputForNextEval(boolean value){
         dbgEvaluationOutputForNextEval = value;
     }
+
 }

@@ -1,5 +1,6 @@
 package org.apache.poi.ss.formula.functions;
 
+import org.apache.poi.ss.formula.LazyAreaEval;
 import org.apache.poi.ss.formula.eval.ArrayEval;
 import org.apache.poi.ss.formula.eval.IArrayEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
@@ -40,5 +41,21 @@ public class ArrayFunctionsHelper {
                 return (IArrayEval) valueEval;
         }
         return null;
+    }
+
+    public static int getFirstRow(ValueEval[] valueEvals) {
+        for (ValueEval valueEval : valueEvals) {
+            if (valueEval instanceof LazyAreaEval)
+                return ((LazyAreaEval) valueEval).getFirstRow();
+        }
+        return 0;
+    }
+
+    public static int getLastRow(ValueEval[] valueEvals, int notFound) {
+        for (ValueEval valueEval : valueEvals) {
+            if (valueEval instanceof LazyAreaEval)
+                return ((LazyAreaEval) valueEval).getLastRow();
+        }
+        return notFound;
     }
 }

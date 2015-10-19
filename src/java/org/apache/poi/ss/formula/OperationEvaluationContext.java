@@ -36,8 +36,10 @@ import org.apache.poi.ss.formula.ptg.NameXPxg;
 import org.apache.poi.ss.formula.ptg.Ptg;
 import org.apache.poi.ss.formula.ptg.Ref3DPtg;
 import org.apache.poi.ss.formula.ptg.Ref3DPxg;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.ss.util.CellReference.NameType;
+import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
 
 /**
  * Contains all the contextual information required to evaluate an operation
@@ -142,6 +144,22 @@ public final class OperationEvaluationContext {
 		return new SheetRangeEvaluator(otherFirstSheetIndex, otherLastSheetIndex, evals);
 	}
 
+	public EvaluationCell getCell() {
+		return this.getWorkbook().getSheet(_sheetIndex).getCell(_rowIndex, _columnIndex);
+	}
+
+	public boolean isPartOfArrayFormula() {
+		return ((XSSFEvaluationWorkbook) _workbook).isPartOfArrayFormula(_sheetIndex, _rowIndex, _columnIndex);
+	}
+
+	public CellRangeAddress getArrayFormulaRangeAddress() {
+		return ((XSSFEvaluationWorkbook) _workbook).getArrayFormulaRangeAddress(_sheetIndex, _rowIndex, _columnIndex);
+	}
+
+	public int getArrayFormulaRowOffset() {
+		CellRangeAddress range = this.getArrayFormulaRangeAddress();
+		return _rowIndex - range.getFirstRow();
+	}
 	/**
 	 * @return <code>null</code> if either workbook or sheet is not found
 	 */
@@ -446,4 +464,6 @@ public final class OperationEvaluationContext {
             return ErrorEval.REF_INVALID;
         }
    }
+
+
 }

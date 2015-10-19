@@ -96,28 +96,28 @@ public class TestArrayFunctions extends TestCase {
     }
 
     public void testFixed1ArgFunction() {
-        assertFormulaResult(wb, -136,"SUM(-A2:A17)");
-        assertFormulaResult(wb, "\u0001", "CHAR(A2:A17)");
-        assertFormulaResult(wb, 0.01, "A2:A17%");
+        assertFormulaResult(wb, -189600,"SUM(-F2:F17)");
+        assertFormulaResult(wb, "\u0001", "CHAR(F2:F17/F2:F17)");
+        assertFormulaResult(wb, 105.0, "F2:F17%");
     }
 
     public void testFixed2ArgFunction() {
-        assertFormulaResult(wb, "I", "ROMAN(A2:A17,0)");
+        assertFormulaResult(wb, "I", "ROMAN(F2:F17/F2:F17,0)");
     }
 
     public void testFixed3ArgFunction() {
-        assertFormulaResult(wb, "Se", "MID(C2:C17,1,2)");
+        assertFormulaResult(wb, "10", "MID(F2:F17,1,2)");
     }
 
     public void testFixed4ArgFunction() {
-        assertFormulaResult(wb, "Mudan", "REPLACE(C2:C17,1,2,\"Mu\")");
+        assertFormulaResult(wb, "Mu500", "REPLACE(F2:F17,1,2,\"Mu\")");
     }
 
     public void testVar1or2ArgFunction() {
-        assertFormulaResult(wb, 0.2, "TRUNC(A2:A17/D2:D17,1)");
+        assertFormulaResult(wb, 1.0, "TRUNC(F2:F17/F2:F17,1)");
     }
 
     public void testVar2or3ArgFunction() {
-
+        assertFormulaResult(wb, "one", "IF(F2:F17=10500, \"one\")");
     }
 }

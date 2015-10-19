@@ -17,10 +17,8 @@
 
 package org.apache.poi.ss.formula.eval;
 
-import org.apache.poi.ss.formula.LazyAreaEval;
 import org.apache.poi.ss.formula.functions.Fixed2ArgFunction;
 import org.apache.poi.ss.formula.functions.Function;
-import org.apache.poi.ss.formula.functions.Value;
 
 /**
  * @author Josh Micich
@@ -32,22 +30,6 @@ public abstract class TwoOperandNumericOperation extends Fixed2ArgFunction {
 		return OperandResolver.coerceValueToDouble(ve);
 	}
 	public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
-		if (arg0 instanceof IArrayEval && arg1 instanceof IArrayEval) {
-			IArrayEval ia0 = (IArrayEval) arg0;
-			IArrayEval ia1 = (IArrayEval) arg1;
-
-			int height = ia0.getLength();
-
-			ValueEval[] results = new ValueEval[height];
-			for (int j = 0; j < height; j++) {
-				results[j] = evaluateScalar(j, 0, ia0.getValue(j), ia1.getValue(j));
-			}
-			return new ArrayEval(results, 0, 1);
-		} else {
-			return evaluateScalar(srcRowIndex, srcColumnIndex, arg0, arg1);
-		}
-	}
-	public ValueEval evaluateScalar(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
 		double result;
 		try {
 			double d0 = singleOperandEvaluate(arg0, srcRowIndex, srcColumnIndex);

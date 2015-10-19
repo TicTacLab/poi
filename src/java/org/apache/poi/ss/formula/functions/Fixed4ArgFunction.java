@@ -33,26 +33,27 @@ public abstract class Fixed4ArgFunction implements Function4Arg {
 			return ErrorEval.VALUE_INVALID;
 		}
        if (ArrayFunctionsHelper.isAnyIArrayEval(args)) {
-          return evaluateArray(srcRowIndex, srcColumnIndex, args[0], args[1], args[2], args[3]);
+          return evaluateArray(args, srcRowIndex, srcColumnIndex);
        } else {
           return evaluate(srcRowIndex, srcColumnIndex, args[0], args[1], args[2], args[3]);
        }
 	}
 
-    public final ValueEval evaluateArray(int srcRowIndex, int srcColumnIndex,
-                                         ValueEval arg0, ValueEval arg1,
-                                         ValueEval arg2, ValueEval arg3) {
-        int length = ArrayFunctionsHelper.getIArrayArg(new ValueEval[] {arg0, arg1, arg2, arg3}).getLength();
+    public final ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+        int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
 
-        IArrayEval a0 = ArrayFunctionsHelper.coerceToIArrayEval(arg0, length);
-        IArrayEval a1 = ArrayFunctionsHelper.coerceToIArrayEval(arg1, length);
-        IArrayEval a2 = ArrayFunctionsHelper.coerceToIArrayEval(arg2, length);
-        IArrayEval a3 = ArrayFunctionsHelper.coerceToIArrayEval(arg3, length);
+        IArrayEval a0 = ArrayFunctionsHelper.coerceToIArrayEval(args[0], length);
+        IArrayEval a1 = ArrayFunctionsHelper.coerceToIArrayEval(args[1], length);
+        IArrayEval a2 = ArrayFunctionsHelper.coerceToIArrayEval(args[2], length);
+        IArrayEval a3 = ArrayFunctionsHelper.coerceToIArrayEval(args[3], length);
+
+        int firstRow = ArrayFunctionsHelper.getFirstRow(args);
+        int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
 
         ValueEval[] result = new ValueEval[length];
         for (int i = 0; i < length; i++) {
-            result[i] = evaluate(srcRowIndex, srcColumnIndex, a0.getValue(i), a1.getValue(i), a2.getValue(i), a3.getValue(i));
+            result[i] = evaluate(firstRow + i, srcColumnIndex, a0.getValue(i), a1.getValue(i), a2.getValue(i), a3.getValue(i));
         }
-        return new ArrayEval(result, 0, 1);
+        return new ArrayEval(result, firstRow, lastRow);
     }
 }

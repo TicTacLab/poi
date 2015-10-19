@@ -51,25 +51,35 @@ abstract class Var1or2ArgFunction implements Function1Arg, Function2Arg {
     public final ValueEval evaluateArray(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
         IArrayEval a0 = ArrayFunctionsHelper.coerceToIArrayEval(arg0);
         int length = a0.getLength();
+
+        ValueEval[] args = new ValueEval[] {arg0};
+
+        int firstRow = ArrayFunctionsHelper.getFirstRow(args);
+        int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
+
         ValueEval[] result = new ValueEval[length];
 
         for (int i = 0; i < length; i++) {
-            result[i] = evaluate(srcRowIndex, srcColumnIndex, a0.getValue(i));
+            result[i] = evaluate(firstRow+i, srcColumnIndex, a0.getValue(i));
         }
 
-        return new ArrayEval(result, 0, 1);
+        return new ArrayEval(result, firstRow, lastRow);
     }
 
     public final ValueEval evaluateArray(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
-        int length = ArrayFunctionsHelper.getIArrayArg(new ValueEval[] {arg0, arg1}).getLength();
+        ValueEval[] args = new ValueEval[] {arg0, arg1};
+        int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
 
         IArrayEval a0 = ArrayFunctionsHelper.coerceToIArrayEval(arg0, length);
         IArrayEval a1 = ArrayFunctionsHelper.coerceToIArrayEval(arg1, length);
 
+        int firstRow = ArrayFunctionsHelper.getFirstRow(args);
+        int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
+
         ValueEval[] result = new ValueEval[length];
         for (int i = 0; i < length; i++) {
-            result[i] = evaluate(srcRowIndex, srcColumnIndex, a0.getValue(i), a1.getValue(i));
+            result[i] = evaluate(firstRow+i, srcColumnIndex, a0.getValue(i), a1.getValue(i));
         }
-        return new ArrayEval(result, 0, 1);
+        return new ArrayEval(result, firstRow, lastRow);
     }
 }

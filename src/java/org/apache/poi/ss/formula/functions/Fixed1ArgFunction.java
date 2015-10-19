@@ -33,20 +33,22 @@ public abstract class Fixed1ArgFunction implements Function1Arg {
 			return ErrorEval.VALUE_INVALID;
 		}
         if (ArrayFunctionsHelper.isAnyIArrayEval(args))
-            return evaluateArray(srcRowIndex, srcColumnIndex, args[0]);
+            return evaluateArray(args, srcRowIndex, srcColumnIndex);
         else
             return evaluate(srcRowIndex, srcColumnIndex, args[0]);
 	}
 
-    public final ValueEval evaluateArray(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
-        IArrayEval a0 = ArrayFunctionsHelper.coerceToIArrayEval(arg0);
+    public final ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+        IArrayEval a0 = ArrayFunctionsHelper.coerceToIArrayEval(args[0]);
         int length = a0.getLength();
+        int firstRow = ArrayFunctionsHelper.getFirstRow(args);
+        int lastRow = ArrayFunctionsHelper.getLastRow(args, length-1);
         ValueEval[] result = new ValueEval[length];
 
         for (int i = 0; i < length; i++) {
-            result[i] = evaluate(srcRowIndex, srcColumnIndex, a0.getValue(i));
+            result[i] = evaluate(firstRow+i, srcColumnIndex, a0.getValue(i));
         }
 
-        return new ArrayEval(result, 0, 1);
+        return new ArrayEval(result, firstRow, lastRow);
     }
 }

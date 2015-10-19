@@ -29,27 +29,30 @@ import org.apache.poi.ss.usermodel.FormulaError;
  * @author Josh Micich
  */
 public abstract class Fixed2ArgFunction implements Function2Arg {
-	public final ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
-		if (args.length != 2) {
-			return ErrorEval.VALUE_INVALID;
-		}
-        if (ArrayFunctionsHelper.isAnyIArrayEval(args)) {
-           return evaluateArray(srcRowIndex, srcColumnIndex, args[0], args[1]);
-        } else {
-           return evaluate(srcRowIndex, srcColumnIndex, args[0], args[1]);
+    public final ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+        if (args.length != 2) {
+            return ErrorEval.VALUE_INVALID;
         }
-	}
+        if (ArrayFunctionsHelper.isAnyIArrayEval(args)) {
+            return evaluateArray(args, srcRowIndex, srcColumnIndex);
+        } else {
+            return evaluate(srcRowIndex, srcColumnIndex, args[0], args[1]);
+        }
+    }
 
-   public final ValueEval evaluateArray(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
-      int length = ArrayFunctionsHelper.getIArrayArg(new ValueEval[] {arg0, arg1}).getLength();
+    public final ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+        int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
+        int firstRow = ArrayFunctionsHelper.getFirstRow(args);
+        int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
 
-      IArrayEval a0 = ArrayFunctionsHelper.coerceToIArrayEval(arg0, length);
-      IArrayEval a1 = ArrayFunctionsHelper.coerceToIArrayEval(arg1, length);
+        IArrayEval a0 = ArrayFunctionsHelper.coerceToIArrayEval(args[0], length);
+        IArrayEval a1 = ArrayFunctionsHelper.coerceToIArrayEval(args[1], length);
 
-      ValueEval[] result = new ValueEval[length];
-      for (int i = 0; i < length; i++) {
-         result[i] = evaluate(srcRowIndex, srcColumnIndex, a0.getValue(i), a1.getValue(i));
-      }
-      return new ArrayEval(result, 0, 1);
-   }
+        ValueEval[] result = new ValueEval[length];
+        for (int i = 0; i < length; i++) {
+            result[i] = evaluate(firstRow+i, srcColumnIndex, a0.getValue(i), a1.getValue(i));
+        }
+        return new ArrayEval(result, firstRow, lastRow);
+    }
+
 }
