@@ -23,10 +23,7 @@ import org.apache.poi.ss.formula.CollaboratingWorkbooksEnvironment.WorkbookNotFo
 import org.apache.poi.ss.formula.atp.AnalysisToolPak;
 import org.apache.poi.ss.formula.eval.*;
 import org.apache.poi.ss.formula.function.FunctionMetadataRegistry;
-import org.apache.poi.ss.formula.functions.Choose;
-import org.apache.poi.ss.formula.functions.FreeRefFunction;
-import org.apache.poi.ss.formula.functions.Function;
-import org.apache.poi.ss.formula.functions.IfFunc;
+import org.apache.poi.ss.formula.functions.*;
 import org.apache.poi.ss.formula.ptg.*;
 import org.apache.poi.ss.formula.udf.AggregatingUDFFinder;
 import org.apache.poi.ss.formula.udf.UDFFinder;
@@ -437,7 +434,39 @@ public final class WorkbookEvaluator {
 				if (attrPtg.isOptimizedIf()) {
 					ValueEval arg0 = stack.pop();
 					boolean evaluatedPredicate;
-					try {
+
+					AttrPtg trueAttr = attrPtg;
+					int trueSkip = countTokensToBeSkipped(ptgs, 0, trueAttr.getData());
+					Ptg truePtg = ptgs.get(trueSkip - 1);
+
+					AttrPtg falseOrEndAttr = (AttrPtg) ptgs.get(trueSkip);
+					int falseOrEndSkip = 0;
+					Ptg falsePtg = null;
+					if (IfFunc.withElse(ptgs, trueSkip)) {
+						AttrPtg falseAttr = falseOrEndAttr;
+						falseOrEndSkip = countTokensToBeSkipped(ptgs, trueSkip, falseAttr.getData() + 1);
+						falsePtg = ptgs.get(trueSkip - 1 + falseOrEndSkip - 1);
+					}
+
+					Ptg[] ifPtgs;
+					if (falsePtg != null) {
+						ifPtgs = new Ptg[] {truePtg, falsePtg};
+					} else {
+						ifPtgs = new Ptg[] {truePtg};
+					}
+
+					boolean hasArrayArguments = ArrayFunctionsHelper.isAnyArrayPtg(ifPtgs)
+							|| ArrayFunctionsHelper.isAnyIArrayEval(new ValueEval[] {arg0});
+
+					if (hasArrayArguments) {
+						ptgs.removeFirst();
+						ptgs.remove(trueSkip-1);
+						ptgs.remove(falseOrEndSkip-1);
+						stack.push(arg0);
+						continue;
+					}
+
+ 					try {
 						evaluatedPredicate = IfFunc.evaluateFirstArg(arg0, ec.getRowIndex(), ec.getColumnIndex());
 					} catch (EvaluationException e) {
 						stack.push(e.getErrorEval());

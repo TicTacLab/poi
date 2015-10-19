@@ -32,6 +32,7 @@ import org.apache.poi.ss.formula.ptg.Ptg;
 import org.apache.poi.ss.formula.ptg.RefPtg;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import java.util.LinkedList;
 import java.util.Stack;
 
 /**
@@ -90,6 +91,16 @@ public final class IfFunc extends Var2or3ArgFunction {
 			return false;
 		}
 		return b.booleanValue();
+	}
+
+	public static boolean withElse(LinkedList<Ptg> ptgs, int i) {
+		Ptg ptg = ptgs.get(i);
+		Ptg nextPtg = ptgs.get(i+1);
+		return !(ptg instanceof AttrPtg && nextPtg instanceof FuncVarPtg &&
+				// in order to verify that there is no third param, we need to check
+				// if we really have the IF next or some other FuncVarPtg as third param, e.g. ROW()/COLUMN()!
+				((FuncVarPtg)nextPtg).getFunctionIndex() == FunctionMetadataRegistry.FUNCTION_INDEX_IF);
+
 	}
 
 	/*public static ValueEval evaluateOptimized(Ptg[] ptgs, int curPos, AttrPtg attrPtg, ValueEval arg0, OperationEvaluationContext ec) {

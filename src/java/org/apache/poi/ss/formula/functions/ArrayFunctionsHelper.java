@@ -4,6 +4,8 @@ import org.apache.poi.ss.formula.LazyAreaEval;
 import org.apache.poi.ss.formula.eval.ArrayEval;
 import org.apache.poi.ss.formula.eval.IArrayEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
+import org.apache.poi.ss.formula.ptg.AreaPtg;
+import org.apache.poi.ss.formula.ptg.Ptg;
 
 /**
  * Created by serzh on 10/16/15.
@@ -29,6 +31,15 @@ public class ArrayFunctionsHelper {
     public static boolean isAnyIArrayEval(ValueEval[] valueEvals) {
         for (ValueEval valueEval : valueEvals) {
             if (valueEval instanceof IArrayEval) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isAnyArrayPtg(Ptg[] ptgs) {
+        for (Ptg ptg : ptgs) {
+            if (ptg instanceof AreaPtg) {
                 return true;
             }
         }

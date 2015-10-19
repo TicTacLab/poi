@@ -118,6 +118,6 @@ public class TestArrayFunctions extends TestCase {
     }
 
     public void testVar2or3ArgFunction() {
-        assertFormulaResult(wb, "one", "IF(F2:F17=10500, \"one\")");
+        assertFormulaResult(wb, 1, "SUM(IF(F2:F17=10500, A2:A17, 0))");
     }
 }
