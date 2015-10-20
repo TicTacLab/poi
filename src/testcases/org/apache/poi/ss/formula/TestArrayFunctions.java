@@ -129,8 +129,16 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, 1, "SUM(IF(F2:F17=10500, A2:A17, 0))");
     }
 
-
     public void testChoose() {
         assertFormulaResult(wb, "Barnhill", "CHOOSE(A2:A17,B2:B17,C2:C17,D2:D17,E2:E17,F2:F17)");
+    }
+
+    public void testTextFunction() {
+        assertFormulaResult(wb, "Sedan1", "CONCATENATE(C2:C17,A2:A17)");
+        assertFormulaResult(wb, 5, "LEN(F2:F17)");
+        assertFormulaResult(wb, "00", "RIGHT(F2:F17,2)");
+    }
+    public void testFreeRefFunction() {
+        //assertFormulaResult(wb, "Total Sales", "INDIRECT(CONCATENATE(\"f\", A2:A17))");
     }
 }

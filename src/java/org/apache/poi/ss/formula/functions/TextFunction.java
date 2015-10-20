@@ -17,16 +17,11 @@
 
 package org.apache.poi.ss.formula.functions;
 
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
-import org.apache.poi.ss.formula.eval.BoolEval;
-import org.apache.poi.ss.formula.eval.ErrorEval;
-import org.apache.poi.ss.formula.eval.EvaluationException;
-import org.apache.poi.ss.formula.eval.NumberEval;
-import org.apache.poi.ss.formula.eval.OperandResolver;
-import org.apache.poi.ss.formula.eval.StringEval;
-import org.apache.poi.ss.formula.eval.ValueEval;
+import org.apache.poi.ss.formula.eval.*;
 import org.apache.poi.ss.usermodel.DataFormatter;
 
 /**
@@ -272,15 +267,36 @@ public abstract class TextFunction implements Function {
 	public static final Function CONCATENATE = new Function() {
 
 		public ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
-			StringBuilder sb = new StringBuilder();
-			for (int i=0, iSize=args.length; i<iSize; i++) {
-				try {
-					sb.append(evaluateStringArg(args[i], srcRowIndex, srcColumnIndex));
-				} catch (EvaluationException e) {
-					return e.getErrorEval();
+			if (ArrayFunctionsHelper.isAnyIArrayEval(args)) {
+				return evaluateArray(args, srcRowIndex, srcColumnIndex);
+			} else {
+				StringBuilder sb = new StringBuilder();
+				for (int i = 0, iSize = args.length; i < iSize; i++) {
+					try {
+						sb.append(evaluateStringArg(args[i], srcRowIndex, srcColumnIndex));
+					} catch (EvaluationException e) {
+						return e.getErrorEval();
+					}
 				}
+				return new StringEval(sb.toString());
 			}
-			return new StringEval(sb.toString());
+		}
+
+		public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+			IArrayEval[] arargs = new IArrayEval[args.length];
+			for (int i = 0; i < args.length; i++) arargs[i] = ArrayFunctionsHelper.coerceToIArrayEval(args[i]);
+			int length = arargs[0].getLength();
+			int firstRow = ArrayFunctionsHelper.getFirstRow(args);
+			int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
+
+
+			ValueEval[] result = new ValueEval[length];
+			for (int i = 0; i < length; i++) {
+				ValueEval[] newArgs = new ValueEval[args.length];
+				for (int j = 0; j < args.length; j++) newArgs[j] = arargs[j].getValue(i);
+				result[i] = evaluate(newArgs, firstRow+i, srcColumnIndex);
+			}
+			return new ArrayEval(result, firstRow, lastRow);
 		}
 	};
 
