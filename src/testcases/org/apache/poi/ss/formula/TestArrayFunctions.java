@@ -185,4 +185,8 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, "Sedan!$E$1", "ADDRESS(A2:A17,D2:D17,1,1,C2:C17)");
 
     }
+
+    public void testFactDouble() {
+        assertFormulaResult(wb, 1, "FACTDOUBLE(A2:A17)");
+    }
 }
