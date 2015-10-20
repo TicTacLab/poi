@@ -21,13 +21,7 @@ package org.apache.poi.ss.formula.functions;
 
 import java.util.Calendar;
 
-import org.apache.poi.ss.formula.eval.BlankEval;
-import org.apache.poi.ss.formula.eval.ErrorEval;
-import org.apache.poi.ss.formula.eval.EvaluationException;
-import org.apache.poi.ss.formula.eval.MissingArgEval;
-import org.apache.poi.ss.formula.eval.NumberEval;
-import org.apache.poi.ss.formula.eval.OperandResolver;
-import org.apache.poi.ss.formula.eval.ValueEval;
+import org.apache.poi.ss.formula.eval.*;
 import org.apache.poi.ss.usermodel.DateUtil;
 
 
@@ -36,17 +30,16 @@ import org.apache.poi.ss.usermodel.DateUtil;
  *
  * @author Thies Wellpott
  */
-public final class WeekdayFunc implements Function {
-//or:  extends Var1or2ArgFunction {
+public final class WeekdayFunc extends Var1or2ArgFunction {
 
-	public static final Function instance = new WeekdayFunc();
+    public static final Function instance = new WeekdayFunc();
 
-	private WeekdayFunc() {
-		// no fields to initialise
-	}
+    private WeekdayFunc() {
+        // no fields to initialise
+    }
 
 	/* for Var1or2ArgFunction:
-	@Override
+    @Override
 	public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
 	}
 
@@ -56,73 +49,72 @@ public final class WeekdayFunc implements Function {
 	*/
 
 
-	/**
-	 * Perform WEEKDAY(date, returnOption) function.
-	 * Note: Parameter texts are from German EXCEL-2010 help.
-	 * Parameters in args[]:
-	 *  args[0] serialDate
-	 * EXCEL-date value
-	 * Standardmaessig ist der 1. Januar 1900 die fortlaufende Zahl 1 und
-	 * der 1. Januar 2008 die fortlaufende Zahl 39.448, da dieser Tag nach 39.448 Tagen
-	 * auf den 01.01.1900 folgt.
-	 * @return Option (optional)
-	 * Bestimmt den Rueckgabewert:
-		1	oder nicht angegeben Zahl 1 (Sonntag) bis 7 (Samstag). Verhaelt sich wie fruehere Microsoft Excel-Versionen.
-		2	Zahl 1 (Montag) bis 7 (Sonntag).
-		3	Zahl 0 (Montag) bis 6 (Sonntag).
-		11	Die Zahlen 1 (Montag) bis 7 (Sonntag)
-		12	Die Zahlen 1 (Dienstag) bis 7 (Montag)
-		13	Die Zahlen 1 (Mittwoch) bis 7 (Dienstag)
-		14	Die Zahlen 1 (Donnerstag) bis 7 (Mittwoch)
-		15	Die Zahlen 1 (Freitag) bis 7 (Donnerstag)
-		16	Die Zahlen 1 (Samstag) bis 7 (Freitag)
-		17	Die Zahlen 1 (Sonntag) bis 7 (Samstag)
-	 */
-	public ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
-		try {
-			if (args.length < 1  ||  args.length > 2) {
-				return ErrorEval.VALUE_INVALID;
-			}
+    /**
+     * Perform WEEKDAY(date, returnOption) function.
+     * Note: Parameter texts are from German EXCEL-2010 help.
+     * Parameters in args[]:
+     * args[0] serialDate
+     * EXCEL-date value
+     * Standardmaessig ist der 1. Januar 1900 die fortlaufende Zahl 1 und
+     * der 1. Januar 2008 die fortlaufende Zahl 39.448, da dieser Tag nach 39.448 Tagen
+     * auf den 01.01.1900 folgt.
+     *
+     * @return Option (optional)
+     * Bestimmt den Rueckgabewert:
+     * 1	oder nicht angegeben Zahl 1 (Sonntag) bis 7 (Samstag). Verhaelt sich wie fruehere Microsoft Excel-Versionen.
+     * 2	Zahl 1 (Montag) bis 7 (Sonntag).
+     * 3	Zahl 0 (Montag) bis 6 (Sonntag).
+     * 11	Die Zahlen 1 (Montag) bis 7 (Sonntag)
+     * 12	Die Zahlen 1 (Dienstag) bis 7 (Montag)
+     * 13	Die Zahlen 1 (Mittwoch) bis 7 (Dienstag)
+     * 14	Die Zahlen 1 (Donnerstag) bis 7 (Mittwoch)
+     * 15	Die Zahlen 1 (Freitag) bis 7 (Donnerstag)
+     * 16	Die Zahlen 1 (Samstag) bis 7 (Freitag)
+     * 17	Die Zahlen 1 (Sonntag) bis 7 (Samstag)
+     */
+    public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
+        return evaluate(srcRowIndex, srcColumnIndex, arg0, new NumberEval(1));
+    }
 
-			// extract first parameter
-			ValueEval serialDateVE = OperandResolver.getSingleValue(args[0], srcRowIndex, srcColumnIndex);
-			double serialDate = OperandResolver.coerceValueToDouble(serialDateVE);
-			if (!DateUtil.isValidExcelDate(serialDate)) {
-				return ErrorEval.NUM_ERROR;						// EXCEL uses this and no VALUE_ERROR
-			}
-			Calendar date = DateUtil.getJavaCalendar(serialDate, false);		// (XXX 1904-windowing not respected)
-			int weekday = date.get(Calendar.DAY_OF_WEEK);		// => sunday = 1, monday = 2, ..., saturday = 7
+    public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
+        try {
 
-			// extract second parameter
-			int returnOption = 1;					// default value
-			if (args.length == 2) {
-				ValueEval ve = OperandResolver.getSingleValue(args[1], srcRowIndex, srcColumnIndex);
-				if (ve == MissingArgEval.instance  ||  ve == BlankEval.instance) {
-					return ErrorEval.NUM_ERROR;		// EXCEL uses this and no VALUE_ERROR
-				}
-				returnOption = OperandResolver.coerceValueToInt(ve);
-				if (returnOption == 2) {
-					returnOption = 11;				// both mean the same
-				}
-			} // if
+            // extract first parameter
+            ValueEval serialDateVE = OperandResolver.getSingleValue(arg0, srcRowIndex, srcColumnIndex);
+            double serialDate = OperandResolver.coerceValueToDouble(serialDateVE);
+            if (!DateUtil.isValidExcelDate(serialDate)) {
+                return ErrorEval.NUM_ERROR;                        // EXCEL uses this and no VALUE_ERROR
+            }
+            Calendar date = DateUtil.getJavaCalendar(serialDate, false);        // (XXX 1904-windowing not respected)
+            int weekday = date.get(Calendar.DAY_OF_WEEK);        // => sunday = 1, monday = 2, ..., saturday = 7
 
-			// perform calculation
-			double result;
-			if (returnOption == 1) {
-				result = weekday;
-			// value 2 is handled above (as value 11)
-			} else if (returnOption == 3) {
-				result = (weekday + 6 - 1) % 7;
-			} else if (returnOption >= 11  &&  returnOption <= 17) {
-				result = (weekday + 6 - (returnOption - 10)) % 7 + 1;		// rotate in the value range 1 to 7
-			} else {
-				return ErrorEval.NUM_ERROR;		// EXCEL uses this and no VALUE_ERROR
-			}
+            // extract second parameter
+            int returnOption = 1;
+            ValueEval ve = OperandResolver.getSingleValue(arg1, srcRowIndex, srcColumnIndex);
+            if (ve == MissingArgEval.instance || ve == BlankEval.instance) {
+                return ErrorEval.NUM_ERROR;        // EXCEL uses this and no VALUE_ERROR
+            }
+            returnOption = OperandResolver.coerceValueToInt(ve);
+            if (returnOption == 2) {
+                returnOption = 11;                // both mean the same
+            }
 
-			return new NumberEval(result);
-		} catch (EvaluationException e) {
-			return e.getErrorEval();
-		}
-	} // evaluate()
+            // perform calculation
+            double result;
+            if (returnOption == 1) {
+                result = weekday;
+                // value 2 is handled above (as value 11)
+            } else if (returnOption == 3) {
+                result = (weekday + 6 - 1) % 7;
+            } else if (returnOption >= 11 && returnOption <= 17) {
+                result = (weekday + 6 - (returnOption - 10)) % 7 + 1;        // rotate in the value range 1 to 7
+            } else {
+                return ErrorEval.NUM_ERROR;        // EXCEL uses this and no VALUE_ERROR
+            }
 
+            return new NumberEval(result);
+        } catch (EvaluationException e) {
+            return e.getErrorEval();
+        }
+    } // evaluate()
 }

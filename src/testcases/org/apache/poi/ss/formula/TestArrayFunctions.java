@@ -58,19 +58,19 @@ public class TestArrayFunctions extends TestCase {
 
     public String int2type(int type) {
         switch (type) {
-            case 0: return "Number";
-            case 1: return "String";
-            case 2: return "Formula";
-            case 3: return "Blank";
-            case 4: return "Boolean";
-            case 5: return "Error";
+            case 0: return "NUMBER";
+            case 1: return "STRING";
+            case 2: return "FORMULA";
+            case 3: return "BLANK";
+            case 4: return "BOOLEAN";
+            case 5: return "ERROR";
         }
         return "42";
     }
 
     public void assertType(int expected, CellValue value) {
         int actual = value.getCellType();
-        assertEquals( String.format("Expect type %s, but get %s", int2type(expected), int2type(actual)),
+        assertEquals( String.format("Expect type \"%s\", but get \"%s\"", int2type(expected), int2type(actual)),
                 expected, actual);
     }
 
@@ -188,5 +188,13 @@ public class TestArrayFunctions extends TestCase {
 
     public void testFactDouble() {
         assertFormulaResult(wb, 1, "FACTDOUBLE(A2:A17)");
+    }
+
+    public void testOffset() {
+        assertFormulaResult(wb, 9, "SUM(OFFSET(A2:A17,0,3,2))");
+    }
+
+    public void testWeekdayFunc()  {
+        assertFormulaResult(wb, 68, "SUM(WEEKDAY(F2:F17, A2:A17-A2:A17+1))");
     }
 }
