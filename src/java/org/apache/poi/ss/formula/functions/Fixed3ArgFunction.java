@@ -39,7 +39,7 @@ public abstract class Fixed3ArgFunction implements Function3Arg {
         }
 	}
 
-    public final ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+    public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
         int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
 
         IArrayEval a0 = ArrayFunctionsHelper.coerceToIArrayEval(args[0], length);

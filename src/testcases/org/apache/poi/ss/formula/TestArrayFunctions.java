@@ -21,6 +21,7 @@ import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
 import org.apache.poi.hssf.HSSFTestDataSamples;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.hssf.usermodel.examples.CellTypes;
 import org.apache.poi.ss.formula.eval.*;
 import org.apache.poi.ss.formula.ptg.*;
 import org.apache.poi.ss.usermodel.*;
@@ -55,6 +56,24 @@ public class TestArrayFunctions extends TestCase {
         return fe.evaluate(wb.getSheet("Sheet1").getRow(17).getCell(5));
     }
 
+    public String int2type(int type) {
+        switch (type) {
+            case 0: return "Number";
+            case 1: return "String";
+            case 2: return "Formula";
+            case 3: return "Blank";
+            case 4: return "Boolean";
+            case 5: return "Error";
+        }
+        return "42";
+    }
+
+    public void assertType(int expected, CellValue value) {
+        int actual = value.getCellType();
+        assertEquals( String.format("Expect type %s, but get %s", int2type(expected), int2type(actual)),
+                expected, actual);
+    }
+
     public void assertFormulaResult(Workbook wb, double expected, String formula) {
         setArrayFormula(wb, formula);
         assertEquals(expected, evaluate(wb).getNumberValue(), 0.0001);
@@ -68,6 +87,13 @@ public class TestArrayFunctions extends TestCase {
     public void assertFormulaResult(Workbook wb, String expected, String formula) {
         setArrayFormula(wb, formula);
         assertEquals(expected, evaluate(wb).getStringValue());
+    }
+
+    public void assertFormulaResult(Workbook wb, ErrorEval expected, String formula) {
+        setArrayFormula(wb, formula);
+        CellValue value = evaluate(wb);
+        assertType(Cell.CELL_TYPE_ERROR, value);
+        assertEquals(expected, ErrorEval.valueOf(value.getErrorValue()));
     }
 
 	public void testAggregateOfBasicOperators() {
@@ -140,5 +166,12 @@ public class TestArrayFunctions extends TestCase {
     }
     public void testFreeRefFunction() {
         assertFormulaResult(wb, "Total Sales", "INDIRECT(CONCATENATE(\"f\", A2:A17))");
+    }
+
+    public void testFunctionsWithNoSupportOfArrayArgs() {
+        assertFormulaResult(wb, ErrorEval.VALUE_INVALID, "DELTA(A2:A17,B2:B17)");
+        assertFormulaResult(wb, ErrorEval.NUM_ERROR, "DEC2HEX(A2:A17)");
+        assertFormulaResult(wb, ErrorEval.NUM_ERROR, "DEC2BIN(A2:A17)");
+        assertFormulaResult(wb, ErrorEval.NUM_ERROR, "BIN2DEC(A2:A17)");
     }
 }

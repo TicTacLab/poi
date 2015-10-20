@@ -48,7 +48,7 @@ abstract class Var2or3ArgFunction implements Function2Arg, Function3Arg {
 		return ErrorEval.VALUE_INVALID;
 	}
 
-   public final ValueEval evaluateArray(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
+   public ValueEval evaluateArray(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
       ValueEval[] args = new ValueEval[] {arg0, arg1};
       int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
 
@@ -65,7 +65,7 @@ abstract class Var2or3ArgFunction implements Function2Arg, Function3Arg {
       return new ArrayEval(result, firstRow, lastRow);
    }
 
-   public final ValueEval evaluateArray(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1, ValueEval arg2) {
+   public ValueEval evaluateArray(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1, ValueEval arg2) {
       ValueEval[] args = new ValueEval[] {arg0, arg1, arg2};
       int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
 

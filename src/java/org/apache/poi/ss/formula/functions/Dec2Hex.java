@@ -126,13 +126,15 @@ public final class Dec2Hex extends Var1or2ArgFunction implements FreeRefFunction
         return this.evaluate(srcRowIndex, srcColumnIndex, arg0, null);
     }
 
+    public ValueEval evaluateArray(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
+        return ErrorEval.NUM_ERROR;
+    }
+
+    public ValueEval evaluateArray(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
+        return ErrorEval.NUM_ERROR;
+    }
+
     public ValueEval evaluate(ValueEval[] args, OperationEvaluationContext ec) {
-        if (args.length == 1) {
-            return evaluate(ec.getRowIndex(), ec.getColumnIndex(), args[0]);
-        }
-        if (args.length == 2) {
-            return evaluate(ec.getRowIndex(), ec.getColumnIndex(), args[0], args[1]);
-        }
-        return ErrorEval.VALUE_INVALID;
+        return evaluate(args, ec.getRowIndex(), ec.getColumnIndex());
     }
 }

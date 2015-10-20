@@ -38,7 +38,7 @@ public abstract class Fixed1ArgFunction implements Function1Arg {
             return evaluate(srcRowIndex, srcColumnIndex, args[0]);
 	}
 
-    public final ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+    public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
         IArrayEval a0 = ArrayFunctionsHelper.coerceToIArrayEval(args[0]);
         int length = a0.getLength();
         int firstRow = ArrayFunctionsHelper.getFirstRow(args);

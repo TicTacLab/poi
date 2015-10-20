@@ -40,7 +40,7 @@ public abstract class Fixed2ArgFunction implements Function2Arg {
         }
     }
 
-    public final ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+    public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
         int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
         int firstRow = ArrayFunctionsHelper.getFirstRow(args);
         int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);

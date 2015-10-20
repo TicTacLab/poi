@@ -75,9 +75,13 @@ public final class Delta extends Fixed2ArgFunction implements FreeRefFunction {
         return result == 0 ? ONE : ZERO;
     }
 
+    public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+        return ErrorEval.VALUE_INVALID;
+    }
+
     public ValueEval evaluate(ValueEval[] args, OperationEvaluationContext ec) {
          if (args.length == 2) {
-            return evaluate(ec.getRowIndex(), ec.getColumnIndex(), args[0], args[1]);
+            return evaluate(args, ec.getRowIndex(), ec.getColumnIndex());
         }
 
         return ErrorEval.VALUE_INVALID;
