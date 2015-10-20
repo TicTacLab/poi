@@ -194,6 +194,15 @@ public abstract class BaseXSSFFormulaEvaluator implements FormulaEvaluator, Work
         if (eval instanceof ErrorEval) {
             return CellValue.getError(((ErrorEval)eval).getErrorCode());
         }
+        if (eval instanceof  RefEval) {
+            RefEval re = (RefEval) eval;
+            return evaluateFormulaCellValue(
+                    cell.getSheet()
+                            .getWorkbook()
+                            .getSheetAt(re.getFirstSheetIndex())
+                            .getRow(re.getRow())
+                            .getCell(re.getColumn()));
+        }
         if (eval instanceof IArrayEval) {
             if (cell.isPartOfArrayFormulaGroup()) {
                 IArrayEval ae = (IArrayEval) eval;

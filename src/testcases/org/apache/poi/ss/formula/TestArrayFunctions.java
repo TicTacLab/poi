@@ -139,6 +139,6 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, "00", "RIGHT(F2:F17,2)");
     }
     public void testFreeRefFunction() {
-        //assertFormulaResult(wb, "Total Sales", "INDIRECT(CONCATENATE(\"f\", A2:A17))");
+        assertFormulaResult(wb, "Total Sales", "INDIRECT(CONCATENATE(\"f\", A2:A17))");
     }
 }

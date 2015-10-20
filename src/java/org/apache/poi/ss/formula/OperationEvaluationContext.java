@@ -365,9 +365,9 @@ public final class OperationEvaluationContext {
         // Look it up for the external workbook
         String workbookName = externSheet.getWorkbookName();
         ExternalName externName = _workbook.getExternalName(
-              nameXPtg.getSheetRefIndex(), 
-              nameXPtg.getNameIndex()
-        );
+				nameXPtg.getSheetRefIndex(),
+				nameXPtg.getNameIndex()
+		);
         return getExternalNameXEval(externName, workbookName);
     }
 	public ValueEval getNameXEval(NameXPxg nameXPxg) {
@@ -465,5 +465,14 @@ public final class OperationEvaluationContext {
         }
    }
 
+	public OperationEvaluationContext withNewRow(int newRow) {
+		return new OperationEvaluationContext(
+				_bookEvaluator,
+				_workbook,
+				_sheetIndex,
+				newRow,
+				_columnIndex,
+				_tracker);
+	}
 
 }

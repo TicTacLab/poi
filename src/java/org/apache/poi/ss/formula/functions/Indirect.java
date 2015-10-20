@@ -17,12 +17,7 @@
 
 package org.apache.poi.ss.formula.functions;
 
-import org.apache.poi.ss.formula.eval.BlankEval;
-import org.apache.poi.ss.formula.eval.ErrorEval;
-import org.apache.poi.ss.formula.eval.EvaluationException;
-import org.apache.poi.ss.formula.eval.MissingArgEval;
-import org.apache.poi.ss.formula.eval.OperandResolver;
-import org.apache.poi.ss.formula.eval.ValueEval;
+import org.apache.poi.ss.formula.eval.*;
 import org.apache.poi.ss.formula.OperationEvaluationContext;
 
 /**
@@ -49,31 +44,52 @@ public final class Indirect implements FreeRefFunction {
 	}
 
 	public ValueEval evaluate(ValueEval[] args, OperationEvaluationContext ec) {
-		if (args.length < 1) {
+		if (args.length < 1 || args.length > 2) {
 			return ErrorEval.VALUE_INVALID;
 		}
 
-		boolean isA1style;
-		String text;
-		try {
-			ValueEval ve = OperandResolver.getSingleValue(args[0], ec.getRowIndex(), ec
-					.getColumnIndex());
-			text = OperandResolver.coerceValueToString(ve);
-			switch (args.length) {
-				case 1:
-					isA1style = true;
-					break;
-				case 2:
-					isA1style = evaluateBooleanArg(args[1], ec);
-					break;
-				default:
-					return ErrorEval.VALUE_INVALID;
+		if (ArrayFunctionsHelper.isAnyIArrayEval(args)) {
+			return evaluateArray(args, ec);
+		} else {
+			boolean isA1style;
+			String text;
+			try {
+				ValueEval ve = OperandResolver.getSingleValue(args[0], ec.getRowIndex(), ec
+						.getColumnIndex());
+				text = OperandResolver.coerceValueToString(ve);
+				switch (args.length) {
+					case 1:
+						isA1style = true;
+						break;
+					case 2:
+						isA1style = evaluateBooleanArg(args[1], ec);
+						break;
+					default:
+						return ErrorEval.VALUE_INVALID;
+				}
+			} catch (EvaluationException e) {
+				return e.getErrorEval();
 			}
-		} catch (EvaluationException e) {
-			return e.getErrorEval();
-		}
 
-		return evaluateIndirect(ec, text, isA1style);
+			return evaluateIndirect(ec, text, isA1style);
+		}
+	}
+
+	public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+		int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
+		IArrayEval[] arargs = new IArrayEval[args.length];
+		for (int i = 0; i < args.length; i++) arargs[i] = ArrayFunctionsHelper.coerceToIArrayEval(args[i]);
+		int firstRow = ArrayFunctionsHelper.getFirstRow(args);
+		int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
+
+
+		ValueEval[] result = new ValueEval[length];
+		for (int i = 0; i < length; i++) {
+			ValueEval[] newArgs = new ValueEval[args.length];
+			for (int j = 0; j < args.length; j++) newArgs[j] = arargs[j].getValue(i);
+			result[i] = evaluate(newArgs, ec.withNewRow(firstRow + i));
+		}
+		return new ArrayEval(result, firstRow, lastRow);
 	}
 
 	private static boolean evaluateBooleanArg(ValueEval arg, OperationEvaluationContext ec)

@@ -283,10 +283,10 @@ public abstract class TextFunction implements Function {
 		}
 
 		public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+			int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
 			IArrayEval[] arargs = new IArrayEval[args.length];
-			for (int i = 0; i < args.length; i++) arargs[i] = ArrayFunctionsHelper.coerceToIArrayEval(args[i]);
-			int length = arargs[0].getLength();
-			int firstRow = ArrayFunctionsHelper.getFirstRow(args);
+			for (int i = 0; i < args.length; i++) arargs[i] = ArrayFunctionsHelper.coerceToIArrayEval(args[i], length);
+						int firstRow = ArrayFunctionsHelper.getFirstRow(args);
 			int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
 
 
