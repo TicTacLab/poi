@@ -78,7 +78,7 @@ public final class Indirect implements FreeRefFunction {
 	public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
 		int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
 		IArrayEval[] arargs = new IArrayEval[args.length];
-		for (int i = 0; i < args.length; i++) arargs[i] = ArrayFunctionsHelper.coerceToIArrayEval(args[i]);
+		for (int i = 0; i < args.length; i++) arargs[i] = ArrayFunctionsHelper.coerceToIArrayEval(args[i], length);
 		int firstRow = ArrayFunctionsHelper.getFirstRow(args);
 		int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
 

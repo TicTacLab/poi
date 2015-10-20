@@ -76,17 +76,23 @@ public class TestArrayFunctions extends TestCase {
 
     public void assertFormulaResult(Workbook wb, double expected, String formula) {
         setArrayFormula(wb, formula);
-        assertEquals(expected, evaluate(wb).getNumberValue(), 0.0001);
+        CellValue value = evaluate(wb);
+        assertType(Cell.CELL_TYPE_NUMERIC, value);
+        assertEquals(expected, value.getNumberValue(), 0.01);
     }
 
     public void assertFormulaResult(Workbook wb, boolean expected, String formula) {
         setArrayFormula(wb, formula);
-        assertEquals(expected, evaluate(wb).getBooleanValue());
+        CellValue value = evaluate(wb);
+        assertType(Cell.CELL_TYPE_BOOLEAN, value);
+        assertEquals(expected, value.getBooleanValue());
     }
 
     public void assertFormulaResult(Workbook wb, String expected, String formula) {
         setArrayFormula(wb, formula);
-        assertEquals(expected, evaluate(wb).getStringValue());
+        CellValue value = evaluate(wb);
+        assertType(Cell.CELL_TYPE_STRING, value);
+        assertEquals(expected, value.getStringValue());
     }
 
     public void assertFormulaResult(Workbook wb, ErrorEval expected, String formula) {
@@ -173,5 +179,10 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, ErrorEval.NUM_ERROR, "DEC2HEX(A2:A17)");
         assertFormulaResult(wb, ErrorEval.NUM_ERROR, "DEC2BIN(A2:A17)");
         assertFormulaResult(wb, ErrorEval.NUM_ERROR, "BIN2DEC(A2:A17)");
+    }
+
+    public void testAddress() {
+        assertFormulaResult(wb, "Sedan!$E$1", "ADDRESS(A2:A17,D2:D17,1,1,C2:C17)");
+
     }
 }

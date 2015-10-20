@@ -16,6 +16,7 @@
 ==================================================================== */
 package org.apache.poi.ss.formula.functions;
 
+import org.apache.poi.ss.formula.OperationEvaluationContext;
 import org.apache.poi.ss.formula.SheetNameFormatter;
 import org.apache.poi.ss.formula.eval.*;
 import org.apache.poi.ss.util.CellReference;
@@ -31,43 +32,63 @@ public class Address implements Function {
     public static final int REF_ROW_RELATIVE_RELATIVE_ABSOLUTE = 3;
     public static final int REF_RELATIVE = 4;
 
+    public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+        int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
+        IArrayEval[] arargs = new IArrayEval[args.length];
+        for (int i = 0; i < args.length; i++) arargs[i] = ArrayFunctionsHelper.coerceToIArrayEval(args[i], length);
+        int firstRow = ArrayFunctionsHelper.getFirstRow(args);
+        int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
+
+
+        ValueEval[] result = new ValueEval[length];
+        for (int i = 0; i < length; i++) {
+            ValueEval[] newArgs = new ValueEval[args.length];
+            for (int j = 0; j < args.length; j++) newArgs[j] = arargs[j].getValue(i);
+            result[i] = evaluate(newArgs, srcRowIndex, srcColumnIndex);
+        }
+        return new ArrayEval(result, firstRow, lastRow);
+    }
+
     public ValueEval evaluate(ValueEval[] args, int srcRowIndex,
                               int srcColumnIndex) {
         if(args.length < 2 || args.length > 5) {
             return ErrorEval.VALUE_INVALID;
         }
-        try {
-            boolean pAbsRow, pAbsCol;
+        if (ArrayFunctionsHelper.isAnyIArrayEval(args)) {
+            return evaluateArray(args, srcRowIndex, srcColumnIndex);
+        } else {
+            try {
+                boolean pAbsRow, pAbsCol;
 
-            int row =  (int)NumericFunction.singleOperandEvaluate(args[0], srcRowIndex, srcColumnIndex);
-            int col =  (int)NumericFunction.singleOperandEvaluate(args[1], srcRowIndex, srcColumnIndex);
+                int row = (int) NumericFunction.singleOperandEvaluate(args[0], srcRowIndex, srcColumnIndex);
+                int col = (int) NumericFunction.singleOperandEvaluate(args[1], srcRowIndex, srcColumnIndex);
 
-            int refType;
-            if (args.length > 2  &&  args[2] != MissingArgEval.instance) {
-                refType = (int)NumericFunction.singleOperandEvaluate(args[2], srcRowIndex, srcColumnIndex);
-            } else {
-                refType = REF_ABSOLUTE;		// this is also the default if parameter is not given
-            }
-            switch (refType){
-                case REF_ABSOLUTE:
-                    pAbsRow = true;
-                    pAbsCol = true;
-                    break;
-                case REF_ROW_ABSOLUTE_COLUMN_RELATIVE:
-                    pAbsRow = true;
-                    pAbsCol = false;
-                    break;
-                case REF_ROW_RELATIVE_RELATIVE_ABSOLUTE:
-                    pAbsRow = false;
-                    pAbsCol = true;
-                    break;
-                case REF_RELATIVE:
-                    pAbsRow = false;
-                    pAbsCol = false;
-                    break;
-                default:
-                    throw new EvaluationException(ErrorEval.VALUE_INVALID);
-            }
+                int refType;
+                if (args.length > 2 && args[2] != MissingArgEval.instance) {
+                    refType = (int) NumericFunction.singleOperandEvaluate(args[2], srcRowIndex, srcColumnIndex);
+                } else {
+                    refType = REF_ABSOLUTE;        // this is also the default if parameter is not given
+                }
+                switch (refType) {
+                    case REF_ABSOLUTE:
+                        pAbsRow = true;
+                        pAbsCol = true;
+                        break;
+                    case REF_ROW_ABSOLUTE_COLUMN_RELATIVE:
+                        pAbsRow = true;
+                        pAbsCol = false;
+                        break;
+                    case REF_ROW_RELATIVE_RELATIVE_ABSOLUTE:
+                        pAbsRow = false;
+                        pAbsCol = true;
+                        break;
+                    case REF_RELATIVE:
+                        pAbsRow = false;
+                        pAbsCol = false;
+                        break;
+                    default:
+                        throw new EvaluationException(ErrorEval.VALUE_INVALID);
+                }
 
 //            boolean a1;
 //            if(args.length > 3){
@@ -78,26 +99,27 @@ public class Address implements Function {
 //                a1 = true;
 //            }
 
-            String sheetName;
-            if(args.length == 5){
-                ValueEval ve = OperandResolver.getSingleValue(args[4], srcRowIndex, srcColumnIndex);
-                sheetName = ve == MissingArgEval.instance ? null : OperandResolver.coerceValueToString(ve);
-            } else {
-                sheetName = null;
+                String sheetName;
+                if (args.length == 5) {
+                    ValueEval ve = OperandResolver.getSingleValue(args[4], srcRowIndex, srcColumnIndex);
+                    sheetName = ve == MissingArgEval.instance ? null : OperandResolver.coerceValueToString(ve);
+                } else {
+                    sheetName = null;
+                }
+
+                CellReference ref = new CellReference(row - 1, col - 1, pAbsRow, pAbsCol);
+                StringBuffer sb = new StringBuffer(32);
+                if (sheetName != null) {
+                    SheetNameFormatter.appendFormat(sb, sheetName);
+                    sb.append('!');
+                }
+                sb.append(ref.formatAsString());
+
+                return new StringEval(sb.toString());
+
+            } catch (EvaluationException e) {
+                return e.getErrorEval();
             }
-
-            CellReference ref = new CellReference(row - 1, col - 1, pAbsRow, pAbsCol);
-            StringBuffer sb = new StringBuffer(32);
-            if(sheetName != null) {
-                SheetNameFormatter.appendFormat(sb, sheetName);
-                sb.append('!');
-            }
-            sb.append(ref.formatAsString());
-
-            return new StringEval(sb.toString());
-
-        } catch (EvaluationException e){
-            return e.getErrorEval();
         }
     }
 }
