@@ -366,7 +366,11 @@ public final class WorkbookEvaluator {
 	// current indent level for evalution; negative value for no output
 	private int dbgEvaluationOutputIndent = -1;
 
-	// visibility raised for testing
+	public static void skipPtgs(LinkedList<Ptg> ptgs, int skip) {
+		for (int j = 0; j<skip; j++) ptgs.removeFirst();
+	}
+
+    // visibility raised for testing
 	public ValueEval evaluateFormula(OperationEvaluationContext ec, Ptg[] _ptgs) {
 
 		LinkedList<Ptg> ptgs = new LinkedList<Ptg>(Arrays.asList(_ptgs));
@@ -427,8 +431,7 @@ public final class WorkbookEvaluator {
 					dist -= nChoices*2+2; // subtract jump table size
 					int skip = countTokensToBeSkipped(ptgs, i, dist);
 					i+= skip;
-					for (int j = 0; j<skip; j++) ptgs.removeFirst();
-
+					skipPtgs(ptgs, skip);
 					continue;
 				}
 				if (attrPtg.isOptimizedIf()) {
@@ -460,8 +463,8 @@ public final class WorkbookEvaluator {
 
 					if (hasArrayArguments) {
 						ptgs.removeFirst();
-						ptgs.remove(trueSkip-1);
-						ptgs.remove(falseOrEndSkip-1);
+						ptgs.remove(trueSkip - 1);
+						ptgs.remove(falseOrEndSkip - 1);
 						stack.push(arg0);
 						continue;
 					}
@@ -478,7 +481,7 @@ public final class WorkbookEvaluator {
 						int skip2 = countTokensToBeSkipped(ptgs, i, dist);
 						i+= skip2;
 
-						for (int j = 0; j<skip1+skip2; j++) ptgs.removeFirst();
+						skipPtgs(ptgs, skip1 + skip2);
 
 						continue;
 					}
@@ -504,7 +507,7 @@ public final class WorkbookEvaluator {
 					int dist = attrPtg.getData()+1;
 					int skip = countTokensToBeSkipped(ptgs, i, dist);
 					i+= skip;
-					for (int j = 0; j<skip; j++) ptgs.removeFirst();
+					skipPtgs(ptgs, skip);
 					if (stack.peek() == MissingArgEval.instance) {
 						stack.pop();
 						stack.push(BlankEval.instance);

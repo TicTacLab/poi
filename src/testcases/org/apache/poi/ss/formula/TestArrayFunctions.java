@@ -118,10 +118,19 @@ public class TestArrayFunctions extends TestCase {
     }
 
     public void testVar2or3ArgFunction() {
-        assertFormulaResult(wb, 1, "SUM(IF(F2:F17=10500, A2:A17, 0))");
+
     }
 
     public void testVar3or4ArgFunction() {
         assertFormulaResult(wb, "105Do0", "SUBSTITUTE(F2:F17,\"0\",\"Do\",2)");
+    }
+
+    public void testIf() {
+        assertFormulaResult(wb, 1, "SUM(IF(F2:F17=10500, A2:A17, 0))");
+    }
+
+
+    public void testChoose() {
+        assertFormulaResult(wb, "Barnhill", "CHOOSE(A2:A17,B2:B17,C2:C17,D2:D17,E2:E17,F2:F17)");
     }
 }

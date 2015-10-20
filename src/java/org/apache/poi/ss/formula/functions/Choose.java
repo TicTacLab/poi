@@ -17,12 +17,7 @@
 
 package org.apache.poi.ss.formula.functions;
 
-import org.apache.poi.ss.formula.eval.BlankEval;
-import org.apache.poi.ss.formula.eval.ErrorEval;
-import org.apache.poi.ss.formula.eval.EvaluationException;
-import org.apache.poi.ss.formula.eval.MissingArgEval;
-import org.apache.poi.ss.formula.eval.OperandResolver;
-import org.apache.poi.ss.formula.eval.ValueEval;
+import org.apache.poi.ss.formula.eval.*;
 
 /**
  * @author Josh Micich
@@ -34,19 +29,41 @@ public final class Choose implements Function {
 			return ErrorEval.VALUE_INVALID;
 		}
 
-		try {
-			int ix = evaluateFirstArg(args[0], srcRowIndex, srcColumnIndex);
-			if (ix < 1 || ix >= args.length) {
-				return ErrorEval.VALUE_INVALID;
+		if (ArrayFunctionsHelper.isIArrayEval(args[0])) {
+			return evaluateArray(args, srcRowIndex, srcColumnIndex);
+		} else {
+
+			try {
+				int ix = evaluateFirstArg(args[0], srcRowIndex, srcColumnIndex);
+				if (ix < 1 || ix >= args.length) {
+					return ErrorEval.VALUE_INVALID;
+				}
+				ValueEval result = OperandResolver.getSingleValue(args[ix], srcRowIndex, srcColumnIndex);
+				if (result == MissingArgEval.instance) {
+					return BlankEval.instance;
+				}
+				return result;
+			} catch (EvaluationException e) {
+				return e.getErrorEval();
 			}
-			ValueEval result = OperandResolver.getSingleValue(args[ix], srcRowIndex, srcColumnIndex);
-			if (result == MissingArgEval.instance) {
-				return BlankEval.instance;
-			}
-			return result;
-		} catch (EvaluationException e) {
-			return e.getErrorEval();
 		}
+	}
+
+	public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+		IArrayEval a0 = ArrayFunctionsHelper.coerceToIArrayEval(args[0]);
+		int length = a0.getLength();
+		int firstRow = ArrayFunctionsHelper.getFirstRow(args);
+		int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
+
+
+		ValueEval[] result = new ValueEval[length];
+		for (int i = 0; i < length; i++) {
+			ValueEval[] newArgs = new ValueEval[args.length];
+			newArgs[0] = a0.getValue(i);
+			System.arraycopy(args, 1, newArgs, 1, args.length - 1);
+			result[i] = evaluate(newArgs, firstRow+i, srcColumnIndex);
+		}
+		return new ArrayEval(result, firstRow, lastRow);
 	}
 
 	public static int evaluateFirstArg(ValueEval arg0, int srcRowIndex, int srcColumnIndex)

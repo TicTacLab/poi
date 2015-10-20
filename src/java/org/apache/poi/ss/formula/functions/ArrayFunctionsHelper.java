@@ -30,11 +30,15 @@ public class ArrayFunctionsHelper {
 
     public static boolean isAnyIArrayEval(ValueEval[] valueEvals) {
         for (ValueEval valueEval : valueEvals) {
-            if (valueEval instanceof IArrayEval) {
+            if (isIArrayEval(valueEval)) {
                 return true;
             }
         }
         return false;
+    }
+
+    public static boolean isIArrayEval(ValueEval ve) {
+        return ve instanceof IArrayEval;
     }
 
     public static boolean isAnyArrayPtg(Ptg[] ptgs) {
