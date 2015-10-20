@@ -102,6 +102,10 @@ public class TestArrayFunctions extends TestCase {
         assertEquals(expected, ErrorEval.valueOf(value.getErrorValue()));
     }
 
+    public void testOperators() {
+        assertFormulaResult(wb, 10500, "D2:D17*E2:E17");
+    }
+
 	public void testAggregateOfBasicOperators() {
         assertFormulaResult(wb, 189691.0, "SUM(D2:D17+F2:F17)");
         assertFormulaResult(wb, -189509.0, "SUM(D2:D17-F2:F17)");
@@ -190,8 +194,8 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, 1, "FACTDOUBLE(A2:A17)");
     }
 
-    public void testOffset() {
-        assertFormulaResult(wb, 9, "SUM(OFFSET(A2:A17,0,3,2))");
+    public void testBUGBUGOffset() {
+        assertFormulaResult(wb, 17700.0, "SUM(OFFSET(F2:F17,0,0,2))");
     }
 
     public void testWeekdayFunc()  {

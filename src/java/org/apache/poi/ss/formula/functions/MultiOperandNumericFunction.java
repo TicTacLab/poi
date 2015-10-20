@@ -190,6 +190,10 @@ public abstract class MultiOperandNumericFunction implements Function {
 		if (ve == null) {
 			throw new IllegalArgumentException("ve must not be null");
 		}
+		if (ve instanceof IArrayEval) {
+			collectValues(ve, temp);
+			return;
+		}
 		if (ve instanceof BoolEval) {
 			if (!isViaReference || _isReferenceBoolCounted) {
 				BoolEval boolEval = (BoolEval) ve;

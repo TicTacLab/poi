@@ -19,11 +19,13 @@ package org.apache.poi.xssf.usermodel;
 
 import org.apache.poi.ss.formula.EvaluationCell;
 import org.apache.poi.ss.formula.EvaluationSheet;
+import org.apache.poi.ss.formula.eval.IArrayEval;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 /**
  * XSSF wrapper for a cell under evaluation
  */
-final class XSSFEvaluationCell implements EvaluationCell {
+public final class XSSFEvaluationCell implements EvaluationCell {
 
 	private final EvaluationSheet _evalSheet;
 	private final XSSFCell _cell;
@@ -72,5 +74,13 @@ final class XSSFEvaluationCell implements EvaluationCell {
 	}
 	public int getCachedFormulaResultType() {
 		return _cell.getCachedFormulaResultType();
+	}
+
+	public boolean isPartOfArrayFormulaGroup() {
+		return _cell.isPartOfArrayFormulaGroup();
+	}
+
+	public CellRangeAddress getArrayFormulaRange() {
+		return _cell.getArrayFormulaRange();
 	}
 }

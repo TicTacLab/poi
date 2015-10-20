@@ -17,6 +17,7 @@
 
 package org.apache.poi.ss.formula;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 import org.apache.poi.ss.formula.CollaboratingWorkbooksEnvironment.WorkbookNotFoundException;
@@ -28,10 +29,12 @@ import org.apache.poi.ss.formula.ptg.*;
 import org.apache.poi.ss.formula.udf.AggregatingUDFFinder;
 import org.apache.poi.ss.formula.udf.UDFFinder;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.util.POILogFactory;
 import org.apache.poi.util.POILogger;
 import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFEvaluationCell;
 import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
 
 /**
@@ -544,6 +547,10 @@ public final class WorkbookEvaluator {
 				}
 //				logDebug("invoke " + operation + " (nAgs=" + numops + ")");
 				opResult = OperationEvaluatorFactory.evaluate(optg, ops, ec);
+
+/*				if ((opResult instanceof ArrayEval) && ec.isPartOfArrayFormula()) {
+					opResult = ((ArrayEval) opResult).getValue(ec.getArrayFormulaRowOffset())
+				}*/
 			} else {
 				opResult = getEvalForPtg(ptg, ec);
 			}
@@ -884,7 +891,21 @@ public final class WorkbookEvaluator {
 			int columnIndex, EvaluationTracker tracker) {
 
 		EvaluationCell cell = sheet.getCell(rowIndex, columnIndex);
-		return evaluateAny(cell, sheetIndex, rowIndex, columnIndex, tracker);
+		XSSFEvaluationCell ecell = (XSSFEvaluationCell) cell;
+		ValueEval result = evaluateAny(cell, sheetIndex, rowIndex, columnIndex, tracker);
+		if (result instanceof ArrayEval) {
+
+			if (ecell.isPartOfArrayFormulaGroup()) {
+				IArrayEval ae = (IArrayEval) result;
+				CellRangeAddress cra = ecell.getArrayFormulaRange();
+
+				int relativeRow = ecell.getRowIndex() - cra.getFirstRow();
+				int relativeCol = ecell.getColumnIndex() - cra.getFirstColumn();
+
+				result = ae.getValue(relativeRow);
+			}
+		}
+		return result;
 	}
 	public FreeRefFunction findUserDefinedFunction(String functionName) {
 		return _udfFinder.findFunction(functionName);
