@@ -102,13 +102,6 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, 10500, "D2:D17*E2:E17");
     }
 
-    public void testRATE() {
-        assertFormulaResult(wb, -1, "ROUNDUP(RATE(1, -1*D2:D17, F2:F17), 0)");
-        assertFormulaResult(wb, -1, "ROUNDUP(RATE(A2:A17, -5, F2:F17), 0)");
-        assertFormulaResult(wb, -1, "ROUNDUP(RATE(A2:A17, -1*D2:D17, 10500), 0)");
-        assertFormulaResult(wb, -1, "ROUNDUP(RATE(A2:A17, -1*D2:D17, F2:F17), 0)");
-    }
-
     public void testREPT() {
         assertFormulaResult(wb, "xxxxx", "REPT(\"x\", D2:D17)");
         assertFormulaResult(wb, "SedanSedan", "REPT(C2:C17, 2)");
