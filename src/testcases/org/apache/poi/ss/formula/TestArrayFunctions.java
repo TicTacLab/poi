@@ -308,7 +308,7 @@ public class TestArrayFunctions extends TestCase {
 
     public void testDOLLAR() {assertFormulaResult(wb, 10500, "DOLLAR(F2:F17)");}
 
-    public void testERRORTYPE() {assertFormulaResult(wb, 5, "ERROR.TYPE(SUM(F2:F17)/0)");}
+    public void testERRORTYPE() {assertFormulaResult(wb, 2, "ERROR.TYPE(SUM(F2:F17)/0)");}
 
     public void testEVEN() {assertFormulaResult(wb, 10500, "EVEN(F2:F17)");}
 
