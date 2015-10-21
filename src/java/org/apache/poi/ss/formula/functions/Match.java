@@ -30,6 +30,7 @@ import org.apache.poi.ss.formula.functions.LookupUtils.CompareResult;
 import org.apache.poi.ss.formula.functions.LookupUtils.LookupValueComparer;
 import org.apache.poi.ss.formula.functions.LookupUtils.ValueVector;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -105,7 +106,9 @@ public final class Match extends Var2or3ArgFunction {
 
 	@Override
 	public Set<Integer> notArrayArgs() {
-		return null;
+		Set<Integer> xs = new HashSet<Integer>();
+		xs.add(1);
+		return xs;
 	}
 
 	private static final class SingleValueVector implements ValueVector {
