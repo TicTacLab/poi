@@ -101,45 +101,45 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, 10500, "D2:D17*E2:E17");
     }
 
-    public void testTime() {
-        assertFormulaResult(wb, 1, "HOUR(TIME(A2:A17, D2:D17, A2:A17))");
-    }
+    public void testSUMIF() {assertFormulaResult(wb, 86, "SUMIF(A2:A17, \">\"&TEXT(A2:A17,\"0\"),D2:D17)");}
 
-    public void testToday() {
-        assertFormulaResult(wb, 0, "TODAY()-TODAY()");
-    }
+    public void testSUMPRODUCT() {assertFormulaResult(wb, 813, "SUMPRODUCT(A2:A17, D2:D17)");}
 
-    public void testTrim() {
-        assertFormulaResult(wb, "Sedan", "TRIM(C2:C17)");
-    }
+    public void testSUMSQ() {assertFormulaResult(wb, 2091, "SUMSQ(A2:A17, D2:D17)");}
 
-    public void testTrue() {
-        assertFormulaResult(wb, true, "TRUE()");
-    }
+    public void testSUMX2MY2() {assertFormulaResult(wb, 901, "SUMX2MY2(A2:A17,D2:D17)");}
 
-    public void testUpper() {
-        assertFormulaResult(wb, "SEDAN", "UPPER(C2:C17)");
-    }
+    public void testSUMX2PY2() {assertFormulaResult(wb, 2091, "SUMX2PY2(A2:A17, D2:D17)");}
 
-    public void testValue() {
-        assertFormulaResult(wb, 10500, "VALUE(TEXT(F2:F17, \"0\"))");
-    }
+    public void testSUMXMY2() {assertFormulaResult(wb, 465, "SUMXMY2(A2:A17, D2:D17)");}
 
-    public void testVar() {
-        assertFormulaResult(wb, 24877000, "VAR(F2:F17)");
-    }
+    public void testT() {assertFormulaResult(wb, "Sedan", "T(C2:C17)");}
 
-    public void testVarp() {
-        assertFormulaResult(wb, 23322187.5, "VARP(F2:F17)");
-    }
+    public void testTAN() {assertFormulaResult(wb, 5, "DEGREES(ATAN(TAN(RADIANS(D2:D17))))");}
 
-    public void testVLookup() {
-        assertFormulaResult(wb, 2100, "VLOOKUP(A2:A17, A2:F17, 5)");
-    }
+    public void testTANH() {assertFormulaResult(wb, 5.0, "ATANH(TANH(D2:D17))");}
 
-    public void testYear() {
-        assertFormulaResult(wb, 1928, "YEAR(F2:F17)");
-    }
+    public void testTEXT() {assertFormulaResult(wb, "10500", "TEXT(F2:F17, \"0\")");}
+
+    public void testTIME() {assertFormulaResult(wb, 1, "HOUR(TIME(A2:A17, D2:D17, A2:A17))");}
+
+    public void testTODAY() {assertFormulaResult(wb, 0, "TODAY()-TODAY()");}
+
+    public void testTRIM() {assertFormulaResult(wb, "Sedan", "TRIM(C2:C17)");}
+
+    public void testTRUE() {assertFormulaResult(wb, true, "TRUE()");}
+
+    public void testUPPER() {assertFormulaResult(wb, "SEDAN", "UPPER(C2:C17)");}
+
+    public void testVALUE() {assertFormulaResult(wb, 10500, "VALUE(TEXT(F2:F17, \"0\"))");}
+
+    public void testVAR() {assertFormulaResult(wb, 24877000, "VAR(F2:F17)");}
+
+    public void testVARP() {assertFormulaResult(wb, 23322187.5, "VARP(F2:F17)");}
+
+    public void testVLOOKUP() {assertFormulaResult(wb, 2100, "VLOOKUP(A2:A17, A2:F17, 5)");}
+
+    public void testYEAR() {assertFormulaResult(wb, 1928, "YEAR(F2:F17)");}
 
 	public void testAggregateOfBasicOperators() {
         assertFormulaResult(wb, 189691.0, "SUM(D2:D17+F2:F17)");
