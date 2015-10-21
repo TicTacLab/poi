@@ -27,6 +27,7 @@ import org.apache.poi.ss.formula.eval.OperandResolver;
 import org.apache.poi.ss.formula.eval.RefEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -130,6 +131,8 @@ public class Rank extends Var2or3ArgFunction {
 
 	@Override
 	public Set<Integer> notArrayArgs() {
-		return null;
+		Set<Integer> xs = new HashSet<Integer>();
+		xs.add(1);
+		return xs;
 	}
 }
