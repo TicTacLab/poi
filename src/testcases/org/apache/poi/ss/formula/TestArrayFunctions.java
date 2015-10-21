@@ -101,6 +101,18 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, 10500, "D2:D17*E2:E17");
     }
 
+    public void testSUMIF() {assertFormulaResult(wb, 86, "SUMIF(A2:A17, \">\"&TEXT(A2:A17,\"0\"),D2:D17)");}
+
+    public void testSUMPRODUCT() {assertFormulaResult(wb, 813, "SUMPRODUCT(A2:A17, D2:D17)");}
+
+    public void testSUMSQ() {assertFormulaResult(wb, 2091, "SUMSQ(A2:A17, D2:D17)");}
+
+    public void testSUMX2MY2() {assertFormulaResult(wb, 901, "SUMX2MY2(A2:A17,D2:D17)");}
+
+    public void testSUMX2PY2() {assertFormulaResult(wb, 2091, "SUMX2PY2(A2:A17, D2:D17)");}
+
+    public void testSUMXMY2() {assertFormulaResult(wb, 465, "SUMXMY2(A2:A17, D2:D17)");}
+
     public void testT() {assertFormulaResult(wb, "Sedan", "T(C2:C17)");}
 
     public void testTAN() {assertFormulaResult(wb, 5, "DEGREES(ATAN(TAN(RADIANS(D2:D17))))");}
