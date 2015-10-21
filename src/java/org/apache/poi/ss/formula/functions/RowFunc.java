@@ -17,11 +17,10 @@
 
 package org.apache.poi.ss.formula.functions;
 
-import org.apache.poi.ss.formula.eval.AreaEval;
-import org.apache.poi.ss.formula.eval.ErrorEval;
-import org.apache.poi.ss.formula.eval.NumberEval;
-import org.apache.poi.ss.formula.eval.RefEval;
-import org.apache.poi.ss.formula.eval.ValueEval;
+import org.apache.poi.ss.formula.eval.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Implementation for the Excel function ROW
@@ -29,6 +28,7 @@ import org.apache.poi.ss.formula.eval.ValueEval;
  * @author Josh Micich
  */
 public final class RowFunc implements Function0Arg, Function1Arg {
+
 
     public ValueEval evaluate(int srcRowIndex, int srcColumnIndex) {
         return new NumberEval(srcRowIndex+1);
@@ -50,10 +50,45 @@ public final class RowFunc implements Function0Arg, Function1Arg {
     public ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
         switch (args.length) {
             case 1:
-                return evaluate(srcRowIndex, srcColumnIndex, args[0]);
+                if (ArrayFunctionsHelper.isAnyIArrayEval(args, notArrayArgs())) {
+                    return evaluateArray(args, srcRowIndex, srcColumnIndex);
+                } else {
+                    return evaluate(srcRowIndex, srcColumnIndex, args[0]);
+                }
             case 0:
               return new NumberEval(srcRowIndex+1);
         }
         return ErrorEval.VALUE_INVALID;
+    }
+
+    public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+        int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
+        IArrayEval[] arargs = new IArrayEval[args.length];
+        for (int i = 0; i < args.length; i++) arargs[i] = ArrayFunctionsHelper.coerceToIArrayEval(args[i], length);
+        int firstRow = ArrayFunctionsHelper.getFirstRow(args);
+        int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
+
+
+        ValueEval[] result = new ValueEval[length];
+        for (int i = 0; i < length; i++) {
+            ValueEval[] newArgs = new ValueEval[args.length];
+            for (int j = 0; j < args.length; j++) newArgs[j] = arargs[j].getValue(i);
+
+            // freeze args
+            if (notArrayArgs() != null) {
+                for (Integer j : notArrayArgs())
+                    if (j < args.length)
+                        newArgs[j] = args[j];
+            }
+
+            result[i] = evaluate(newArgs, srcRowIndex, srcColumnIndex);
+        }
+        return new ArrayEval(result, firstRow, lastRow);
+    }
+
+    public Set<Integer> notArrayArgs() {
+        Set<Integer> xs = new HashSet<Integer>();
+        xs.add(0);
+        return xs;
     }
 }
