@@ -19,6 +19,8 @@ package org.apache.poi.ss.formula.functions;
 
 import org.apache.poi.ss.formula.eval.*;
 
+import java.util.Set;
+
 /**
  * Implementation for Excel CODE () function.<p/>
  * <p/>
@@ -31,6 +33,9 @@ import org.apache.poi.ss.formula.eval.*;
  * @author cedric dot walter @ gmail dot com
  */
 public class Code extends Fixed1ArgFunction {
+
+    @Override
+    public Set<Integer> notArrayArgs() { return null; }
 
     public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval textArg) {
 

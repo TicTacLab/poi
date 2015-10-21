@@ -213,13 +213,6 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, "Total Sales", "INDIRECT(CONCATENATE(\"f\", A2:A17))");
     }
 
-    public void testFunctionsWithNoSupportOfArrayArgs() {
-        assertFormulaResult(wb, ErrorEval.VALUE_INVALID, "DELTA(A2:A17,B2:B17)");
-        assertFormulaResult(wb, ErrorEval.NUM_ERROR, "DEC2HEX(A2:A17)");
-        assertFormulaResult(wb, ErrorEval.NUM_ERROR, "DEC2BIN(A2:A17)");
-        assertFormulaResult(wb, ErrorEval.NUM_ERROR, "BIN2DEC(A2:A17)");
-    }
-
     public void testAddress() {
         assertFormulaResult(wb, "Sedan!$E$1", "ADDRESS(A2:A17,D2:D17,1,1,C2:C17)");
 

@@ -24,6 +24,9 @@ import org.apache.poi.ss.formula.eval.RefEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.functions.CountUtils.I_MatchPredicate;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Implementation for the function COUNTBLANK
  * <p>
@@ -36,6 +39,12 @@ import org.apache.poi.ss.formula.functions.CountUtils.I_MatchPredicate;
  * @author Mads Mohr Christensen
  */
 public final class Countblank extends Fixed1ArgFunction {
+	@Override
+	public Set<Integer> notArrayArgs() {
+		Set<Integer> xs = new HashSet<Integer>();
+		xs.add(0);
+		return xs;
+	}
 
 	public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
 

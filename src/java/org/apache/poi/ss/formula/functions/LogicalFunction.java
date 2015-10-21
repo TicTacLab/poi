@@ -28,11 +28,17 @@ import org.apache.poi.ss.formula.eval.RefEval;
 import org.apache.poi.ss.formula.eval.StringEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Implementation of the various ISxxx Logical Functions, which
  *  take a single expression argument, and return True or False.
  */
 public abstract class LogicalFunction extends Fixed1ArgFunction {
+
+	@Override
+	public Set<Integer> notArrayArgs() { return null; }
 
     @SuppressWarnings("unused")
     public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
@@ -130,6 +136,12 @@ public abstract class LogicalFunction extends Fixed1ArgFunction {
 	};
 
 	public static final Function ISREF = new Fixed1ArgFunction() {
+		@Override
+		public Set<Integer> notArrayArgs() {
+			Set<Integer> xs = new HashSet<Integer>();
+			xs.add(0);
+			return xs;
+		}
 
 		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
 			if (arg0 instanceof RefEval || arg0 instanceof AreaEval) {

@@ -23,6 +23,8 @@ import org.apache.poi.ss.formula.eval.NumberEval;
 import org.apache.poi.ss.formula.eval.OperandResolver;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.Set;
+
 /**
  * Implementation for Excel VALUE() function.<p/>
  *
@@ -34,6 +36,9 @@ import org.apache.poi.ss.formula.eval.ValueEval;
  * properly the result is <b>#VALUE!</b> error. Blank string converts to zero.
  */
 public final class Value extends Fixed1ArgFunction {
+
+	@Override
+	public Set<Integer> notArrayArgs() { return null; }
 
 	/** "1,0000" is valid, "1,00" is not */
 	private static final int MIN_DISTANCE_BETWEEN_THOUSANDS_SEPARATOR = 4;

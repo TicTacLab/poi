@@ -22,6 +22,9 @@ import org.apache.poi.ss.formula.eval.NumberEval;
 import org.apache.poi.ss.formula.eval.OperandResolver;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * <p>Implementation for Excel Oct2Dec() function.<p/>
  * <p>
@@ -40,6 +43,13 @@ import org.apache.poi.ss.formula.eval.ValueEval;
  * @author cedric dot walter @ gmail dot com
  */
 public class Oct2Dec extends Fixed1ArgFunction implements FreeRefFunction {
+
+    @Override
+    public Set<Integer> notArrayArgs() {
+        Set<Integer> xs = new HashSet<Integer>();
+        xs.add(0);
+        return xs;
+    }
 
     public static final FreeRefFunction instance = new Oct2Dec();
 

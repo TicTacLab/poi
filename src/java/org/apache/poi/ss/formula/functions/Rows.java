@@ -23,12 +23,17 @@ import org.apache.poi.ss.formula.eval.RefEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.TwoDEval;
 
+import java.util.Set;
+
 /**
  * Implementation for Excel ROWS function.
  *
  * @author Josh Micich
  */
 public final class Rows extends Fixed1ArgFunction {
+
+   @Override
+   public Set<Integer> notArrayArgs() { return null; }
 
 	public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
 
