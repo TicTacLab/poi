@@ -316,7 +316,7 @@ public class TestArrayFunctions extends TestCase {
 
     public void testFIND() {assertFormulaResult(wb, 1, "FIND(F2:F17, F2:F17)");}
 
-    public void testFIXED() {assertFormulaResult(wb, 10500, "FIXED(F2:F17, 2)");}
+    public void testFIXED() {assertFormulaResult(wb, "10,500.0", "FIXED(F2:F17, A2:A17)");}
 
     public void testFLOOR() {assertFormulaResult(wb, 10500, "FLOOR(F2:F17, 2)");}
 
