@@ -3,3 +3,5 @@ lib
 compile-lib
 ooxml-lib
 ~*
+.idea
+*.iml
