@@ -156,8 +156,6 @@ public class TestArrayFunctions extends TestCase {
 
     public void testSTDEV() {assertFormulaResult(wb, 4.76, "STDEV(A2:A17)");}
 
-    public void testSUBTOTAL() {assertFormulaResult(wb, 8.5, "SUBTOTAL(A2:A17,A2:A17)");}
-
     public void testSUMIF() {assertFormulaResult(wb, 86, "SUMIF(A2:A17, \">\"&TEXT(A2:A17,\"0\"),D2:D17)");}
 
     public void testSUMPRODUCT() {assertFormulaResult(wb, 813, "SUMPRODUCT(A2:A17, D2:D17)");}
