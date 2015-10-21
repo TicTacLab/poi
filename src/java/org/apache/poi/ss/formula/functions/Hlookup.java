@@ -24,6 +24,7 @@ import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.functions.LookupUtils.ValueVector;
 import org.apache.poi.ss.formula.TwoDEval;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -83,6 +84,8 @@ public final class Hlookup extends Var3or4ArgFunction  {
 
 	@Override
 	public Set<Integer> notArrayArgs() {
-		return null;
+		Set<Integer> xs = new HashSet<Integer>();
+		xs.add(1);
+		return xs;
 	}
 }

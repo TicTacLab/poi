@@ -23,6 +23,7 @@ import org.apache.poi.ss.formula.eval.NumberEval;
 import org.apache.poi.ss.formula.eval.OperandResolver;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -71,7 +72,9 @@ public abstract class AggregateFunction extends MultiOperandNumericFunction {
 
 		@Override
 		public Set<Integer> notArrayArgs() {
-			return null;
+			Set<Integer> xs = new HashSet<Integer>();
+			xs.add(0);
+			return xs;
 		}
 	}
 
