@@ -330,7 +330,7 @@ public class TestArrayFunctions extends TestCase {
 
     public void testDOLLAR() {assertFormulaResult(wb, 10500, "DOLLAR(F2:F17)");}
 
-    public void testERRORTYPE() {assertFormulaResult(wb, 5, "ERROR.TYPE(SUM(F2:F17)/0)");}
+    public void testERRORTYPE() {assertFormulaResult(wb, 2, "ERROR.TYPE(SUM(F2:F17)/0)");}
 
     public void testEVEN() {assertFormulaResult(wb, 10500, "EVEN(F2:F17)");}
 
@@ -338,7 +338,7 @@ public class TestArrayFunctions extends TestCase {
 
     public void testFIND() {assertFormulaResult(wb, 1, "FIND(F2:F17, F2:F17)");}
 
-    public void testFIXED() {assertFormulaResult(wb, 10500, "FIXED(F2:F17, 2)");}
+    public void testFIXED() {assertFormulaResult(wb, "10,500.0", "FIXED(F2:F17, A2:A17)");}
 
     public void testFLOOR() {assertFormulaResult(wb, 10500, "FLOOR(F2:F17, 2)");}
 

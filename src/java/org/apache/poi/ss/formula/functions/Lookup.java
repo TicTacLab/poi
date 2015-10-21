@@ -23,6 +23,8 @@ import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.functions.LookupUtils.ValueVector;
 import org.apache.poi.ss.formula.TwoDEval;
 
+import java.util.Set;
+
 /**
  * Implementation of Excel function LOOKUP.<p/>
  *
@@ -72,5 +74,10 @@ public final class Lookup extends Var2or3ArgFunction {
 		}
 		// extra complexity required to emulate the way LOOKUP can handles these abnormal cases.
 		throw new RuntimeException("non-vector lookup or result areas not supported yet");
+	}
+
+	@Override
+	public Set<Integer> notArrayArgs() {
+		return null;
 	}
 }

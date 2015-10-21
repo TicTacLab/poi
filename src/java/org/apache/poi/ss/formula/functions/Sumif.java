@@ -25,6 +25,9 @@ import org.apache.poi.ss.formula.eval.RefEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.functions.CountUtils.I_MatchPredicate;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Implementation for the Excel function SUMIF<p>
  *
@@ -130,4 +133,11 @@ public final class Sumif extends Var2or3ArgFunction {
 		throw new EvaluationException(ErrorEval.VALUE_INVALID);
 	}
 
+	@Override
+	public Set<Integer> notArrayArgs() {
+		Set<Integer> xs = new HashSet<Integer>();
+		xs.add(0);
+		xs.add(2);
+		return xs;
+	}
 }

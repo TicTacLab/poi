@@ -22,16 +22,15 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
+import java.util.Set;
 
-import org.apache.poi.ss.formula.eval.BoolEval;
-import org.apache.poi.ss.formula.eval.ErrorEval;
-import org.apache.poi.ss.formula.eval.EvaluationException;
-import org.apache.poi.ss.formula.eval.NumberEval;
-import org.apache.poi.ss.formula.eval.OperandResolver;
-import org.apache.poi.ss.formula.eval.StringEval;
-import org.apache.poi.ss.formula.eval.ValueEval;
+import org.apache.poi.ss.formula.eval.*;
 
 public final class Fixed implements Function1Arg, Function2Arg, Function3Arg {
+
+    public Set<Integer> notArrayArgs() {
+        return null;
+    }
     @Override
     public ValueEval evaluate(
             int srcRowIndex, int srcColumnIndex,
@@ -54,15 +53,44 @@ public final class Fixed implements Function1Arg, Function2Arg, Function3Arg {
     public ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
         switch (args.length) {
             case 1:
-                return fixed(args[0], new NumberEval(2), BoolEval.FALSE,
-                        srcRowIndex, srcColumnIndex);
+                if (ArrayFunctionsHelper.isAnyIArrayEval(args, notArrayArgs())) {
+                    return evaluateArray(args, srcRowIndex, srcColumnIndex);
+                } else {
+                    return fixed(args[0], new NumberEval(2), BoolEval.FALSE,
+                            srcRowIndex, srcColumnIndex);
+                }
             case 2:
-                return fixed(args[0], args[1], BoolEval.FALSE,
-                        srcRowIndex, srcColumnIndex);
+                if (ArrayFunctionsHelper.isAnyIArrayEval(args, notArrayArgs())) {
+                    return evaluateArray(args, srcRowIndex, srcColumnIndex);
+                } else {
+                    return fixed(args[0], args[1], BoolEval.FALSE,
+                            srcRowIndex, srcColumnIndex);
+                }
             case 3:
-                return fixed(args[0], args[1], args[2], srcRowIndex, srcColumnIndex);
+                if (ArrayFunctionsHelper.isAnyIArrayEval(args, notArrayArgs())) {
+                    return evaluateArray(args, srcRowIndex, srcColumnIndex);
+                } else {
+                    return fixed(args[0], args[1], args[2], srcRowIndex, srcColumnIndex);
+                }
         }
         return ErrorEval.VALUE_INVALID;
+    }
+
+    public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+        int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
+        IArrayEval[] arargs = new IArrayEval[args.length];
+        for (int i = 0; i < args.length; i++) arargs[i] = ArrayFunctionsHelper.coerceToIArrayEval(args[i], length);
+        int firstRow = ArrayFunctionsHelper.getFirstRow(args);
+        int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
+
+
+        ValueEval[] result = new ValueEval[length];
+        for (int i = 0; i < length; i++) {
+            ValueEval[] newArgs = new ValueEval[args.length];
+            for (int j = 0; j < args.length; j++) newArgs[j] = arargs[j].getValue(i);
+            result[i] = evaluate(newArgs, srcRowIndex, srcColumnIndex);
+        }
+        return new ArrayEval(result, firstRow, lastRow);
     }
     
     private ValueEval fixed(

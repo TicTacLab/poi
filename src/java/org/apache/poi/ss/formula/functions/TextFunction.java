@@ -404,6 +404,11 @@ public abstract class TextFunction implements Function {
 			}
 			return new NumberEval(result + 1);
 		}
+
+		@Override
+		public Set<Integer> notArrayArgs() {
+			return null;
+		}
 	}
 	/**
 	 * Implementation of the FIND() function.<p/>
