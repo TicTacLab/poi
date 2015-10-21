@@ -17,6 +17,8 @@
 
 package org.apache.poi.ss.formula;
 
+import org.apache.poi.ss.util.CellRangeAddress;
+
 /**
  * Abstracts a cell for the purpose of formula evaluation.  This interface represents both formula
  * and non-formula cells.<br/>
@@ -43,4 +45,7 @@ public interface EvaluationCell {
 	int getErrorCellValue();
 
 	int getCachedFormulaResultType();
+
+    boolean isPartOfArrayFormulaGroup();
+    CellRangeAddress getArrayFormulaRange();
 }

@@ -19,6 +19,7 @@ package org.apache.poi.xssf.streaming;
 
 import org.apache.poi.ss.formula.EvaluationCell;
 import org.apache.poi.ss.formula.EvaluationSheet;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 /**
  * SXSSF wrapper for a cell under evaluation
@@ -71,5 +72,15 @@ final class SXSSFEvaluationCell implements EvaluationCell {
     }
     public int getCachedFormulaResultType() {
         return _cell.getCachedFormulaResultType();
+    }
+
+    @Override
+    public boolean isPartOfArrayFormulaGroup() {
+        return _cell.isPartOfArrayFormulaGroup();
+    }
+
+    @Override
+    public CellRangeAddress getArrayFormulaRange() {
+        return _cell.getArrayFormulaRange();
     }
 }

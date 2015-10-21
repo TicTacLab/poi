@@ -26,6 +26,7 @@ import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.EvaluationCell;
 import org.apache.poi.ss.formula.EvaluationSheet;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 /**
  * Represents a cell being used for forked evaluation that has had a value set different from the
@@ -131,5 +132,15 @@ final class ForkedEvaluationCell implements EvaluationCell {
     public int getCachedFormulaResultType() {
         return _masterCell.getCachedFormulaResultType();
     }
+
+	@Override
+	public boolean isPartOfArrayFormulaGroup() {
+		return _masterCell.isPartOfArrayFormulaGroup();
+	}
+
+	@Override
+	public CellRangeAddress getArrayFormulaRange() {
+		return _masterCell.getArrayFormulaRange();
+	}
 
 }

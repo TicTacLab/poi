@@ -891,16 +891,15 @@ public final class WorkbookEvaluator {
 			int columnIndex, EvaluationTracker tracker) {
 
 		EvaluationCell cell = sheet.getCell(rowIndex, columnIndex);
-		XSSFEvaluationCell ecell = (XSSFEvaluationCell) cell;
 		ValueEval result = evaluateAny(cell, sheetIndex, rowIndex, columnIndex, tracker);
 		if (result instanceof ArrayEval) {
 
-			if (ecell.isPartOfArrayFormulaGroup()) {
+			if (cell.isPartOfArrayFormulaGroup()) {
 				IArrayEval ae = (IArrayEval) result;
-				CellRangeAddress cra = ecell.getArrayFormulaRange();
+				CellRangeAddress cra = cell.getArrayFormulaRange();
 
-				int relativeRow = ecell.getRowIndex() - cra.getFirstRow();
-				int relativeCol = ecell.getColumnIndex() - cra.getFirstColumn();
+				int relativeRow = cell.getRowIndex() - cra.getFirstRow();
+				int relativeCol = cell.getColumnIndex() - cra.getFirstColumn();
 
 				result = ae.getValue(relativeRow);
 			}
