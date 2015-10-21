@@ -8,4 +8,5 @@ public interface IArrayEval {
     ValueEval getOffsetValue(int row);
     ValueEval[] getValues();
     int getLength();
+    int getColsNum();
 }

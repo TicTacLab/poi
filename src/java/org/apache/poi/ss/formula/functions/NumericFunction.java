@@ -19,6 +19,8 @@ package org.apache.poi.ss.formula.functions;
 
 import org.apache.poi.ss.formula.eval.*;
 
+import java.util.Set;
+
 /**
  * @author Amol S. Deshmukh &lt; amolweb at ya hoo dot com &gt;
  * @author Josh Micich
@@ -95,6 +97,9 @@ public abstract class NumericFunction implements Function {
 			// no fields to initialise
 		}
 
+		public Set<Integer> notArrayArgs() {
+			return null;
+		}
 
 		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
 			double result;

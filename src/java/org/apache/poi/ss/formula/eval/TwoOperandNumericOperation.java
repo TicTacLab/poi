@@ -20,11 +20,15 @@ package org.apache.poi.ss.formula.eval;
 import org.apache.poi.ss.formula.functions.Fixed2ArgFunction;
 import org.apache.poi.ss.formula.functions.Function;
 
+import java.util.Set;
+
 /**
  * @author Josh Micich
  */
 public abstract class TwoOperandNumericOperation extends Fixed2ArgFunction {
-
+	public Set<Integer> notArrayArgs() {
+		return null;
+	}
 	protected final double singleOperandEvaluate(ValueEval arg, int srcCellRow, int srcCellCol) throws EvaluationException {
 		ValueEval ve = OperandResolver.getSingleValue(arg, srcCellRow, srcCellCol);
 		return OperandResolver.coerceValueToDouble(ve);

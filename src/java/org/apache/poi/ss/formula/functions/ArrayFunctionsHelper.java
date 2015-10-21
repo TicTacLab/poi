@@ -7,6 +7,8 @@ import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.ptg.AreaPtg;
 import org.apache.poi.ss.formula.ptg.Ptg;
 
+import java.util.Set;
+
 /**
  * Created by serzh on 10/16/15.
  */
@@ -30,6 +32,17 @@ public class ArrayFunctionsHelper {
 
     public static boolean isAnyIArrayEval(ValueEval[] valueEvals) {
         for (ValueEval valueEval : valueEvals) {
+            if (isIArrayEval(valueEval)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static boolean isAnyIArrayEval(ValueEval[] valueEvals, Set<Integer> excludes) {
+        for (int i = 0; i < valueEvals.length; i++) {
+            if (excludes != null && excludes.contains(i)) continue;
+            ValueEval valueEval = valueEvals[i];
             if (isIArrayEval(valueEval)) {
                 return true;
             }

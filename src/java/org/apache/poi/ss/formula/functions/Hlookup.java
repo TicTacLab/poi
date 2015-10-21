@@ -23,6 +23,9 @@ import org.apache.poi.ss.formula.eval.OperandResolver;
 import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.functions.LookupUtils.ValueVector;
 import org.apache.poi.ss.formula.TwoDEval;
+
+import java.util.Set;
+
 /**
  * Implementation of the HLOOKUP() function.<p/>
  *
@@ -76,5 +79,10 @@ public final class Hlookup extends Var3or4ArgFunction  {
 			throw EvaluationException.invalidRef();
 		}
 		return LookupUtils.createRowVector(tableArray, rowIndex);
+	}
+
+	@Override
+	public Set<Integer> notArrayArgs() {
+		return null;
 	}
 }
