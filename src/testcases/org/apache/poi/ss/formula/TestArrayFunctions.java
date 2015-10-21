@@ -101,6 +101,24 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, 10500, "D2:D17*E2:E17");
     }
 
+    public void testSECOND() {assertFormulaResult(wb, 0, "SECOND(F2:F17)");}
+
+    public void testSIGN() {assertFormulaResult(wb, 1.0, "SIGN(F2:F17)");}
+
+    public void testSIN() {assertFormulaResult(wb, 1, "ASIN(SIN(A2:A17))");}
+
+    public void testSINH() {assertFormulaResult(wb, 1, "ASINH(SINH(A2:A17))");}
+
+    public void testSLOPE() {assertFormulaResult(wb, 0.51, "SLOPE(A2:A17,D2:D17)");}
+
+    public void testSMALL() {assertFormulaResult(wb, 1.0, "SMALL(A2:A17,A2:A17)");}
+
+    public void testSQRT() {assertFormulaResult(wb, 1, "SQRT(A2:A17)");}
+
+    public void testSTDEV() {assertFormulaResult(wb, 4.76, "STDEV(A2:A17)");}
+
+    public void testSUBTOTAL() {assertFormulaResult(wb, 8.5, "SUBTOTAL(A2:A17,A2:A17)");}
+
     public void testSUMIF() {assertFormulaResult(wb, 86, "SUMIF(A2:A17, \">\"&TEXT(A2:A17,\"0\"),D2:D17)");}
 
     public void testSUMPRODUCT() {assertFormulaResult(wb, 813, "SUMPRODUCT(A2:A17, D2:D17)");}
