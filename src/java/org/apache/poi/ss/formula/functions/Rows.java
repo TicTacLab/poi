@@ -23,6 +23,7 @@ import org.apache.poi.ss.formula.eval.RefEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.TwoDEval;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -33,7 +34,11 @@ import java.util.Set;
 public final class Rows extends Fixed1ArgFunction {
 
    @Override
-   public Set<Integer> notArrayArgs() { return null; }
+   public Set<Integer> notArrayArgs() {
+      Set<Integer> xs = new HashSet<Integer>();
+      xs.add(0);
+      return xs;
+   }
 
 	public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
 
