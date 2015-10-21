@@ -26,7 +26,6 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.XSSFTestDataSamples;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.junit.Ignore;
 
 /**
  * Tests {@link WorkbookEvaluator}.
@@ -100,6 +99,41 @@ public class TestArrayFunctions extends TestCase {
 
     public void testOperators() {
         assertFormulaResult(wb, 10500, "D2:D17*E2:E17");
+    }
+
+    public void testPOISSON() {
+        assertFormulaResult(wb, 0.04, "POISSON(A2, D2, TRUE)");
+        assertFormulaResult(wb, 0.04, "POISSON(A2, D2:D17, TRUE)");
+        assertFormulaResult(wb, 0.04, "POISSON(A2:A17, D2, TRUE)");
+        assertFormulaResult(wb, 0.04, "POISSON(A2:A17, D2:D17, TRUE)");
+        assertFormulaResult(wb, 0.04, "POISSON(A2:A17, D2:D17, IF(MOD(A2:A17, 2)=0, TRUE, FALSE))");
+    }
+
+    public void testPOWER() {
+        assertFormulaResult(wb, 4,  "POWER(2, 2)");
+        assertFormulaResult(wb, 32, "POWER(2, D2:D17)");
+        assertFormulaResult(wb, 1,  "POWER(A2:A17, 2)");
+        assertFormulaResult(wb, 1,  "POWER(A2:A17, D2:D17)");
+    }
+
+    public void testPRODUCT() {
+        assertFormulaResult(wb, 2,   "PRODUCT(2)");
+        assertFormulaResult(wb, 24,  "PRODUCT(A2:A5)");
+        assertFormulaResult(wb, 4,   "PRODUCT(2, 2)");
+        assertFormulaResult(wb, 48,  "PRODUCT(A2:A5, 2)");
+        assertFormulaResult(wb, 720, "PRODUCT(A2:A4, D2:D4)");
+    }
+
+    public void testPROPER() {assertFormulaResult(wb, "Sedan", "PROPER(C2:C17)");}
+
+    public void testRADIANS() {assertFormulaResult(wb, 0.02, "RADIANS(A2:A17)");}
+
+    public void testRAND() {assertFormulaResult(wb, 1, "ROUNDUP(RAND(), 0)");}
+
+    public void testRANK() {
+        assertFormulaResult(wb, 10,  "SUM(RANK(10500, F2:F17))");
+        assertFormulaResult(wb, 135, "SUM(RANK(F2:F17, F2:F17, 0))");
+        assertFormulaResult(wb, 154, "SUM(RANK(F2:F17, F2:F17, MOD(A2:A17,2)))");
     }
 
     public void testREPT() {
