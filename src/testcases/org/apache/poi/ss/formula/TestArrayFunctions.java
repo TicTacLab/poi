@@ -101,6 +101,22 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, 10500, "D2:D17*E2:E17");
     }
 
+    public void testT() {
+        assertFormulaResult(wb, "Sedan", "T(C2:C17)");
+    }
+
+    public void testTan() {
+        assertFormulaResult(wb, 5, "DEGREES(ATAN(TAN(RADIANS(D2:D17))))");
+    }
+
+    public void testTanh() {
+        assertFormulaResult(wb, 5.0, "ATANH(TANH(D2:D17))");
+    }
+
+    public void testText() {
+        assertFormulaResult(wb, "10500", "TEXT(F2:F17, \"0\")");
+    }
+
     public void testTime() {
         assertFormulaResult(wb, 1, "HOUR(TIME(A2:A17, D2:D17, A2:A17))");
     }
