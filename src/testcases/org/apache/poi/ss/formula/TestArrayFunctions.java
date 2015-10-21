@@ -426,5 +426,10 @@ public class TestArrayFunctions extends TestCase {
 
     public void testLOOKUP() {assertFormulaResult(wb, 12, "LOOKUP(13300,F2:F17,A2:A17)");}
 
+    public void testLOWER() {assertFormulaResult(wb, "10500", "LOWER(F2:F17)");}
+
+    public void testMATCH() {assertFormulaResult(wb, 12, "MATCH(13300,F2:F17)");}
+
+
 
 }
