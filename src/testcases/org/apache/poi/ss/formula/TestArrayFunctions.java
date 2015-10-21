@@ -154,7 +154,7 @@ public class TestArrayFunctions extends TestCase {
     }
 
     public void testVar2or3ArgFunction() {
-
+        assertFormulaResult(wb, 1, "SEARCH(A2:A17,F2:F17)");
     }
 
     public void testVar3or4ArgFunction() {
