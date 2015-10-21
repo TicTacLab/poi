@@ -19,6 +19,7 @@ package org.apache.poi.ss.formula.functions;
 
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.apache.poi.ss.formula.eval.*;
@@ -301,6 +302,9 @@ public abstract class TextFunction implements Function {
 	};
 
 	public static final Function EXACT = new Fixed2ArgFunction() {
+		public Set<Integer> notArrayArgs() {
+			return null;
+		}
 
 		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0,
 				ValueEval arg1) {
@@ -327,6 +331,9 @@ public abstract class TextFunction implements Function {
 	 * <b>Syntax<b>:<br/> <b>TEXT</b>(<b>value</b>, <b>format_text</b>)<br/>
 	 */
 	public static final Function TEXT = new Fixed2ArgFunction() {
+		public Set<Integer> notArrayArgs() {
+			return null;
+		}
 
 		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
 			double s0;

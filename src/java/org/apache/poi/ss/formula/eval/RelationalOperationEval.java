@@ -21,12 +21,18 @@ import org.apache.poi.ss.formula.functions.Fixed2ArgFunction;
 import org.apache.poi.ss.formula.functions.Function;
 import org.apache.poi.ss.util.NumberComparer;
 
+import java.util.Set;
+
 /**
  * Base class for all comparison operator evaluators
  *
  * @author Amol S. Deshmukh &lt; amolweb at ya hoo dot com &gt;
  */
 public abstract class RelationalOperationEval extends Fixed2ArgFunction {
+
+	public Set<Integer> notArrayArgs() {
+		return null;
+	}
 
 	/**
 	 * Converts a standard compare result (-1, 0, 1) to <code>true</code> or <code>false</code>

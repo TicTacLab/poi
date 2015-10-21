@@ -20,12 +20,18 @@ package org.apache.poi.ss.formula.eval;
 import org.apache.poi.ss.formula.functions.Fixed2ArgFunction;
 import org.apache.poi.ss.formula.functions.Function;
 
+import java.util.Set;
+
 
 /**
  *
  * @author Josh Micich
  */
 public final class RangeEval extends Fixed2ArgFunction {
+
+	public Set<Integer> notArrayArgs() {
+		return null;
+	}
 
 	public static final Function instance = new RangeEval();
 

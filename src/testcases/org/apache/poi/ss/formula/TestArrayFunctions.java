@@ -283,6 +283,6 @@ public class TestArrayFunctions extends TestCase {
 
     public void testCOUNTBLANK() {assertFormulaResult(wb, 0, "COUNTBLANK(F2:F17)");}
 
-    public void testCOUNTIF() {assertFormulaResult(wb, 1, "COUNTIF(F2:F17, 13600)");}
+    public void testCOUNTIF() {assertFormulaResult(wb, 1, "COUNTIF(F2:F17, F2:F17)");}
 
 }

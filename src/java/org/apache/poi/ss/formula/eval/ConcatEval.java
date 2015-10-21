@@ -20,10 +20,16 @@ package org.apache.poi.ss.formula.eval;
 import org.apache.poi.ss.formula.functions.Fixed2ArgFunction;
 import org.apache.poi.ss.formula.functions.Function;
 
+import java.util.Set;
+
 /**
  * @author Amol S. Deshmukh &lt; amolweb at ya hoo dot com &gt;
  */
 public final class ConcatEval  extends Fixed2ArgFunction {
+
+	public Set<Integer> notArrayArgs() {
+		return null;
+	}
 
 	public static final Function instance = new ConcatEval();
 

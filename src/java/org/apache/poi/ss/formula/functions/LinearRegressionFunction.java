@@ -27,6 +27,8 @@ import org.apache.poi.ss.formula.eval.RefEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.functions.LookupUtils.ValueVector;
 
+import java.util.Set;
+
 /**
  * Base class for linear regression functions.
  *
@@ -41,7 +43,12 @@ import org.apache.poi.ss.formula.functions.LookupUtils.ValueVector;
  * @author Johan Karlsteen
  */
 public final class LinearRegressionFunction extends Fixed2ArgFunction {
-	
+
+	@Override
+	public Set<Integer> notArrayArgs() {
+		return null;
+	}
+
 	private static abstract class ValueArray implements ValueVector {
 		private final int _size;
 		protected ValueArray(int size) {

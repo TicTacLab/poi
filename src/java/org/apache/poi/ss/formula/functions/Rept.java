@@ -23,6 +23,8 @@ import org.apache.poi.ss.formula.eval.OperandResolver;
 import org.apache.poi.ss.formula.eval.StringEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.Set;
+
 /**
  * Implementation for Excel REPT () function.<p/>
  * <p/>
@@ -41,6 +43,9 @@ import org.apache.poi.ss.formula.eval.ValueEval;
  * @author cedric dot walter @ gmail dot com
  */
 public class Rept extends Fixed2ArgFunction  {
+    public Set<Integer> notArrayArgs() {
+        return null;
+    }
 
 
     public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval text, ValueEval number_times) {

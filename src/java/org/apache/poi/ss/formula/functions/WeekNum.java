@@ -18,6 +18,7 @@
 package org.apache.poi.ss.formula.functions;
 
 import java.util.Calendar;
+import java.util.Set;
 
 import org.apache.poi.ss.formula.OperationEvaluationContext;
 import org.apache.poi.ss.formula.eval.ErrorEval;
@@ -44,6 +45,9 @@ import org.apache.poi.util.LocaleUtil;
  * 2	Week begins on Monday. Weekdays are numbered 1 through 7.
  */
 public class WeekNum extends Fixed2ArgFunction implements FreeRefFunction {
+    public Set<Integer> notArrayArgs() {
+        return null;
+    }
     public static final FreeRefFunction instance = new WeekNum();
 
     public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval serialNumVE, ValueEval returnTypeVE) {
