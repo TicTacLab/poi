@@ -68,6 +68,10 @@ public abstract class NumericFunction implements Function {
 	// intermediate sub-classes (one-arg, two-arg and multi-arg)
 
 	public static abstract class OneArg extends Fixed1ArgFunction {
+		@Override
+		public Set<Integer> notArrayArgs() {
+			return null;
+		}
 		protected OneArg() {
 			// no fields to initialise
 		}

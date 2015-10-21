@@ -22,6 +22,7 @@ import org.apache.poi.ss.formula.eval.*;
 
 import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Implementation for Excel FACTDOUBLE() function.<p/>
@@ -42,6 +43,9 @@ import java.util.HashMap;
  * @author cedric dot walter @ gmail dot com
  */
 public class FactDouble extends Fixed1ArgFunction implements FreeRefFunction {
+
+    @Override
+    public Set<Integer> notArrayArgs() { return null; }
 
     public static final FreeRefFunction instance = new FactDouble();
 

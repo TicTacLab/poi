@@ -24,6 +24,8 @@ import org.apache.poi.ss.formula.eval.OperandResolver;
 import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.usermodel.ErrorConstants;
 
+import java.util.Set;
+
 /**
  * Implementation for the ERROR.TYPE() Excel function.
  * <p>
@@ -76,4 +78,8 @@ public final class Errortype extends Fixed1ArgFunction {
 		throw new IllegalArgumentException("Invalid error code (" + errorCode + ")");
 	}
 
+	@Override
+	public Set<Integer> notArrayArgs() {
+		return null;
+	}
 }

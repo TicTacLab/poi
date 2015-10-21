@@ -20,10 +20,15 @@ package org.apache.poi.ss.formula.eval;
 import org.apache.poi.ss.formula.functions.Fixed1ArgFunction;
 import org.apache.poi.ss.formula.functions.Function;
 
+import java.util.Set;
+
 /**
  * @author Amol S. Deshmukh &lt; amolweb at ya hoo dot com &gt;
  */
 public final class UnaryMinusEval extends Fixed1ArgFunction {
+
+	@Override
+	public Set<Integer> notArrayArgs() { return null; }
 
 	public static final Function instance = new UnaryMinusEval();
 

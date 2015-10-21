@@ -23,6 +23,8 @@ import org.apache.poi.ss.formula.eval.RefEval;
 import org.apache.poi.ss.formula.eval.StringEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.Set;
+
 /**
  * Implementation of Excel T() function
  * <p/>
@@ -31,6 +33,9 @@ import org.apache.poi.ss.formula.eval.ValueEval;
  * (regardless of the coordinates of the evaluating formula cell).
  */
 public final class T extends Fixed1ArgFunction {
+
+    @Override
+    public Set<Integer> notArrayArgs() { return null; }
 
     public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
         ValueEval arg = arg0;

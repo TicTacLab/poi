@@ -62,6 +62,9 @@ public abstract class TextFunction implements Function {
 
 	private static abstract class SingleArgTextFunc extends Fixed1ArgFunction {
 
+		@Override
+		public Set<Integer> notArrayArgs() { return null; }
+
 		protected SingleArgTextFunc() {
 			// no fields to initialise
 		}
@@ -81,6 +84,8 @@ public abstract class TextFunction implements Function {
      * Returns the character specified by a number.
      */
     public static final Function CHAR = new Fixed1ArgFunction() {
+		@Override
+		public Set<Integer> notArrayArgs() { return null; }
         public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
             int arg;
             try {

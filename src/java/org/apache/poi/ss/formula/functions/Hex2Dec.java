@@ -20,6 +20,9 @@ package org.apache.poi.ss.formula.functions;
 import org.apache.poi.ss.formula.OperationEvaluationContext;
 import org.apache.poi.ss.formula.eval.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Implementation for Excel HEX2DEC() function.<p/>
  * <p/>
@@ -36,6 +39,12 @@ import org.apache.poi.ss.formula.eval.*;
  * @author cedric dot walter @ gmail dot com
  */
 public class Hex2Dec extends Fixed1ArgFunction implements FreeRefFunction {
+    @Override
+    public Set<Integer> notArrayArgs() {
+        Set<Integer> xs = new HashSet<Integer>();
+        xs.add(0);
+        return xs;
+    }
 
     public static final FreeRefFunction instance = new Hex2Dec();
 

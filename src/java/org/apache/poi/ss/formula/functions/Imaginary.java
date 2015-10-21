@@ -20,6 +20,8 @@ package org.apache.poi.ss.formula.functions;
 import org.apache.poi.ss.formula.OperationEvaluationContext;
 import org.apache.poi.ss.formula.eval.*;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,6 +42,9 @@ import java.util.regex.Pattern;
  * @author cedric dot walter @ gmail dot com
  */
 public class Imaginary extends Fixed1ArgFunction implements FreeRefFunction {
+
+    @Override
+    public Set<Integer> notArrayArgs() { return null; }
 
     public static final FreeRefFunction instance = new Imaginary();
 

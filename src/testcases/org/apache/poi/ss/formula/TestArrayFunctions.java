@@ -231,13 +231,6 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, "Total Sales", "INDIRECT(CONCATENATE(\"f\", A2:A17))");
     }
 
-    public void testFunctionsWithNoSupportOfArrayArgs() {
-        assertFormulaResult(wb, ErrorEval.VALUE_INVALID, "DELTA(A2:A17,B2:B17)");
-        assertFormulaResult(wb, ErrorEval.NUM_ERROR, "DEC2HEX(A2:A17)");
-        assertFormulaResult(wb, ErrorEval.NUM_ERROR, "DEC2BIN(A2:A17)");
-        assertFormulaResult(wb, ErrorEval.NUM_ERROR, "BIN2DEC(A2:A17)");
-    }
-
     public void testAddress() {
         assertFormulaResult(wb, "Sedan!$E$1", "ADDRESS(A2:A17,D2:D17,1,1,C2:C17)");
 
@@ -320,4 +313,11 @@ public class TestArrayFunctions extends TestCase {
     public void testEVEN() {assertFormulaResult(wb, 10500, "EVEN(F2:F17)");}
 
     public void testEXACT() {assertFormulaResult(wb, true, "EXACT(F2:F17, F2:F17)");}
+
+    public void testFIND() {assertFormulaResult(wb, 1, "FIND(F2:F17, F2:F17)");}
+
+    public void testFIXED() {assertFormulaResult(wb, 10500, "FIXED(F2:F17, 2)");}
+
+    public void testFLOOR() {assertFormulaResult(wb, 10500, "FLOOR(F2:F17, 2)");}
+
 }

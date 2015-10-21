@@ -18,6 +18,7 @@
 package org.apache.poi.ss.formula.functions;
 
 import java.util.Calendar;
+import java.util.Set;
 
 import org.apache.poi.ss.formula.eval.ErrorEval;
 import org.apache.poi.ss.formula.eval.EvaluationException;
@@ -35,6 +36,9 @@ import org.apache.poi.ss.usermodel.DateUtil;
  * @author Thies Wellpott
  */
 public final class CalendarFieldFunction extends Fixed1ArgFunction {
+
+	@Override
+	public Set<Integer> notArrayArgs() { return null; }
 	public static final Function YEAR = new CalendarFieldFunction(Calendar.YEAR);
 	public static final Function MONTH = new CalendarFieldFunction(Calendar.MONTH);
 	public static final Function DAY = new CalendarFieldFunction(Calendar.DAY_OF_MONTH);

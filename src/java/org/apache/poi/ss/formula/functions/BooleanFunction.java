@@ -20,6 +20,8 @@ package org.apache.poi.ss.formula.functions;
 import org.apache.poi.ss.formula.TwoDEval;
 import org.apache.poi.ss.formula.eval.*;
 
+import java.util.Set;
+
 /**
  * Here are the general rules concerning Boolean functions:
  * <ol>
@@ -151,6 +153,9 @@ public abstract class BooleanFunction implements Function {
 		}
 	};
 	public static final Function NOT = new Fixed1ArgFunction() {
+
+		@Override
+		public Set<Integer> notArrayArgs() { return null; }
 		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
 			boolean boolArgVal;
 			try {

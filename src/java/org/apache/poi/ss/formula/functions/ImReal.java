@@ -17,6 +17,7 @@
 
 package org.apache.poi.ss.formula.functions;
 
+import java.util.Set;
 import java.util.regex.Matcher;
 
 import org.apache.poi.ss.formula.OperationEvaluationContext;
@@ -44,6 +45,9 @@ import org.apache.poi.ss.formula.eval.ValueEval;
  * @author cedric dot walter @ gmail dot com
  */
 public class ImReal extends Fixed1ArgFunction implements FreeRefFunction {
+
+    @Override
+    public Set<Integer> notArrayArgs() { return null; }
 
     public static final FreeRefFunction instance = new ImReal();
 
