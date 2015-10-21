@@ -320,4 +320,35 @@ public class TestArrayFunctions extends TestCase {
 
     public void testFLOOR() {assertFormulaResult(wb, 10500, "FLOOR(F2:F17, 2)");}
 
+    public void testHLOOKUP() {assertFormulaResult(wb, 13800, "HLOOKUP(10500,A2:F17,3,TRUE)");}
+
+    public void testHOUR() {assertFormulaResult(wb, 0, "HOUR(F2:F17)");}
+
+    public void testINDEX() {assertFormulaResult(wb, 10500, "INDEX(F2:F17, 1)");}
+
+    public void testINT() {assertFormulaResult(wb, 10500, "INT(F2:F17)");}
+
+    public void testISBLANK() {assertFormulaResult(wb, false, "ISBLANK(F2:F17)");}
+
+    public void testISERR() {assertFormulaResult(wb, false, "ISERR(F2:F17)");}
+
+    public void testISERROR() {assertFormulaResult(wb, false, "ISERROR(F2:F17)");}
+
+    public void testISLOGICAL() {assertFormulaResult(wb, false, "ISLOGICAL(F2:F17)");}
+
+    public void testISNA() {assertFormulaResult(wb, false, "ISNA(F2:F17)");}
+
+    public void testISNONTEXT() {assertFormulaResult(wb, true, "ISNONTEXT(F2:F17)");}
+
+    public void testISNUMBER() {assertFormulaResult(wb, true, "ISNUMBER(F2:F17)");}
+
+    public void testISREF() {assertFormulaResult(wb, true, "ISREF(F2:F17)");}
+
+    public void testISTEXT() {assertFormulaResult(wb, false, "ISTEXT(F2:F17)");}
+
+    public void testLARGE() {
+        assertFormulaResult(wb, 19350, "LARGE(F2:F17,1)");
+        assertFormulaResult(wb, 18400, "LARGE(F2:F17,2)");
+        assertFormulaResult(wb, 16800, "LARGE(F2:F17,3)");
+    }
 }
