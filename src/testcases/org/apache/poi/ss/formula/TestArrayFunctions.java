@@ -381,4 +381,16 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, 18400, "LARGE(F2:F17,2)");
         assertFormulaResult(wb, 16800, "LARGE(F2:F17,3)");
     }
+
+    public void testLEFT() {assertFormulaResult(wb, "105", "LEFT(F2:F17,3)");}
+
+    public void testLN() {assertFormulaResult(wb, 9.25, "LN(F2:F17)");}
+
+    public void testLOG() {assertFormulaResult(wb, 13.35, "LOG(F2:F17,2)");}
+
+    public void testLOG10() {assertFormulaResult(wb, 4.02, "LOG10(F2:F17)");}
+
+    public void testLOOKUP() {assertFormulaResult(wb, 12, "LOOKUP(13300,F2:F17,A2:A17)");}
+
+
 }
