@@ -17,6 +17,7 @@
 
 package org.apache.poi.ss.formula.functions;
 
+import org.apache.poi.ss.formula.OperationEvaluationContext;
 import org.apache.poi.ss.formula.eval.ArrayEval;
 import org.apache.poi.ss.formula.eval.ErrorEval;
 import org.apache.poi.ss.formula.eval.IArrayEval;
@@ -34,13 +35,13 @@ abstract class Var1or2ArgFunction implements Function1Arg, Function2Arg {
 		switch (args.length) {
 			case 1:
                if (ArrayFunctionsHelper.isAnyIArrayEval(args)) {
-                   return evaluateArray(srcRowIndex, srcColumnIndex, args[0]);
+                   return evaluateArray(args, srcRowIndex, srcColumnIndex);
                } else {
                   return evaluate(srcRowIndex, srcColumnIndex, args[0]);
                }
 			case 2:
                 if (ArrayFunctionsHelper.isAnyIArrayEval(args)) {
-                    return evaluateArray(srcRowIndex, srcColumnIndex, args[0], args[1]);
+                    return evaluateArray(args, srcRowIndex, srcColumnIndex);
                 } else {
                     return evaluate(srcRowIndex, srcColumnIndex, args[0], args[1]);
                 }
@@ -48,37 +49,19 @@ abstract class Var1or2ArgFunction implements Function1Arg, Function2Arg {
 		return ErrorEval.VALUE_INVALID;
 	}
 
-    public ValueEval evaluateArray(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
-        IArrayEval a0 = ArrayFunctionsHelper.coerceToIArrayEval(arg0);
-        int length = a0.getLength();
-
-        ValueEval[] args = new ValueEval[] {arg0};
-
-        int firstRow = ArrayFunctionsHelper.getFirstRow(args);
-        int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
-
-        ValueEval[] result = new ValueEval[length];
-
-        for (int i = 0; i < length; i++) {
-            result[i] = evaluate(firstRow+i, srcColumnIndex, a0.getValue(i));
-        }
-
-        return new ArrayEval(result, firstRow, lastRow);
-    }
-
-    public ValueEval evaluateArray(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
-        ValueEval[] args = new ValueEval[] {arg0, arg1};
+    public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
         int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
-
-        IArrayEval a0 = ArrayFunctionsHelper.coerceToIArrayEval(arg0, length);
-        IArrayEval a1 = ArrayFunctionsHelper.coerceToIArrayEval(arg1, length);
-
+        IArrayEval[] arargs = new IArrayEval[args.length];
+        for (int i = 0; i < args.length; i++) arargs[i] = ArrayFunctionsHelper.coerceToIArrayEval(args[i], length);
         int firstRow = ArrayFunctionsHelper.getFirstRow(args);
         int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
 
+
         ValueEval[] result = new ValueEval[length];
         for (int i = 0; i < length; i++) {
-            result[i] = evaluate(firstRow+i, srcColumnIndex, a0.getValue(i), a1.getValue(i));
+            ValueEval[] newArgs = new ValueEval[args.length];
+            for (int j = 0; j < args.length; j++) newArgs[j] = arargs[j].getValue(i);
+            result[i] = evaluate(newArgs, srcRowIndex, srcColumnIndex);
         }
         return new ArrayEval(result, firstRow, lastRow);
     }
