@@ -33,6 +33,7 @@ import org.apache.poi.ss.formula.ptg.RefPtg;
 import org.apache.poi.ss.usermodel.Workbook;
 
 import java.util.LinkedList;
+import java.util.Set;
 import java.util.Stack;
 
 /**
@@ -101,6 +102,11 @@ public final class IfFunc extends Var2or3ArgFunction {
 				// if we really have the IF next or some other FuncVarPtg as third param, e.g. ROW()/COLUMN()!
 				((FuncVarPtg)nextPtg).getFunctionIndex() == FunctionMetadataRegistry.FUNCTION_INDEX_IF);
 
+	}
+
+	@Override
+	public Set<Integer> notArrayArgs() {
+		return null;
 	}
 
 	/*public static ValueEval evaluateOptimized(Ptg[] ptgs, int curPos, AttrPtg attrPtg, ValueEval arg0, OperationEvaluationContext ec) {

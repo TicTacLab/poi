@@ -30,6 +30,8 @@ import org.apache.poi.ss.formula.functions.LookupUtils.CompareResult;
 import org.apache.poi.ss.formula.functions.LookupUtils.LookupValueComparer;
 import org.apache.poi.ss.formula.functions.LookupUtils.ValueVector;
 
+import java.util.Set;
+
 /**
  * Implementation for the MATCH() Excel function.<p/>
  *
@@ -99,6 +101,11 @@ public final class Match extends Var2or3ArgFunction {
 		} catch (EvaluationException e) {
 			return e.getErrorEval();
 		}
+	}
+
+	@Override
+	public Set<Integer> notArrayArgs() {
+		return null;
 	}
 
 	private static final class SingleValueVector implements ValueVector {

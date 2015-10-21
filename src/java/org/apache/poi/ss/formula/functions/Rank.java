@@ -27,6 +27,8 @@ import org.apache.poi.ss.formula.eval.OperandResolver;
 import org.apache.poi.ss.formula.eval.RefEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.Set;
+
 
 /**
  * Returns the rank of a number in a list of numbers. The rank of a number is its size relative to other values in a list.
@@ -126,4 +128,8 @@ public class Rank extends Var2or3ArgFunction {
 		throw new EvaluationException(ErrorEval.VALUE_INVALID);
 	}
 
+	@Override
+	public Set<Integer> notArrayArgs() {
+		return null;
+	}
 }

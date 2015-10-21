@@ -85,7 +85,9 @@ public final class Vlookup extends Var3or4ArgFunction {
 
 			// freeze args
 			if (notArrayArgs() != null) {
-				for (Integer j : notArrayArgs()) newArgs[j] = args[j];
+				for (Integer j : notArrayArgs())
+					if (j < args.length - 1)
+						newArgs[j] = args[j];
 			}
 
 			result[i] = evaluate(newArgs, srcRowIndex, srcColumnIndex);

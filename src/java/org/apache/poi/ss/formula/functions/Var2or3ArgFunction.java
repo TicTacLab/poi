@@ -22,6 +22,8 @@ import org.apache.poi.ss.formula.eval.ErrorEval;
 import org.apache.poi.ss.formula.eval.IArrayEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.Set;
+
 /**
  * Convenience base class for any function which must take two or three
  * arguments
@@ -30,16 +32,18 @@ import org.apache.poi.ss.formula.eval.ValueEval;
  */
 abstract class Var2or3ArgFunction implements Function2Arg, Function3Arg {
 
+    abstract public Set<Integer> notArrayArgs();
+
 	public final ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
 		switch (args.length) {
            case 2:
-              if (ArrayFunctionsHelper.isAnyIArrayEval(args)) {
+              if (ArrayFunctionsHelper.isAnyIArrayEval(args, notArrayArgs())) {
                  return evaluateArray(args, srcRowIndex, srcColumnIndex);
               } else {
                  return evaluate(srcRowIndex, srcColumnIndex, args[0], args[1]);
               }
            case 3:
-              if (ArrayFunctionsHelper.isAnyIArrayEval(args)) {
+              if (ArrayFunctionsHelper.isAnyIArrayEval(args, notArrayArgs())) {
                  return evaluateArray(args, srcRowIndex, srcColumnIndex);
               } else {
                  return evaluate(srcRowIndex, srcColumnIndex, args[0], args[1], args[2]);
@@ -60,6 +64,14 @@ abstract class Var2or3ArgFunction implements Function2Arg, Function3Arg {
       for (int i = 0; i < length; i++) {
          ValueEval[] newArgs = new ValueEval[args.length];
          for (int j = 0; j < args.length; j++) newArgs[j] = arargs[j].getValue(i);
+
+         // freeze args
+         if (notArrayArgs() != null) {
+            for (Integer j : notArrayArgs())
+               if (j < args.length)
+                  newArgs[j] = args[j];
+         }
+
          result[i] = evaluate(newArgs, srcRowIndex, srcColumnIndex);
       }
       return new ArrayEval(result, firstRow, lastRow);
