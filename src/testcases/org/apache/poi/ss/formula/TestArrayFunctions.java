@@ -101,7 +101,7 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, 10500, "D2:D17*E2:E17");
     }
 
-    public void testNORMDIST_NORM_DOT_DIST() {
+/*    public void testNORMDIST_NORM_DOT_DIST() {
         String[] fns = {"NORMDIST", "NORM.DIST"};
 
         for (String fn : fns) {
@@ -112,7 +112,7 @@ public class TestArrayFunctions extends TestCase {
             assertFormulaResult(wb, 0, fn + "(D2, E2, D2, IF(MOD(A2:A17, 2)=0, TRUE, FALSE)))");
             assertFormulaResult(wb, 0, fn + "(D2:D17, E2:E17, D2:D17, IF(MOD(A2:A17, 2)=0, TRUE, FALSE))))");
         }
-    }
+    }*/
 
 
     public void testNOW() {assertFormulaResult(wb, 0, "NOW()-NOW()");}
