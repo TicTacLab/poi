@@ -92,10 +92,6 @@ public abstract class MultiOperandNumericFunction implements Function {
 		//}
 	}
 
-	public final ValueEval evaluate(ArrayEval arg, int srcCellRow, int srcCellCol) {
-		return evaluate(arg.getValues(), srcCellRow, srcCellCol);
-	}
-
 	protected abstract double evaluate(double[] values) throws EvaluationException;
 
 	/**

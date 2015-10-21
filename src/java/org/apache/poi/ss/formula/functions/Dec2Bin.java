@@ -118,11 +118,7 @@ public class Dec2Bin extends Var1or2ArgFunction implements FreeRefFunction {
         return this.evaluate(srcRowIndex, srcColumnIndex, numberVE, null);
     }
 
-    public ValueEval evaluateArray(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
-        return ErrorEval.NUM_ERROR;
-    }
-
-    public ValueEval evaluateArray(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
+    public ValueEval evaluateArray(ValueEval args[], int srcRowIndex, int srcColumnIndex) {
         return ErrorEval.NUM_ERROR;
     }
 
