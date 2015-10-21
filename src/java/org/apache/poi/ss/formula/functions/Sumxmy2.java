@@ -17,6 +17,9 @@
 
 package org.apache.poi.ss.formula.functions;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Implementation of Excel function SUMXMY2()<p/>
  *
@@ -29,6 +32,13 @@ package org.apache.poi.ss.formula.functions;
  * @author Amol S. Deshmukh &lt; amolweb at ya hoo dot com &gt;
  */
 public final class Sumxmy2 extends XYNumericFunction {
+    @Override
+    public Set<Integer> notArrayArgs() {
+       Set<Integer> xs = new HashSet<Integer>();
+       xs.add(0);
+       xs.add(1);
+       return xs;
+    }
 
 	private static final Accumulator XMinusYSquaredAccumulator = new Accumulator() {
 		public double accumulate(double x, double y) {
