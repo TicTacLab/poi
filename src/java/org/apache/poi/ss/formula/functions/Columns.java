@@ -17,10 +17,7 @@
 
 package org.apache.poi.ss.formula.functions;
 
-import org.apache.poi.ss.formula.eval.ErrorEval;
-import org.apache.poi.ss.formula.eval.NumberEval;
-import org.apache.poi.ss.formula.eval.RefEval;
-import org.apache.poi.ss.formula.eval.ValueEval;
+import org.apache.poi.ss.formula.eval.*;
 import org.apache.poi.ss.formula.TwoDEval;
 
 /**
@@ -37,9 +34,15 @@ public final class Columns extends Fixed1ArgFunction {
 			result = ((TwoDEval) arg0).getWidth();
 		} else if (arg0 instanceof RefEval) {
 			result = 1;
-		} else { // anything else is not valid argument
+		} else if (arg0 instanceof ArrayEval) {
+            result = ((ArrayEval) arg0).getColsNum();
+        } else { // anything else is not valid argument
 			return ErrorEval.VALUE_INVALID;
 		}
 		return new NumberEval(result);
 	}
+
+    public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+        return evaluate(srcRowIndex, srcColumnIndex, args[0]);
+    }
 }

@@ -25,10 +25,15 @@ import org.apache.poi.ss.formula.eval.RefEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.functions.LookupUtils.ValueVector;
 
+import java.util.Set;
+
 /**
  * @author Amol S. Deshmukh &lt; amolweb at ya hoo dot com &gt;
  */
 public abstract class XYNumericFunction extends Fixed2ArgFunction {
+	public Set<Integer> notArrayArgs() {
+		return null;
+	}
 
 	private static abstract class ValueArray implements ValueVector {
 		private final int _size;

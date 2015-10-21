@@ -23,6 +23,8 @@ import org.apache.poi.ss.formula.eval.OperandResolver;
 import org.apache.poi.ss.formula.eval.StringEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.Set;
+
 /**
  * Implementation for Excel WeekNum() function.<p/>
  * <p/>
@@ -41,6 +43,9 @@ import org.apache.poi.ss.formula.eval.ValueEval;
  * @author cedric dot walter @ gmail dot com
  */
 public class Roman extends Fixed2ArgFunction {
+    public Set<Integer> notArrayArgs() {
+        return null;
+    }
 
     //M (1000), CM (900), D (500), CD (400), C (100), XC (90), L (50), XL (40), X (10), IX (9), V (5), IV (4) and I (1).
     public static final int[] VALUES = new int[]{1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};

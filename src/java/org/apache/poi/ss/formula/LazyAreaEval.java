@@ -120,4 +120,9 @@ public final class LazyAreaEval extends AreaEvalBase implements IArrayEval {
 	public int getLength() {
 		return this.getHeight();
 	}
+
+	@Override
+	public int getColsNum() {
+		return this.getWidth();
+	}
 }

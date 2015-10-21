@@ -17,20 +17,15 @@
 
 package org.apache.poi.ss.formula;
 
-import junit.framework.AssertionFailedError;
 import junit.framework.TestCase;
-import org.apache.poi.hssf.HSSFTestDataSamples;
-import org.apache.poi.hssf.usermodel.*;
-import org.apache.poi.hssf.usermodel.examples.CellTypes;
-import org.apache.poi.ss.formula.eval.*;
-import org.apache.poi.ss.formula.ptg.*;
-import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.formula.eval.ErrorEval;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellValue;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.XSSFTestDataSamples;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import java.io.IOException;
-import java.text.Normalizer;
 
 /**
  * Tests {@link WorkbookEvaluator}.
@@ -104,6 +99,46 @@ public class TestArrayFunctions extends TestCase {
 
     public void testOperators() {
         assertFormulaResult(wb, 10500, "D2:D17*E2:E17");
+    }
+
+    public void testTime() {
+        assertFormulaResult(wb, 1, "HOUR(TIME(A2:A17, D2:D17, A2:A17))");
+    }
+
+    public void testToday() {
+        assertFormulaResult(wb, 0, "TODAY()-TODAY()");
+    }
+
+    public void testTrim() {
+        assertFormulaResult(wb, "Sedan", "TRIM(C2:C17)");
+    }
+
+    public void testTrue() {
+        assertFormulaResult(wb, true, "TRUE()");
+    }
+
+    public void testUpper() {
+        assertFormulaResult(wb, "SEDAN", "UPPER(C2:C17)");
+    }
+
+    public void testValue() {
+        assertFormulaResult(wb, 10500, "VALUE(TEXT(F2:F17, \"0\"))");
+    }
+
+    public void testVar() {
+        assertFormulaResult(wb, 24877000, "VAR(F2:F17)");
+    }
+
+    public void testVarp() {
+        assertFormulaResult(wb, 23322187.5, "VARP(F2:F17)");
+    }
+
+    public void testVLookup() {
+        assertFormulaResult(wb, 2100, "VLOOKUP(A2:A17, A2:F17, 5)");
+    }
+
+    public void testYear() {
+        assertFormulaResult(wb, 1928, "YEAR(F2:F17)");
     }
 
 	public void testAggregateOfBasicOperators() {
@@ -248,7 +283,7 @@ public class TestArrayFunctions extends TestCase {
 
     public void testCOUNTBLANK() {assertFormulaResult(wb, 0, "COUNTBLANK(F2:F17)");}
 
-    public void testCOUNTIF() {assertFormulaResult(wb, 1, "COUNTIF(F2:F17, 13600)");}
+    public void testCOUNTIF() {assertFormulaResult(wb, 1, "COUNTIF(F2:F17, F2:F17)");}
 
     public void testDATE() {assertFormulaResult(wb, 487, "DATE(A2:A17,D2:D17,A2:A17)");}
 

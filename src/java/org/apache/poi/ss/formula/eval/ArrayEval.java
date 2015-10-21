@@ -30,6 +30,8 @@ public class ArrayEval implements ValueEval, IArrayEval {
         return _values.length;
     }
 
+    public int getColsNum() { return 1;  }
+
     public String toString() {
         return this.getClass().getCanonicalName()
                 + " [" + _values[0]

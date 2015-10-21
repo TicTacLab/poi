@@ -22,6 +22,8 @@ import org.apache.poi.ss.formula.eval.EvaluationException;
 import org.apache.poi.ss.formula.eval.StringEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.Set;
+
 /**
  * An implementation of the SUBSTITUTE function:<P/>
  * Substitutes text in a text string with new text, some number of times.
@@ -104,5 +106,10 @@ public final class Substitute extends Var3or4ArgFunction {
 			}
 			startIndex = nextMatch + searchStr.length();
 		}
+	}
+
+	@Override
+	public Set<Integer> notArrayArgs() {
+		return null;
 	}
 }

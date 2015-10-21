@@ -22,6 +22,8 @@ package org.apache.poi.ss.formula.functions;
 import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.functions.LinearRegressionFunction.FUNCTION;
 
+import java.util.Set;
+
 /**
  * Implementation of Excel function INTERCEPT()<p/>
  *
@@ -34,6 +36,10 @@ import org.apache.poi.ss.formula.functions.LinearRegressionFunction.FUNCTION;
  * @author Johan Karlsteen
  */
 public final class Intercept extends Fixed2ArgFunction {
+
+	public Set<Integer> notArrayArgs() {
+		return null;
+	}
 
 	private final LinearRegressionFunction func;
 	public Intercept() {
