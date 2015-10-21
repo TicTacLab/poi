@@ -22,6 +22,7 @@ package org.apache.poi.ss.formula.functions;
 import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.functions.LinearRegressionFunction.FUNCTION;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -38,7 +39,10 @@ import java.util.Set;
 public final class Slope extends Fixed2ArgFunction {
 
 	public Set<Integer> notArrayArgs() {
-		return null;
+		Set<Integer> xs = new HashSet<Integer>();
+		xs.add(0);
+		xs.add(1);
+		return xs;
 	}
 	
 	private final LinearRegressionFunction func;
