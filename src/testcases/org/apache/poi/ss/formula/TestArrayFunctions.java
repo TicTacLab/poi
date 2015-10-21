@@ -101,6 +101,31 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, 10500, "D2:D17*E2:E17");
     }
 
+    public void testNORMDIST_NORM_DOT_DIST() {
+        String[] fns = {"NORMDIST", "NORM.DIST"};
+
+        for (String fn : fns) {
+            assertFormulaResult(wb, 0, fn + "(D2, E2, D2, TRUE)");
+            assertFormulaResult(wb, 0, fn + "(D2:D17, E2, D2, TRUE)");
+            assertFormulaResult(wb, 0, fn + "(D2, E2:E17, D2, TRUE)");
+            assertFormulaResult(wb, 0, fn + "(D2, E2, D2:D17, TRUE)");
+            assertFormulaResult(wb, 0, fn + "(D2, E2, D2, IF(MOD(A2:A17, 2)=0, TRUE, FALSE)))");
+            assertFormulaResult(wb, 0, fn + "(D2:D17, E2:E17, D2:D17, IF(MOD(A2:A17, 2)=0, TRUE, FALSE))))");
+        }
+    }
+
+
+    public void testNOW() {assertFormulaResult(wb, 0, "NOW()-NOW()");}
+
+    public void testODD() {assertFormulaResult(wb, 10501, "ODD(F2:F17)");}
+
+    public void testPERCENTILE() {
+        assertFormulaResult(wb, 2050, "PERCENTILE(E2:E17, 0.5)");
+        assertFormulaResult(wb, 2050, "PERCENTILE(E2:E17, D2:D17/10)");
+    }
+
+    public void testPI() {assertFormulaResult(wb, 3.14, "PI()");}
+
     public void testPOISSON() {
         assertFormulaResult(wb, 0.04, "POISSON(A2, D2, TRUE)");
         assertFormulaResult(wb, 0.04, "POISSON(A2, D2:D17, TRUE)");
