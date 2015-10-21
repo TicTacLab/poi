@@ -18,6 +18,9 @@
 package org.apache.poi.ss.formula.functions;
 
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Implementation of Excel function SUMX2PY2()<p/>
  *
@@ -30,6 +33,14 @@ package org.apache.poi.ss.formula.functions;
  * @author Amol S. Deshmukh &lt; amolweb at ya hoo dot com &gt;
  */
 public final class Sumx2py2 extends XYNumericFunction {
+
+   @Override
+   public Set<Integer> notArrayArgs() {
+      Set<Integer> xs = new HashSet<Integer>();
+      xs.add(0);
+      xs.add(1);
+      return xs;
+   }
 
 	private static final Accumulator XSquaredPlusYSquaredAccumulator = new Accumulator() {
 		public double accumulate(double x, double y) {
