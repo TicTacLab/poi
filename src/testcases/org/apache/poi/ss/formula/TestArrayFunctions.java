@@ -302,4 +302,11 @@ public class TestArrayFunctions extends TestCase {
     public void testEVEN() {assertFormulaResult(wb, 10500, "EVEN(F2:F17)");}
 
     public void testEXACT() {assertFormulaResult(wb, true, "EXACT(F2:F17, F2:F17)");}
+
+    public void testFIND() {assertFormulaResult(wb, 1, "FIND(F2:F17, F2:F17)");}
+
+    public void testFIXED() {assertFormulaResult(wb, 10500, "FIXED(F2:F17, 2)");}
+
+    public void testFLOOR() {assertFormulaResult(wb, 10500, "FLOOR(F2:F17, 2)");}
+
 }
