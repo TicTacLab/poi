@@ -201,4 +201,53 @@ public class TestArrayFunctions extends TestCase {
     public void testWeekdayFunc()  {
         assertFormulaResult(wb, 68, "SUM(WEEKDAY(F2:F17, A2:A17-A2:A17+1))");
     }
+
+    public void testABSFunc() {assertFormulaResult(wb, 10500, "ABS(F2:F17)");}
+
+    public void testACOSFunc() {assertFormulaResult(wb, 1.57, "ACOS(F2:F17-F2:F17)");}
+
+    public void testACOSHFunc() {assertFormulaResult(wb, 9.95, "ACOSH(F2:F17)");}
+
+    public void testANDFunc() {assertFormulaResult(wb, true, "AND(F2:F17)");}
+
+    public void testASINFunc() {assertFormulaResult(wb, 0, "ASIN(F2:F17-F2:F17)");}
+
+    public void testASINHFunc() {assertFormulaResult(wb, 9.95, "ASINH(F2:F17)");}
+
+    public void testATANFunc() {assertFormulaResult(wb, 1.57, "ATAN(F2:F17)");}
+
+    public void testATAN2Func() {assertFormulaResult(wb, 0.78, "ATAN2(F2:F17,F2:F17)");}
+
+    public void testATANHFunc() {assertFormulaResult(wb, 0, "ATANH(F2:F17-F2:F17)");}
+
+    public void testAVEDEV() {assertFormulaResult(wb, 4137.5, "AVEDEV(F2:F17)");}
+
+    public void testAVERAGE() {assertFormulaResult(wb, 11850, "AVERAGE(F2:F17)");}
+
+    public void testCEILING() {assertFormulaResult(wb, 10500, "CEILING(F2:F17, 1)");}
+
+    //public void testBINOMDIST() {assertFormulaResult(wb, 1, "BINOM.DIST(F2:F17, F2:F17, 0.5, 1)");}
+
+    public void testCHAR() {assertFormulaResult(wb, ErrorEval.VALUE_INVALID , "CHAR(F2:F17)");}
+
+    public void testCLEAN() {assertFormulaResult(wb, "10500", "CLEAN(F2:F17)");}
+
+    public void testCODE() {assertFormulaResult(wb, "49", "CODE(F2:F17)");}
+
+    public void testCOLUMN() {assertFormulaResult(wb, 6, "COLUMN(F2:F17)");}
+
+    public void testCOLUMNS() {assertFormulaResult(wb, 1, "COLUMNS(F2:F17)");}
+
+    public void testCOS() {assertFormulaResult(wb, 0.69, "COS(F2:F17)");}
+
+    public void testCOSH() {assertFormulaResult(wb, 1, "COSH(F2:F17-F2:F17)");}
+
+    public void testCOUNT() {assertFormulaResult(wb, 16, "COUNT(F2:F17)");}
+
+    public void testCOUNTA() {assertFormulaResult(wb, 16, "COUNTA(F2:F17)");}
+
+    public void testCOUNTBLANK() {assertFormulaResult(wb, 0, "COUNTBLANK(F2:F17)");}
+
+    public void testCOUNTIF() {assertFormulaResult(wb, 1, "COUNTIF(F2:F17, 13600)");}
+
 }
