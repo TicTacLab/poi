@@ -194,7 +194,7 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, 1, "FACTDOUBLE(A2:A17)");
     }
 
-    public void testBUGBUGOffset() {
+    public void testOffset() {
         assertFormulaResult(wb, 17700.0, "SUM(OFFSET(F2:F17,0,0,2))");
     }
 
