@@ -17,12 +17,13 @@
 
 package org.apache.poi.ss.formula.functions;
 
-import org.apache.poi.ss.formula.eval.BoolEval;
-import org.apache.poi.ss.formula.eval.EvaluationException;
-import org.apache.poi.ss.formula.eval.OperandResolver;
-import org.apache.poi.ss.formula.eval.ValueEval;
+import org.apache.poi.ss.formula.eval.*;
 import org.apache.poi.ss.formula.functions.LookupUtils.ValueVector;
 import org.apache.poi.ss.formula.TwoDEval;
+
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Implementation of the VLOOKUP() function.<p/>
  *
@@ -62,6 +63,32 @@ public final class Vlookup extends Var3or4ArgFunction {
 		}
 	}
 
+	@Override
+	public Set<Integer> notArrayArgs() {
+		Set<Integer> xs = new HashSet<Integer>();
+		xs.add(1);
+		return xs;
+	}
+
+	public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+		int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
+		IArrayEval[] arargs = new IArrayEval[args.length];
+		for (int i = 0; i < args.length; i++) arargs[i] = ArrayFunctionsHelper.coerceToIArrayEval(args[i], length);
+		int firstRow = ArrayFunctionsHelper.getFirstRow(args);
+		int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
+
+
+		ValueEval[] result = new ValueEval[length];
+		for (int i = 0; i < length; i++) {
+			ValueEval[] newArgs = new ValueEval[args.length];
+			for (int j = 0; j < args.length; j++) newArgs[j] = arargs[j].getValue(i);
+			// freeze arg
+			newArgs[1] = args[1];
+
+			result[i] = evaluate(newArgs, srcRowIndex, srcColumnIndex);
+		}
+		return new ArrayEval(result, firstRow, lastRow);
+	}
 
 	/**
 	 * Returns one column from an <tt>AreaEval</tt>

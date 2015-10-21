@@ -22,6 +22,9 @@ import org.apache.poi.ss.formula.eval.ErrorEval;
 import org.apache.poi.ss.formula.eval.IArrayEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * Convenience base class for any function which must take three or four
  * arguments
@@ -30,10 +33,12 @@ import org.apache.poi.ss.formula.eval.ValueEval;
  */
 abstract class Var3or4ArgFunction implements Function3Arg, Function4Arg {
 
+   abstract public Set<Integer> notArrayArgs();
+
 	public final ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
        switch (args.length) {
           case 3:
-             if (ArrayFunctionsHelper.isAnyIArrayEval(args)) {
+             if (ArrayFunctionsHelper.isAnyIArrayEval(args, notArrayArgs())) {
                 return evaluateArray(args, srcRowIndex, srcColumnIndex);
              } else {
                 return evaluate(srcRowIndex, srcColumnIndex, args[0], args[1], args[2]);
