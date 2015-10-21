@@ -430,6 +430,20 @@ public class TestArrayFunctions extends TestCase {
 
     public void testMATCH() {assertFormulaResult(wb, 12, "MATCH(13300,F2:F17)");}
 
+    public void testMAX() {assertFormulaResult(wb, 19350, "MAX(F2:F17)");}
 
+    public void testMAXA() {assertFormulaResult(wb, 19350, "MAXA(F2:F17)");}
+
+    public void testMEDIAN() {assertFormulaResult(wb, 13400, "MEDIAN(F2:F17)");}
+
+    public void testMIN() {assertFormulaResult(wb, 1600, "MIN(F2:F17)");}
+
+    public void testMINA() {assertFormulaResult(wb, 1600, "MINA(F2:F17)");}
+
+    public void testMINUTE() {assertFormulaResult(wb, 0, "MINUTE(F2:F17)");}
+
+    public void testMOD() {assertFormulaResult(wb, 0, "MOD(F2:F17, 2)");}
+
+    public void testMODE() {assertFormulaResult(wb, 6000, "MODE(F2:F17)");}
 
 }
