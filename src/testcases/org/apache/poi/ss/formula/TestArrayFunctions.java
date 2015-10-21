@@ -101,6 +101,28 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, 10500, "D2:D17*E2:E17");
     }
 
+
+    public void testROUND_ROUNDUP_ROUNDDOWN() {
+        assertFormulaResult(wb, 10500, "ROUND(F2:F17, 5)");
+        assertFormulaResult(wb, 1,     "ROUND(1, D2:D17)");
+        assertFormulaResult(wb, 10500, "ROUND(F2:F17, D2:D17)");
+        assertFormulaResult(wb, 10500, "ROUNDUP(F2:F17, 5)");
+        assertFormulaResult(wb, 1,     "ROUNDUP(1, D2:D17)");
+        assertFormulaResult(wb, 10500, "ROUNDUP(F2:F17, D2:D17)");
+        assertFormulaResult(wb, 10500, "ROUNDDOWN(F2:F17, 5)");
+        assertFormulaResult(wb, 1,     "ROUNDDOWN(1, D2:D17)");
+        assertFormulaResult(wb, 10500, "ROUNDDOWN(F2:F17, D2:D17)");
+    }
+
+    public void testROW() {assertFormulaResult(wb, 152, "SUM(ROW(F2:F17))");}
+
+    public void testROWS() {assertFormulaResult(wb, 16, "ROWS(F2:F17)");}
+
+    public void testSEARCH() {
+        assertFormulaResult(wb, 16, "SUM(SEARCH(C2:C17, C2:C17))");
+        assertFormulaResult(wb, 56, "SUM(SEARCH(\"e\", C2:C17, 1+MOD(D2:D17, 2)))");
+    }
+
     public void testSECOND() {assertFormulaResult(wb, 0, "SECOND(F2:F17)");}
 
     public void testSIGN() {assertFormulaResult(wb, 1.0, "SIGN(F2:F17)");}
