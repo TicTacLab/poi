@@ -250,4 +250,21 @@ public class TestArrayFunctions extends TestCase {
 
     public void testCOUNTIF() {assertFormulaResult(wb, 1, "COUNTIF(F2:F17, 13600)");}
 
+    public void testDATE() {assertFormulaResult(wb, 487, "DATE(A2:A17,D2:D17,A2:A17)");}
+
+    public void testDAY() {assertFormulaResult(wb, 29, "DAY(F2:F17)");}
+
+    public void testDAYS360() {assertFormulaResult(wb, 0, "DAYS360(F2:F17, F2:F17)");}
+
+    public void testDEGREES() {assertFormulaResult(wb, 601605.68, "DEGREES(F2:F17)");}
+
+    public void testDEVSQ() {assertFormulaResult(wb, 373155000, "DEVSQ(F2:F17)");}
+
+    public void testDOLLAR() {assertFormulaResult(wb, 10500, "DOLLAR(F2:F17)");}
+
+    public void testERRORTYPE() {assertFormulaResult(wb, 5, "ERROR.TYPE(SUM(F2:F17)/0)");}
+
+    public void testEVEN() {assertFormulaResult(wb, 10500, "EVEN(F2:F17)");}
+
+    public void testEXACT() {assertFormulaResult(wb, true, "EXACT(F2:F17, F2:F17)");}
 }
