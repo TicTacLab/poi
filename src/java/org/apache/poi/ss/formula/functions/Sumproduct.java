@@ -28,6 +28,8 @@ import org.apache.poi.ss.formula.eval.RefEval;
 import org.apache.poi.ss.formula.eval.StringEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.Set;
+
 
 /**
  * Implementation for the Excel function SUMPRODUCT<p>
@@ -53,6 +55,13 @@ import org.apache.poi.ss.formula.eval.ValueEval;
  */
 public final class Sumproduct implements Function {
 
+	public Set<Integer> notArrayArgs() {
+		return null;
+	}
+
+	public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+		return evaluate(args, srcRowIndex, srcColumnIndex);
+	}
 
 	public ValueEval evaluate(ValueEval[] args, int srcCellRow, int srcCellCol) {
 

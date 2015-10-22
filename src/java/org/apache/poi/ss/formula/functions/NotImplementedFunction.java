@@ -20,6 +20,8 @@ package org.apache.poi.ss.formula.functions;
 import org.apache.poi.ss.formula.eval.NotImplementedFunctionException;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.Set;
+
 /**
  * This is the default implementation of a Function class.
  * The default behaviour is to raise a POI internal error
@@ -39,6 +41,15 @@ public final class NotImplementedFunction implements Function {
 	public ValueEval evaluate(ValueEval[] operands, int srcRow, int srcCol) {
 		throw new NotImplementedFunctionException(_functionName);
 	}
+	public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+		throw new NotImplementedFunctionException(_functionName + " (in ARRAY form)");
+	}
+
+	@Override
+	public Set<Integer> notArrayArgs() {
+		return null;
+	}
+
 	public String getFunctionName() {
 		return _functionName;
 	}

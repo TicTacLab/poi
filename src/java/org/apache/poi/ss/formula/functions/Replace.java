@@ -22,6 +22,8 @@ import org.apache.poi.ss.formula.eval.EvaluationException;
 import org.apache.poi.ss.formula.eval.StringEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.Set;
+
 /**
  * An implementation of the Excel REPLACE() function:<p/>
  * Replaces part of a text string based on the number of characters
@@ -70,5 +72,9 @@ public final class Replace extends Fixed4ArgFunction {
 			strBuff.insert(startNum - 1, newStr);
 		}
 		return new StringEval(strBuff.toString());
+	}
+
+	public Set<Integer> notArrayArgs() {
+		return null;
 	}
 }

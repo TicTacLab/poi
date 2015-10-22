@@ -17,10 +17,9 @@
 
 package org.apache.poi.ss.formula.functions;
 
-import org.apache.poi.ss.formula.eval.ErrorEval;
-import org.apache.poi.ss.formula.eval.EvaluationException;
-import org.apache.poi.ss.formula.eval.NumberEval;
-import org.apache.poi.ss.formula.eval.ValueEval;
+import org.apache.poi.ss.formula.eval.*;
+
+import java.util.Set;
 
 /**
  * Calculates the net present value of an investment by using a discount rate
@@ -33,8 +32,16 @@ import org.apache.poi.ss.formula.eval.ValueEval;
  * @author Marcel May
  */
 public final class Npv implements Function {
+    public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+        throw new NotImplementedFunctionException("All Finanace Functions (in ARRAY form)");
+    }
 
-	public ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+    @Override
+    public Set<Integer> notArrayArgs() {
+        return null;
+    }
+
+    public ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
 		int nArgs = args.length;
 		if (nArgs < 2) {
 			return ErrorEval.VALUE_INVALID;

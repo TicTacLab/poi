@@ -22,12 +22,17 @@ import org.apache.poi.ss.formula.eval.ErrorEval;
 import org.apache.poi.ss.formula.eval.IArrayEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.Set;
+
 /**
  * Convenience base class for functions that must take exactly three arguments.
  *
  * @author Josh Micich
  */
 public abstract class Fixed3ArgFunction implements Function3Arg {
+    public Set<Integer> notArrayArgs() {
+        return null;
+    }
 	public final ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
 		if (args.length != 3) {
 			return ErrorEval.VALUE_INVALID;

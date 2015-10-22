@@ -22,25 +22,8 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.poi.ss.formula.ptg.AbstractFunctionPtg;
-import org.apache.poi.ss.formula.ptg.AddPtg;
-import org.apache.poi.ss.formula.ptg.ConcatPtg;
-import org.apache.poi.ss.formula.ptg.DividePtg;
-import org.apache.poi.ss.formula.ptg.EqualPtg;
-import org.apache.poi.ss.formula.ptg.GreaterEqualPtg;
-import org.apache.poi.ss.formula.ptg.GreaterThanPtg;
-import org.apache.poi.ss.formula.ptg.IntersectionPtg;
-import org.apache.poi.ss.formula.ptg.LessEqualPtg;
-import org.apache.poi.ss.formula.ptg.LessThanPtg;
-import org.apache.poi.ss.formula.ptg.MultiplyPtg;
-import org.apache.poi.ss.formula.ptg.NotEqualPtg;
-import org.apache.poi.ss.formula.ptg.OperationPtg;
-import org.apache.poi.ss.formula.ptg.PercentPtg;
-import org.apache.poi.ss.formula.ptg.PowerPtg;
-import org.apache.poi.ss.formula.ptg.RangePtg;
-import org.apache.poi.ss.formula.ptg.SubtractPtg;
-import org.apache.poi.ss.formula.ptg.UnaryMinusPtg;
-import org.apache.poi.ss.formula.ptg.UnaryPlusPtg;
+import org.apache.poi.ss.formula.functions.ArrayFunctionsHelper;
+import org.apache.poi.ss.formula.ptg.*;
 import org.apache.poi.ss.formula.eval.ConcatEval;
 import org.apache.poi.ss.formula.eval.FunctionEval;
 import org.apache.poi.ss.formula.eval.IntersectionEval;
@@ -128,8 +111,13 @@ final class OperationEvaluatorFactory {
 				case FunctionMetadataRegistry.FUNCTION_INDEX_EXTERNAL:
 					return UserDefinedFunction.instance.evaluate(args, ec);
 			}
-
-			return FunctionEval.getBasicFunction(functionIndex).evaluate(args, ec.getRowIndex(), (short) ec.getColumnIndex());
+			Function f = FunctionEval.getBasicFunction(functionIndex);
+			if (ec.isPartOfArrayFormula() && ArrayFunctionsHelper.isAnyIArrayEval(args, f.notArrayArgs())) {
+				return f.evaluateArray(args, ec.getRowIndex(), (short) ec.getColumnIndex());
+			}
+			else {
+				return f.evaluate(args, ec.getRowIndex(), (short) ec.getColumnIndex());
+			}
 		}
 		throw new RuntimeException("Unexpected operation ptg class (" + ptg.getClass().getName() + ")");
 	}

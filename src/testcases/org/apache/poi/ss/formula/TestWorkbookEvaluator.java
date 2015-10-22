@@ -78,7 +78,13 @@ public class TestWorkbookEvaluator extends TestCase {
 				AttrPtg.SUM
 		};
 
-		ValueEval result = evaluateFormula(ptgs);
+		boolean thrown = false;
+		try {
+			ValueEval result = evaluateFormula(ptgs);
+		} catch (NullPointerException e) {
+			thrown = true;
+		}
+		assertTrue(thrown);
 	}
 
 	/**

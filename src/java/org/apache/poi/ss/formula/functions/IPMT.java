@@ -24,7 +24,17 @@ import org.apache.poi.ss.formula.eval.EvaluationException;
 import org.apache.poi.ss.formula.eval.OperandResolver;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.Set;
+
 public class IPMT extends NumericFunction {
+
+	public Set<Integer> notArrayArgs() {
+		return null;
+	}
+
+	public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+		return evaluate(args, srcRowIndex, srcColumnIndex);
+	}
 
 	@Override
 	public double eval(ValueEval[] args, int srcCellRow, int srcCellCol) throws EvaluationException {

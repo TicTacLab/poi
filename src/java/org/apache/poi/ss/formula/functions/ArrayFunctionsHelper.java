@@ -7,6 +7,8 @@ import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.ptg.AreaPtg;
 import org.apache.poi.ss.formula.ptg.Ptg;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -85,5 +87,11 @@ public class ArrayFunctionsHelper {
                 return ((LazyAreaEval) valueEval).getLastRow();
         }
         return notFound;
+    }
+
+    public static Set<Integer> asSet(Integer... args) {
+        Set<Integer> xs = new HashSet<>(args.length);
+        Collections.addAll(xs, args);
+        return xs;
     }
 }

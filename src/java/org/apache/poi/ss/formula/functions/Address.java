@@ -21,6 +21,8 @@ import org.apache.poi.ss.formula.SheetNameFormatter;
 import org.apache.poi.ss.formula.eval.*;
 import org.apache.poi.ss.util.CellReference;
 
+import java.util.Set;
+
 /**
  * Creates a text reference as text, given specified row and column numbers.
  *
@@ -31,6 +33,10 @@ public class Address implements Function {
     public static final int REF_ROW_ABSOLUTE_COLUMN_RELATIVE = 2;
     public static final int REF_ROW_RELATIVE_RELATIVE_ABSOLUTE = 3;
     public static final int REF_RELATIVE = 4;
+
+    public Set<Integer> notArrayArgs() {
+        return null;
+    }
 
     public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
         int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();

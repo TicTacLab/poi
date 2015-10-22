@@ -21,6 +21,8 @@ import org.apache.poi.ss.formula.ThreeDEval;
 import org.apache.poi.ss.formula.TwoDEval;
 import org.apache.poi.ss.formula.eval.*;
 
+import java.util.Set;
+
 /**
  * This is the super class for all excel function evaluator
  * classes that take variable number of operands, and
@@ -74,6 +76,10 @@ public abstract class MultiOperandNumericFunction implements Function {
 
 	private static final int DEFAULT_MAX_NUM_OPERANDS = 30;
 
+	public Set<Integer> notArrayArgs() {
+		return null;
+	}
+
 	public final ValueEval evaluate(ValueEval[] args, int srcCellRow, int srcCellCol) {
 
 
@@ -90,6 +96,11 @@ public abstract class MultiOperandNumericFunction implements Function {
 
 			return new NumberEval(d);
 		//}
+	}
+
+
+	public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+		return evaluate(args, srcRowIndex, srcColumnIndex);
 	}
 
 	protected abstract double evaluate(double[] values) throws EvaluationException;

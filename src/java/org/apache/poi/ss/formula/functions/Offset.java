@@ -17,12 +17,10 @@
 
 package org.apache.poi.ss.formula.functions;
 
-import org.apache.poi.ss.formula.eval.AreaEval;
-import org.apache.poi.ss.formula.eval.ErrorEval;
-import org.apache.poi.ss.formula.eval.EvaluationException;
-import org.apache.poi.ss.formula.eval.OperandResolver;
-import org.apache.poi.ss.formula.eval.RefEval;
-import org.apache.poi.ss.formula.eval.ValueEval;
+import org.apache.poi.ss.formula.eval.*;
+
+import java.util.Set;
+
 /**
  * Implementation for Excel function OFFSET()<p/>
  *
@@ -43,6 +41,13 @@ public final class Offset implements Function {
 	// These values are specific to BIFF8
 	private static final int LAST_VALID_ROW_INDEX = 0xFFFF;
 	private static final int LAST_VALID_COLUMN_INDEX = 0xFF;
+
+	public Set<Integer> notArrayArgs() {
+		return null;
+	}
+	public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+		return evaluate(args, srcRowIndex, srcColumnIndex);
+	}
 
 
 	/**

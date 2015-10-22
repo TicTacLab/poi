@@ -23,10 +23,21 @@ import org.apache.poi.ss.formula.eval.NumberEval;
 import org.apache.poi.ss.formula.eval.OperandResolver;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.Set;
+
 /**
  * Implements the Excel Rate function
  */
 public class Rate implements Function {
+
+   public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+      return evaluate(args, srcRowIndex, srcColumnIndex);
+   }
+
+   public Set<Integer> notArrayArgs() {
+      return null;
+   }
+
    public ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
       if (args.length < 3) { //First 3 parameters are mandatory
          return ErrorEval.VALUE_INVALID;

@@ -17,13 +17,18 @@
 
 package org.apache.poi.ss.formula.functions;
 
-import org.apache.poi.ss.formula.eval.AreaEval;
-import org.apache.poi.ss.formula.eval.ErrorEval;
-import org.apache.poi.ss.formula.eval.NumberEval;
-import org.apache.poi.ss.formula.eval.RefEval;
-import org.apache.poi.ss.formula.eval.ValueEval;
+import org.apache.poi.ss.formula.eval.*;
+
+import java.util.Set;
 
 public final class Column implements Function0Arg, Function1Arg {
+
+    public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+        throw new NotImplementedFunctionException("COLUMN (in ARRAY form)");
+    }
+    public Set<Integer> notArrayArgs() {
+        return null;
+    }
 
     public ValueEval evaluate(int srcRowIndex, int srcColumnIndex) {
         return new NumberEval(srcColumnIndex+1);

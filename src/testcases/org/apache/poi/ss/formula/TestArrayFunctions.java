@@ -197,6 +197,10 @@ public class TestArrayFunctions extends TestCase {
         //assertFormulaResult(wb, 152, "SUM(ROW(F2:F17))");
     }
 
+    public void testCOLUMN() {
+        assertFormulaResult(wb, 10, "SUM(COLUMN(A2:D17))");
+    }
+
     public void testROWS() {assertFormulaResult(wb, 16, "ROWS(F2:F17)");}
 
     public void testSEARCH() {
@@ -381,8 +385,6 @@ public class TestArrayFunctions extends TestCase {
 
     public void testCODE() {assertFormulaResult(wb, "49", "CODE(F2:F17)");}
 
-    public void testCOLUMN() {assertFormulaResult(wb, 6, "COLUMN(F2:F17)");}
-
     public void testCOLUMNS() {assertFormulaResult(wb, 1, "COLUMNS(F2:F17)");}
 
     public void testCOS() {assertFormulaResult(wb, 0.69, "COS(F2:F17)");}
@@ -391,7 +393,7 @@ public class TestArrayFunctions extends TestCase {
 
     public void testCOUNT() {assertFormulaResult(wb, 16, "COUNT(F2:F17)");}
 
-    public void testCOUNTA() {assertFormulaResult(wb, 16, "COUNTA(F2:F17)");}
+    public void testCOUNTA() {assertFormulaResult(wb, 32, "COUNTA(F2:F17,A2:A17)");}
 
     public void testCOUNTBLANK() {assertFormulaResult(wb, 0, "COUNTBLANK(F2:F17)");}
 
@@ -425,7 +427,7 @@ public class TestArrayFunctions extends TestCase {
 
     public void testHOUR() {assertFormulaResult(wb, 0, "HOUR(F2:F17)");}
 
-    public void testINDEX() {assertFormulaResult(wb, 10500, "INDEX(F2:F17, 1)");}
+    public void testINDEX() {assertFormulaResult(wb, 7200, "INDEX(F2:F17, A3:A18)");}
 
     public void testINT() {assertFormulaResult(wb, 10500, "INT(F2:F17)");}
 

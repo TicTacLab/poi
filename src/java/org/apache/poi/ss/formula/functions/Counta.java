@@ -25,6 +25,8 @@ import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.functions.CountUtils.I_MatchPredicate;
 import org.apache.poi.ss.formula.functions.CountUtils.I_MatchAreaPredicate;
 
+import java.util.Set;
+
 /**
  * Counts the number of cells that contain data within the list of arguments.
  *
@@ -45,7 +47,16 @@ public final class Counta implements Function {
         _predicate = criteriaPredicate;
     }
 
-	public ValueEval evaluate(ValueEval[] args, int srcCellRow, int srcCellCol) {
+    public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+        return evaluate(args, srcRowIndex, srcColumnIndex);
+    }
+
+    @Override
+    public Set<Integer> notArrayArgs() {
+        return null;
+    }
+
+    public ValueEval evaluate(ValueEval[] args, int srcCellRow, int srcCellCol) {
 		int nArgs = args.length;
 		if (nArgs < 1) {
 			// too few arguments

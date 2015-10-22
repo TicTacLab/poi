@@ -1453,6 +1453,12 @@ public final class TestXSSFBugs extends BaseTestBugzillaIssues {
         Workbook wb = XSSFTestDataSamples.openSampleWorkbook("54436.xlsx");
         if(!WorkbookEvaluator.getSupportedFunctionNames().contains("GETPIVOTDATA")){
             Function func = new Function() {
+                public Set<Integer> notArrayArgs() {
+                    return null;
+                }
+                public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+                    return evaluate(args, srcRowIndex, srcColumnIndex);
+                }
                 @Override
                 public ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
                     return ErrorEval.NA;

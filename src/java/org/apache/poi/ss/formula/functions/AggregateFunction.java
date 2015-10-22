@@ -144,9 +144,7 @@ public abstract class AggregateFunction extends MultiOperandNumericFunction {
 
 		@Override
 		public Set<Integer> notArrayArgs() {
-			Set<Integer> xs = new HashSet<Integer>();
-			xs.add(0);
-			return xs;
+			return ArrayFunctionsHelper.asSet(0);
 		}
 	}
 	

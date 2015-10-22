@@ -19,6 +19,7 @@ package org.apache.poi.ss.formula.functions;
 
 import org.apache.poi.ss.formula.eval.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -175,6 +176,11 @@ public abstract class NumericFunction implements Function {
 	};
 	static final NumberEval DOLLAR_ARG2_DEFAULT = new NumberEval(2.0);
 	public static final Function DOLLAR = new Var1or2ArgFunction() {
+		@Override
+		public Set<Integer> notArrayArgs() {
+			return null;
+		}
+
 		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
 			return evaluate(srcRowIndex, srcColumnIndex, arg0, DOLLAR_ARG2_DEFAULT);
 		}
@@ -463,7 +469,7 @@ public abstract class NumericFunction implements Function {
             return FACTORIALS[n];
         }
 
-        public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1, ValueEval arg2) {
+		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1, ValueEval arg2) {
 
             // arguments/result for this function
             double mean=0;

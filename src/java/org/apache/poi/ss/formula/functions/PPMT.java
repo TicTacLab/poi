@@ -21,12 +21,22 @@ package org.apache.poi.ss.formula.functions;
 
 import org.apache.poi.ss.formula.eval.*;
 
+import java.util.Set;
+
 /**
   * Compute the interest portion of a payment.
   * 
   * @author Mike Argyriou micharg@gmail.com
   */
 public class PPMT extends NumericFunction {
+
+	public Set<Integer> notArrayArgs() {
+		return null;
+	}
+
+	public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+		return evaluate(args, srcRowIndex, srcColumnIndex);
+	}
 
 	@Override
 	public double eval(ValueEval[] args, int srcCellRow, int srcCellCol) throws EvaluationException {

@@ -22,13 +22,12 @@ package org.apache.poi.ss.formula;
 import junit.framework.TestCase;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.formula.atp.AnalysisToolPak;
-import org.apache.poi.ss.formula.eval.ErrorEval;
-import org.apache.poi.ss.formula.eval.FunctionEval;
-import org.apache.poi.ss.formula.eval.NotImplementedException;
-import org.apache.poi.ss.formula.eval.ValueEval;
+import org.apache.poi.ss.formula.eval.*;
 import org.apache.poi.ss.formula.functions.FreeRefFunction;
 import org.apache.poi.ss.formula.functions.Function;
 import org.apache.poi.ss.usermodel.CellValue;
+
+import java.util.Set;
 
 /**
  *
@@ -53,6 +52,12 @@ public class TestFunctionRegistry extends TestCase {
 		}
 
         FunctionEval.registerFunction("FISHER", new Function() {
+            public Set<Integer> notArrayArgs() {
+                return null;
+            }
+            public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+                throw new NotImplementedFunctionException("All Finanace Functions (in ARRAY form)");
+            }
             public ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
                 return ErrorEval.NA;
             }
@@ -82,17 +87,18 @@ public class TestFunctionRegistry extends TestCase {
 
     public void testExceptions() {
         Function func = new Function() {
+            public Set<Integer> notArrayArgs() {
+                return null;
+            }
+            public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+                throw new NotImplementedFunctionException("All Finanace Functions (in ARRAY form)");
+            }
             public ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
                 return ErrorEval.NA;
             }
         };
-        try {
-            FunctionEval.registerFunction("SUM", func);
-            fail("expectecd exception");
-        } catch (IllegalArgumentException e){
-            assertEquals("POI already implememts SUM" +
-                    ". You cannot override POI's implementations of Excel functions", e.getMessage());
-        }
+        FunctionEval.registerFunction("SUM", func);
+
         try {
             FunctionEval.registerFunction("SUMXXX", func);
             fail("expectecd exception");

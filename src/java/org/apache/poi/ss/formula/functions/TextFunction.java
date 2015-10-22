@@ -304,6 +304,10 @@ public abstract class TextFunction implements Function {
 			}
 			return new ArrayEval(result, firstRow, lastRow);
 		}
+
+		public Set<Integer> notArrayArgs() {
+			return null;
+		}
 	};
 
 	public static final Function EXACT = new Fixed2ArgFunction() {

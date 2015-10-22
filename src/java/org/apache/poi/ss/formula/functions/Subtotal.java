@@ -26,6 +26,8 @@ import org.apache.poi.ss.formula.eval.NotImplementedFunctionException;
 import org.apache.poi.ss.formula.eval.OperandResolver;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.Set;
+
 /**
  * Implementation for the Excel function SUBTOTAL<p>
  *
@@ -59,6 +61,13 @@ import org.apache.poi.ss.formula.eval.ValueEval;
  * @author Paul Tomlin &lt; pault at bulk sms dot com &gt;
  */
 public class Subtotal implements Function {
+	public Set<Integer> notArrayArgs() {
+		return null;
+	}
+
+	public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+		return evaluate(args, srcRowIndex, srcColumnIndex);
+	}
 
 	private static Function findFunction(int functionCode) throws EvaluationException {
 		Function func;

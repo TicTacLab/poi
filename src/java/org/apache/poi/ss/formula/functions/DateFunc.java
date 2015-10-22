@@ -17,10 +17,7 @@
 
 package org.apache.poi.ss.formula.functions;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Locale;
-import java.util.TimeZone;
+import java.util.*;
 
 import org.apache.poi.ss.formula.eval.ErrorEval;
 import org.apache.poi.ss.formula.eval.EvaluationException;
@@ -111,5 +108,10 @@ public final class DateFunc extends Fixed3ArgFunction {
 		}
 
 		return year < 1900 ? 1900 + year : year;
+	}
+
+	@Override
+	public Set<Integer> notArrayArgs() {
+		return null;
 	}
 }

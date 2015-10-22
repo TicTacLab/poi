@@ -23,6 +23,8 @@ import org.apache.poi.ss.formula.eval.ErrorEval;
 import org.apache.poi.ss.formula.eval.IArrayEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.Set;
+
 /**
  * Convenience base class for any function which must take two or three
  * arguments
@@ -30,6 +32,10 @@ import org.apache.poi.ss.formula.eval.ValueEval;
  * @author Josh Micich
  */
 abstract class Var1or2ArgFunction implements Function1Arg, Function2Arg {
+
+    public Set<Integer> notArrayArgs() {
+        return null;
+    }
 
 	public final ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
 		switch (args.length) {

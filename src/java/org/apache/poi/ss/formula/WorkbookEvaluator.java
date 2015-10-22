@@ -397,13 +397,11 @@ public final class WorkbookEvaluator {
 		}
 
 		Stack<ValueEval> stack = new Stack<ValueEval>();
-		int i = 0;
 		while (!ptgs.isEmpty()) {
-			System.out.println(stack);
 			Ptg ptg = ptgs.peek();
 
 			if (dbgEvaluationOutputIndent > 0) {
-				EVAL_LOG.log(POILogger.INFO, dbgIndentStr + "  * ptg " + i + ": " + ptg);
+				EVAL_LOG.log(POILogger.INFO, dbgIndentStr + "  * ptg: " + ptg);
 			}
 			if (ptg instanceof AttrPtg) {
 				AttrPtg attrPtg = (AttrPtg) ptg;
@@ -432,8 +430,7 @@ public final class WorkbookEvaluator {
 					// Encoded dist for tAttrChoose includes size of jump table, but
 					// countTokensToBeSkipped() does not (it counts whole tokens).
 					dist -= nChoices*2+2; // subtract jump table size
-					int skip = countTokensToBeSkipped(ptgs, i, dist);
-					i+= skip;
+					int skip = countTokensToBeSkipped(ptgs, 0, dist);
 					skipPtgs(ptgs, skip);
 					continue;
 				}
@@ -477,29 +474,29 @@ public final class WorkbookEvaluator {
 					} catch (EvaluationException e) {
 						stack.push(e.getErrorEval());
 						int dist = attrPtg.getData();
-						int skip1 = countTokensToBeSkipped(ptgs, i, dist);
-						i+= skip1;
+						int skip1 = countTokensToBeSkipped(ptgs, 0, dist);
+						int i = skip1;
 						attrPtg = (AttrPtg) ptgs.get(i);
 						dist = attrPtg.getData()+1;
 						int skip2 = countTokensToBeSkipped(ptgs, i, dist);
-						i+= skip2;
 
 						skipPtgs(ptgs, skip1 + skip2);
 
 						continue;
 					}
 					if (evaluatedPredicate) {
+						ptgs.removeFirst();
 						// nothing to skip - true param follows
 					} else {
 						int dist = attrPtg.getData();
-						i+= countTokensToBeSkipped(ptgs, i, dist);
-						Ptg nextPtg = ptgs.get(i+1);
+						int i = countTokensToBeSkipped(ptgs, 0, dist) + 1;
+						skipPtgs(ptgs, i);
+						Ptg nextPtg = ptgs.get(1);
 						if (ptgs.getFirst() instanceof AttrPtg && nextPtg instanceof FuncVarPtg &&
 								// in order to verify that there is no third param, we need to check
 								// if we really have the IF next or some other FuncVarPtg as third param, e.g. ROW()/COLUMN()!
 								((FuncVarPtg)nextPtg).getFunctionIndex() == FunctionMetadataRegistry.FUNCTION_INDEX_IF) {
 							// this is an if statement without a false param (as opposed to MissingArgPtg as the false param)
-							i++;
 							ptgs.removeFirst();
 							stack.push(BoolEval.FALSE);
 						}
@@ -508,8 +505,7 @@ public final class WorkbookEvaluator {
 				}
 				if (attrPtg.isSkip()) {
 					int dist = attrPtg.getData()+1;
-					int skip = countTokensToBeSkipped(ptgs, i, dist);
-					i+= skip;
+					int skip = countTokensToBeSkipped(ptgs, 0, dist) + 1;
 					skipPtgs(ptgs, skip);
 					if (stack.peek() == MissingArgEval.instance) {
 						stack.pop();
@@ -520,13 +516,16 @@ public final class WorkbookEvaluator {
 			}
 			if (ptg instanceof ControlPtg) {
 				// skip Parentheses, Attr, etc
+				ptgs.removeFirst();
 				continue;
 			}
 			if (ptg instanceof MemFuncPtg || ptg instanceof MemAreaPtg) {
 				// can ignore, rest of tokens for this expression are in OK RPN order
+				ptgs.removeFirst();
 				continue;
 			}
 			if (ptg instanceof MemErrPtg) {
+				ptgs.removeFirst();
 				continue;
 			}
 
@@ -534,7 +533,7 @@ public final class WorkbookEvaluator {
 			if (ptg instanceof OperationPtg) {
 				OperationPtg optg = (OperationPtg) ptg;
 
-				if (optg instanceof UnionPtg) { continue; }
+				if (optg instanceof UnionPtg) { ptgs.removeFirst(); continue; }
 
 
 				int numops = optg.getNumberOfOperands();
@@ -562,7 +561,6 @@ public final class WorkbookEvaluator {
 			if (dbgEvaluationOutputIndent > 0) {
 				EVAL_LOG.log(POILogger.INFO, dbgIndentStr + "    = " + opResult);
 			}
-			i++;
 			ptgs.removeFirst();
 		}
 
@@ -580,143 +578,7 @@ public final class WorkbookEvaluator {
 				// this evaluation is done, reset indent to stop logging
 				dbgEvaluationOutputIndent = -1;
 			}
-		} // if
-		/*for (int i = 0, iSize = ptgs.length; i < iSize; i++) {
-
-			// since we don't know how to handle these yet :(
-			Ptg ptg = ptgs[i];
-
-			if (dbgEvaluationOutputIndent > 0) {
-				EVAL_LOG.log(POILogger.INFO, dbgIndentStr + "  * ptg " + i + ": " + ptg);
-			}
-			if (ptg instanceof AttrPtg) {
-				AttrPtg attrPtg = (AttrPtg) ptg;
-				if (attrPtg.isSum()) {
-					// Excel prefers to encode 'SUM()' as a tAttr token, but this evaluator
-					// expects the equivalent function token
-					ptg = FuncVarPtg.SUM;
-				}
-				if (attrPtg.isOptimizedChoose()) {
-					ValueEval arg0 = stack.pop();
-					int[] jumpTable = attrPtg.getJumpTable();
-					int dist;
-					int nChoices = jumpTable.length;
-					try {
-						int switchIndex = Choose.evaluateFirstArg(arg0, ec.getRowIndex(), ec.getColumnIndex());
-						if (switchIndex<1 || switchIndex > nChoices) {
-							stack.push(ErrorEval.VALUE_INVALID);
-							dist = attrPtg.getChooseFuncOffset() + 4; // +4 for tFuncFar(CHOOSE)
-						} else {
-							dist = jumpTable[switchIndex-1];
-						}
-					} catch (EvaluationException e) {
-						stack.push(e.getErrorEval());
-						dist = attrPtg.getChooseFuncOffset() + 4; // +4 for tFuncFar(CHOOSE)
-					}
-					// Encoded dist for tAttrChoose includes size of jump table, but
-					// countTokensToBeSkipped() does not (it counts whole tokens).
-					dist -= nChoices*2+2; // subtract jump table size
-					i+= countTokensToBeSkipped(ptgs, i, dist);
-					continue;
-				}
-				if (attrPtg.isOptimizedIf()) {
-					ValueEval arg0 = stack.pop();
-					boolean evaluatedPredicate;
-					try {
-						evaluatedPredicate = IfFunc.evaluateFirstArg(arg0, ec.getRowIndex(), ec.getColumnIndex());
-					} catch (EvaluationException e) {
-						stack.push(e.getErrorEval());
-						int dist = attrPtg.getData();
-						i+= countTokensToBeSkipped(ptgs, i, dist);
-						attrPtg = (AttrPtg) ptgs[i];
-						dist = attrPtg.getData()+1;
-						i+= countTokensToBeSkipped(ptgs, i, dist);
-						continue;
-					}
-					if (evaluatedPredicate) {
-						// nothing to skip - true param follows
-					} else {
-						int dist = attrPtg.getData();
-						i+= countTokensToBeSkipped(ptgs, i, dist);
-						Ptg nextPtg = ptgs[i+1];
-						if (ptgs[i] instanceof AttrPtg && nextPtg instanceof FuncVarPtg && 
-						        // in order to verify that there is no third param, we need to check 
-						        // if we really have the IF next or some other FuncVarPtg as third param, e.g. ROW()/COLUMN()!
-						        ((FuncVarPtg)nextPtg).getFunctionIndex() == FunctionMetadataRegistry.FUNCTION_INDEX_IF) {
-							// this is an if statement without a false param (as opposed to MissingArgPtg as the false param)
-							i++;
-							stack.push(BoolEval.FALSE);
-						}
-					}
-					continue;
-				}
-				if (attrPtg.isSkip()) {
-					int dist = attrPtg.getData()+1;
-					i+= countTokensToBeSkipped(ptgs, i, dist);
-					if (stack.peek() == MissingArgEval.instance) {
-						stack.pop();
-						stack.push(BlankEval.instance);
-					}
-					continue;
-				}
-			}
-			if (ptg instanceof ControlPtg) {
-				// skip Parentheses, Attr, etc
-				continue;
-			}
-			if (ptg instanceof MemFuncPtg || ptg instanceof MemAreaPtg) {
-				// can ignore, rest of tokens for this expression are in OK RPN order
-				continue;
-			}
-			if (ptg instanceof MemErrPtg) {
-				continue;
-			}
-
-			ValueEval opResult;
-			if (ptg instanceof OperationPtg) {
-				OperationPtg optg = (OperationPtg) ptg;
-
-				if (optg instanceof UnionPtg) { continue; }
-
-
-				int numops = optg.getNumberOfOperands();
-				ValueEval[] ops = new ValueEval[numops];
-
-				// storing the ops in reverse order since they are popping
-				for (int j = numops - 1; j >= 0; j--) {
-					ValueEval p = stack.pop();
-					ops[j] = p;
-				}
-//				logDebug("invoke " + operation + " (nAgs=" + numops + ")");
-				opResult = OperationEvaluatorFactory.evaluate(optg, ops, ec);
-			} else {
-				opResult = getEvalForPtg(ptg, ec);
-			}
-			if (opResult == null) {
-				throw new RuntimeException("Evaluation result must not be null");
-			}
-//			logDebug("push " + opResult);
-			stack.push(opResult);
-			if (dbgEvaluationOutputIndent > 0) {
-				EVAL_LOG.log(POILogger.INFO, dbgIndentStr + "    = " + opResult);
-			}
 		}
-
-		ValueEval value = stack.pop();
-		if (!stack.isEmpty()) {
-			throw new IllegalStateException("evaluation stack not empty");
-		}
-		ValueEval result = dereferenceResult(value, ec.getRowIndex(), ec.getColumnIndex());
-		if (dbgEvaluationOutputIndent > 0) {
-			EVAL_LOG.log(POILogger.INFO, dbgIndentStr + "finshed eval of "
-							+ new CellReference(ec.getRowIndex(), ec.getColumnIndex()).formatAsString()
-							+ ": " + result);
-			dbgEvaluationOutputIndent--;
-			if (dbgEvaluationOutputIndent == 1) {
-				// this evaluation is done, reset indent to stop logging
-				dbgEvaluationOutputIndent = -1;
-			}
-		} // if*/
 		return result;
 
 	}

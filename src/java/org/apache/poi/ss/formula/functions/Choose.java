@@ -19,6 +19,8 @@ package org.apache.poi.ss.formula.functions;
 
 import org.apache.poi.ss.formula.eval.*;
 
+import java.util.Set;
+
 /**
  * @author Josh Micich
  */
@@ -64,6 +66,11 @@ public final class Choose implements Function {
 			result[i] = evaluate(newArgs, firstRow+i, srcColumnIndex);
 		}
 		return new ArrayEval(result, firstRow, lastRow);
+	}
+
+	@Override
+	public Set<Integer> notArrayArgs() {
+		return null;
 	}
 
 	public static int evaluateFirstArg(ValueEval arg0, int srcRowIndex, int srcColumnIndex)

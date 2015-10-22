@@ -28,6 +28,8 @@ import org.apache.poi.ss.formula.eval.StringValueEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.util.NumberComparer;
 
+import java.util.Set;
+
 /**
  * This class performs a D* calculation. It takes an {@link IDStarAlgorithm} object and
  * uses it for calculating the result value. Iterating a database and checking the
@@ -56,6 +58,14 @@ public final class DStarRunner implements Function3Arg {
         else {
             return ErrorEval.VALUE_INVALID;
         }
+    }
+
+    public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+        return evaluate(args, srcRowIndex, srcColumnIndex);
+    }
+
+    public Set<Integer> notArrayArgs() {
+        return null;
     }
 
     public ValueEval evaluate(int srcRowIndex, int srcColumnIndex,

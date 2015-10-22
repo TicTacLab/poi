@@ -35,8 +35,12 @@ import java.util.Set;
  */
 public abstract class BooleanFunction implements Function {
 
-	public final ValueEval evaluate(ArrayEval arg, int srcRow, int srcCol) {
-		return evaluate(arg.getValues(), srcRow, srcCol);
+	public Set<Integer> notArrayArgs() {
+		return null;
+	}
+
+	public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+		return evaluate(args, srcRowIndex, srcColumnIndex);
 	}
 
 	public final ValueEval evaluate(ValueEval[] args, int srcRow, int srcCol) {

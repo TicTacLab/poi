@@ -17,11 +17,9 @@
 
 package org.apache.poi.ss.formula.functions;
 
-import org.apache.poi.ss.formula.eval.BoolEval;
-import org.apache.poi.ss.formula.eval.ErrorEval;
-import org.apache.poi.ss.formula.eval.EvaluationException;
-import org.apache.poi.ss.formula.eval.NumberEval;
-import org.apache.poi.ss.formula.eval.ValueEval;
+import org.apache.poi.ss.formula.eval.*;
+
+import java.util.Set;
 
 /**
  * @author Amol S. Deshmukh &lt; amolweb at ya hoo dot com &gt;
@@ -30,6 +28,12 @@ public abstract class FinanceFunction implements Function3Arg, Function4Arg {
 	private static final ValueEval DEFAULT_ARG3 = NumberEval.ZERO;
 	private static final ValueEval DEFAULT_ARG4 = BoolEval.FALSE;
 
+	public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+		throw new NotImplementedFunctionException("All Finanace Functions (in ARRAY form)");
+	}
+	public Set<Integer> notArrayArgs() {
+		return null;
+	}
 
 	protected FinanceFunction() {
 		// no instance fields

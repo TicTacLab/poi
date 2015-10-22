@@ -65,6 +65,14 @@ abstract class Var3or4ArgFunction implements Function3Arg, Function4Arg {
       for (int i = 0; i < length; i++) {
          ValueEval[] newArgs = new ValueEval[args.length];
          for (int j = 0; j < args.length; j++) newArgs[j] = arargs[j].getValue(i);
+
+         // freeze args
+         if (notArrayArgs() != null) {
+            for (Integer j : notArrayArgs())
+               if (j < args.length)
+                  newArgs[j] = args[j];
+         }
+
          result[i] = evaluate(newArgs, srcRowIndex, srcColumnIndex);
       }
       return new ArrayEval(result, firstRow, lastRow);

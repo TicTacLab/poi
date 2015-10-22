@@ -19,6 +19,8 @@ package org.apache.poi.ss.formula.functions;
 
 import org.apache.poi.ss.formula.eval.*;
 
+import java.util.Set;
+
 /**
  * Calculates the internal rate of return.
  *
@@ -32,6 +34,13 @@ import org.apache.poi.ss.formula.eval.*;
  */
 public final class Irr implements Function {
 
+    public Set<Integer> notArrayArgs() {
+        return null;
+    }
+
+    public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+        return evaluate(args, srcRowIndex, srcColumnIndex);
+    }
 
     public ValueEval evaluate(final ValueEval[] args, final int srcRowIndex, final int srcColumnIndex) {
         if(args.length == 0 || args.length > 2) {

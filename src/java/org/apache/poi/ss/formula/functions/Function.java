@@ -22,6 +22,8 @@ import org.apache.poi.ss.formula.eval.ErrorEval;
 import org.apache.poi.ss.formula.eval.MissingArgEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.Set;
+
 /**
  * Common interface for all implementations of Excel built-in functions.
  *
@@ -40,4 +42,6 @@ public interface Function {
 	 * ErrorEval#NUM_ERROR}.
 	 */
 	ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex);
+    ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex);
+    Set<Integer> notArrayArgs();
 }
