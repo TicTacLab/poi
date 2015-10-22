@@ -99,7 +99,10 @@ final class OperationEvaluatorFactory {
 		Function result = _instancesByPtgClass.get(ptg);
 
 		if (result != null) {
-			return  result.evaluate(args, ec.getRowIndex(), (short) ec.getColumnIndex());
+			if (ec.isPartOfArrayFormula() && ArrayFunctionsHelper.isAnyIArrayEval(args, result.notArrayArgs()))
+				return result.evaluateArray(args, ec.getRowIndex(), (short) ec.getColumnIndex());
+			else
+				return result.evaluate(args, ec.getRowIndex(), (short) ec.getColumnIndex());
 		}
 
 		if (ptg instanceof AbstractFunctionPtg) {
@@ -112,12 +115,10 @@ final class OperationEvaluatorFactory {
 					return UserDefinedFunction.instance.evaluate(args, ec);
 			}
 			Function f = FunctionEval.getBasicFunction(functionIndex);
-			if (ec.isPartOfArrayFormula() && ArrayFunctionsHelper.isAnyIArrayEval(args, f.notArrayArgs())) {
+			if (ec.isPartOfArrayFormula() && ArrayFunctionsHelper.isAnyIArrayEval(args, f.notArrayArgs()))
 				return f.evaluateArray(args, ec.getRowIndex(), (short) ec.getColumnIndex());
-			}
-			else {
+			else
 				return f.evaluate(args, ec.getRowIndex(), (short) ec.getColumnIndex());
-			}
 		}
 		throw new RuntimeException("Unexpected operation ptg class (" + ptg.getClass().getName() + ")");
 	}

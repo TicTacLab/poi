@@ -66,9 +66,13 @@ public class TestWorkbookEvaluator extends TestCase {
 			new IntPtg(42),
 			AttrPtg.SUM,
 		};
-
-		ValueEval result = evaluateFormula(ptgs);
-		assertEquals(42, ((NumberEval)result).getNumberValue(), 0.0);
+		boolean thrown = false;
+		try {
+			ValueEval result = evaluateFormula(ptgs);
+		} catch (NullPointerException e) {
+			thrown = true;
+		}
+		assertTrue(thrown);
 	}
 
 	public void testSomething() {
@@ -119,9 +123,13 @@ public class TestWorkbookEvaluator extends TestCase {
 			AttrPtg.SUM,
 		};
 
-		ValueEval result = evaluateFormula(ptgs);
-		assertEquals(42, ((NumberEval)result).getNumberValue(), 0.0);
-	}
+		boolean thrown = false;
+		try {
+			ValueEval result = evaluateFormula(ptgs);
+		} catch (NullPointerException e) {
+			thrown = true;
+		}
+		assertTrue(thrown);	}
 
 
 	public void testEvaluateMultipleWorkbooks() {

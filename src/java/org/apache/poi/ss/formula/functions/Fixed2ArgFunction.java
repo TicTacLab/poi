@@ -38,11 +38,7 @@ public abstract class Fixed2ArgFunction implements Function2Arg {
         if (args.length != 2) {
             return ErrorEval.VALUE_INVALID;
         }
-        if (ArrayFunctionsHelper.isAnyIArrayEval(args, notArrayArgs())) {
-            return evaluateArray(args, srcRowIndex, srcColumnIndex);
-        } else {
-            return evaluate(srcRowIndex, srcColumnIndex, args[0], args[1]);
-        }
+        return evaluate(srcRowIndex, srcColumnIndex, args[0], args[1]);
     }
 
     public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
