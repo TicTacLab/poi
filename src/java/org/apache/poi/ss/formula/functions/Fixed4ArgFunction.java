@@ -22,21 +22,22 @@ import org.apache.poi.ss.formula.eval.ErrorEval;
 import org.apache.poi.ss.formula.eval.IArrayEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.Set;
+
 /**
  * Convenience base class for functions that must take exactly four arguments.
  *
  * @author Josh Micich
  */
 public abstract class Fixed4ArgFunction implements Function4Arg {
+    public Set<Integer> notArrayArgs() {
+        return null;
+    }
 	public final ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
 		if (args.length != 4) {
 			return ErrorEval.VALUE_INVALID;
 		}
-       if (ArrayFunctionsHelper.isAnyIArrayEval(args)) {
-          return evaluateArray(args, srcRowIndex, srcColumnIndex);
-       } else {
-          return evaluate(srcRowIndex, srcColumnIndex, args[0], args[1], args[2], args[3]);
-       }
+        return evaluate(srcRowIndex, srcColumnIndex, args[0], args[1], args[2], args[3]);
 	}
 
     public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {

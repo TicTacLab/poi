@@ -50,11 +50,7 @@ public final class RowFunc implements Function0Arg, Function1Arg {
     public ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
         switch (args.length) {
             case 1:
-                if (ArrayFunctionsHelper.isAnyIArrayEval(args, notArrayArgs())) {
-                    return evaluateArray(args, srcRowIndex, srcColumnIndex);
-                } else {
-                    return evaluate(srcRowIndex, srcColumnIndex, args[0]);
-                }
+                return evaluate(srcRowIndex, srcColumnIndex, args[0]);
             case 0:
               return new NumberEval(srcRowIndex+1);
         }

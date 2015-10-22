@@ -37,11 +37,7 @@ public abstract class Fixed3ArgFunction implements Function3Arg {
 		if (args.length != 3) {
 			return ErrorEval.VALUE_INVALID;
 		}
-        if (ArrayFunctionsHelper.isAnyIArrayEval(args)) {
-           return evaluateArray(args, srcRowIndex, srcColumnIndex);
-        } else {
-            return evaluate(srcRowIndex, srcColumnIndex, args[0], args[1], args[2]);
-        }
+        return evaluate(srcRowIndex, srcColumnIndex, args[0], args[1], args[2]);
 	}
 
     public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {

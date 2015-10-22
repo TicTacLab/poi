@@ -53,25 +53,13 @@ public final class Fixed implements Function1Arg, Function2Arg, Function3Arg {
     public ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
         switch (args.length) {
             case 1:
-                if (ArrayFunctionsHelper.isAnyIArrayEval(args, notArrayArgs())) {
-                    return evaluateArray(args, srcRowIndex, srcColumnIndex);
-                } else {
-                    return fixed(args[0], new NumberEval(2), BoolEval.FALSE,
-                            srcRowIndex, srcColumnIndex);
-                }
+                return fixed(args[0], new NumberEval(2), BoolEval.FALSE,
+                        srcRowIndex, srcColumnIndex);
             case 2:
-                if (ArrayFunctionsHelper.isAnyIArrayEval(args, notArrayArgs())) {
-                    return evaluateArray(args, srcRowIndex, srcColumnIndex);
-                } else {
-                    return fixed(args[0], args[1], BoolEval.FALSE,
-                            srcRowIndex, srcColumnIndex);
-                }
+                return fixed(args[0], args[1], BoolEval.FALSE,
+                        srcRowIndex, srcColumnIndex);
             case 3:
-                if (ArrayFunctionsHelper.isAnyIArrayEval(args, notArrayArgs())) {
-                    return evaluateArray(args, srcRowIndex, srcColumnIndex);
-                } else {
-                    return fixed(args[0], args[1], args[2], srcRowIndex, srcColumnIndex);
-                }
+                return fixed(args[0], args[1], args[2], srcRowIndex, srcColumnIndex);
         }
         return ErrorEval.VALUE_INVALID;
     }

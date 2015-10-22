@@ -31,9 +31,9 @@ import java.util.Set;
  * @author Josh Micich
  */
 public abstract class Fixed2ArgFunction implements Function2Arg {
-
-    abstract public Set<Integer> notArrayArgs();
-
+    public Set<Integer> notArrayArgs() {
+        return null;
+    }
     public final ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
         if (args.length != 2) {
             return ErrorEval.VALUE_INVALID;
