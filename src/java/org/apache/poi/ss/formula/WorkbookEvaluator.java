@@ -432,6 +432,7 @@ public final class WorkbookEvaluator {
 					dist -= nChoices*2+2; // subtract jump table size
 					int skip = countTokensToBeSkipped(ptgs, 0, dist);
 					skipPtgs(ptgs, skip);
+					ptgs.removeFirst();
 					continue;
 				}
 				if (attrPtg.isOptimizedIf()) {

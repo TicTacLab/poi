@@ -107,7 +107,6 @@ public class TestFunctionRegistry extends TestCase {
                 return ErrorEval.NA;
             }
         };
-        FunctionEval.registerFunction("SUM", func);
 
         try {
             FunctionEval.registerFunction("SUMXXX", func);
