@@ -67,6 +67,8 @@ public interface EvaluationWorkbook {
      * XSSF Only - fetch the external-style name details
      */
     ExternalName getExternalName(String nameName, String sheetName, int externalWorkbookNumber);
+
+    boolean isPartOfArrayFormula(int sheetIndex, int rowIndex, int colIndex);
     
     EvaluationName getName(NamePtg namePtg);
     EvaluationName getName(String name, int sheetIndex);

@@ -28,6 +28,8 @@ import org.apache.poi.ss.formula.ptg.NamePtg;
 import org.apache.poi.ss.formula.ptg.NameXPtg;
 import org.apache.poi.ss.formula.ptg.Ptg;
 import org.apache.poi.ss.formula.udf.UDFFinder;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
 /**
@@ -121,7 +123,12 @@ final class ForkedEvaluationWorkbook implements EvaluationWorkbook {
 	       return _masterBook.getExternalName(nameName, sheetName, externalWorkbookNumber);
     }
 
-    public int getSheetIndex(EvaluationSheet sheet) {
+	@Override
+	public boolean isPartOfArrayFormula(int sheetIndex, int rowIndex, int colIndex) {
+		return _masterBook.isPartOfArrayFormula(sheetIndex, rowIndex, colIndex);
+	}
+
+	public int getSheetIndex(EvaluationSheet sheet) {
 		if (sheet instanceof ForkedEvaluationSheet) {
 			ForkedEvaluationSheet mes = (ForkedEvaluationSheet) sheet;
 			return mes.getSheetIndex(_masterBook);

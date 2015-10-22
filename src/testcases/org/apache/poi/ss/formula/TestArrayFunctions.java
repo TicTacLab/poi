@@ -105,28 +105,6 @@ public class TestArrayFunctions extends TestCase {
 
     public void testNA() {assertFormulaResult(wb, ErrorEval.NA, "NA()");}
 
-    public void testNEGBINOM_DOT_DIST() {
-        assertFormulaResult(wb, 0, "NEGBINOM.DIST(D2, E2, D2/10, TRUE)");
-        assertFormulaResult(wb, 0, "NEGBINOM.DIST(D2:D17, E2, D2/10, TRUE)");
-        assertFormulaResult(wb, 0, "NEGBINOM.DIST(D2, E2:E17, D2/10, TRUE)");
-        assertFormulaResult(wb, 0, "NEGBINOM.DIST(D2, E2, D2:D17/10, TRUE)");
-        assertFormulaResult(wb, 0, "NEGBINOM.DIST(D2, E2, D2/10, IF(MOD(A2:A17)=0,TRUE,FALSE))");
-        assertFormulaResult(wb, 0, "NEGBINOM.DIST(D2:D17, E2:E17, D2:D17/10, IF(MOD(A2:A17)=0,TRUE,FALSE))");
-    }
-
-/*    public void testNORMDIST_NORM_DOT_DIST() {
-        String[] fns = {"NORMDIST", "NORM.DIST"};
-
-        for (String fn : fns) {
-            assertFormulaResult(wb, 0, fn + "(D2, E2, D2, TRUE)");
-            assertFormulaResult(wb, 0, fn + "(D2:D17, E2, D2, TRUE)");
-            assertFormulaResult(wb, 0, fn + "(D2, E2:E17, D2, TRUE)");
-            assertFormulaResult(wb, 0, fn + "(D2, E2, D2:D17, TRUE)");
-            assertFormulaResult(wb, 0, fn + "(D2, E2, D2, IF(MOD(A2:A17, 2)=0, TRUE, FALSE)))");
-            assertFormulaResult(wb, 0, fn + "(D2:D17, E2:E17, D2:D17, IF(MOD(A2:A17, 2)=0, TRUE, FALSE))))");
-        }
-    }*/
-
     public void testNOW() {assertFormulaResult(wb, 0, "NOW()-NOW()");}
 
     public void testODD() {assertFormulaResult(wb, 10501, "ODD(F2:F17)");}

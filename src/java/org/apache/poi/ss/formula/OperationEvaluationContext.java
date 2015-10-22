@@ -149,7 +149,7 @@ public final class OperationEvaluationContext {
 	}
 
 	public boolean isPartOfArrayFormula() {
-		return ((XSSFEvaluationWorkbook) _workbook).isPartOfArrayFormula(_sheetIndex, _rowIndex, _columnIndex);
+		return _workbook.isPartOfArrayFormula(_sheetIndex, _rowIndex, _columnIndex);
 	}
 
 	public CellRangeAddress getArrayFormulaRangeAddress() {

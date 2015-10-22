@@ -38,6 +38,8 @@ import org.apache.poi.ss.formula.ptg.NameXPtg;
 import org.apache.poi.ss.formula.ptg.Ptg;
 import org.apache.poi.ss.formula.ptg.Ref3DPtg;
 import org.apache.poi.ss.formula.udf.UDFFinder;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.AreaReference;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.util.POILogFactory;
@@ -159,6 +161,13 @@ public final class HSSFEvaluationWorkbook implements FormulaRenderingWorkbook, E
 
     public ExternalName getExternalName(String nameName, String sheetName, int externalWorkbookNumber) {
         throw new IllegalStateException("XSSF-style external names are not supported for HSSF");
+    }
+
+    @Override
+    public boolean isPartOfArrayFormula(int sheetIndex, int rowIndex, int colIndex) {
+        Sheet sheet = _uBook.getSheetAt(sheetIndex);
+        Cell cell = sheet.getRow(rowIndex).getCell(colIndex);
+        return cell.isPartOfArrayFormulaGroup();
     }
 
     public String resolveNameXText(NameXPtg n) {
