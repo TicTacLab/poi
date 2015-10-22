@@ -478,18 +478,17 @@ public final class WorkbookEvaluator {
 						int i = skip1;
 						attrPtg = (AttrPtg) ptgs.get(i);
 						dist = attrPtg.getData()+1;
-						int skip2 = countTokensToBeSkipped(ptgs, i, dist);
+						int skip2 = countTokensToBeSkipped(ptgs, i, dist) + 1;
 
 						skipPtgs(ptgs, skip1 + skip2);
 
 						continue;
 					}
 					if (evaluatedPredicate) {
-						ptgs.removeFirst();
 						// nothing to skip - true param follows
 					} else {
 						int dist = attrPtg.getData();
-						int i = countTokensToBeSkipped(ptgs, 0, dist) + 1;
+						int i = countTokensToBeSkipped(ptgs, 0, dist);
 						skipPtgs(ptgs, i);
 						Ptg nextPtg = ptgs.size() > 1 ? ptgs.get(1) : null;
 						if (ptgs.getFirst() instanceof AttrPtg && nextPtg instanceof FuncVarPtg &&
@@ -501,6 +500,7 @@ public final class WorkbookEvaluator {
 							stack.push(BoolEval.FALSE);
 						}
 					}
+					ptgs.removeFirst();
 					continue;
 				}
 				if (attrPtg.isSkip()) {

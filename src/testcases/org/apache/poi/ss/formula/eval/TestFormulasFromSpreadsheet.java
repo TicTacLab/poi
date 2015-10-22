@@ -177,6 +177,7 @@ public final class TestFormulasFromSpreadsheet {
                continue;
            }
 
+           evaluator.setDebugEvaluationOutputForNextEval(true);
            CellValue actValue = evaluator.evaluate(c);
            Cell expValue = (expectedValuesRow == null) ? null : expectedValuesRow.getCell(colnum);
 
