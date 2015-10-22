@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.poi.ss.formula.functions.ArrayFunctionsHelper;
+import org.apache.poi.ss.formula.functions.FreeRefFunction;
 import org.apache.poi.ss.formula.ptg.*;
 import org.apache.poi.ss.formula.eval.ConcatEval;
 import org.apache.poi.ss.formula.eval.FunctionEval;
@@ -108,12 +109,21 @@ final class OperationEvaluatorFactory {
 		if (ptg instanceof AbstractFunctionPtg) {
 			AbstractFunctionPtg fptg = (AbstractFunctionPtg)ptg;
 			int functionIndex = fptg.getFunctionIndex();
+			FreeRefFunction frf = null;
 			switch (functionIndex) {
 				case FunctionMetadataRegistry.FUNCTION_INDEX_INDIRECT:
-					return Indirect.instance.evaluate(args, ec);
+					frf = Indirect.instance;
+					break;
 				case FunctionMetadataRegistry.FUNCTION_INDEX_EXTERNAL:
-					return UserDefinedFunction.instance.evaluate(args, ec);
+					frf = UserDefinedFunction.instance;
+					break;
 			}
+			if (frf != null)
+				if (ec.isPartOfArrayFormula() && ArrayFunctionsHelper.isAnyIArrayEval(args, frf.notArrayArgs()))
+					return frf.evaluateArray(args, ec);
+				else
+					return frf.evaluate(args, ec);
+
 			Function f = FunctionEval.getBasicFunction(functionIndex);
 			if (ec.isPartOfArrayFormula() && ArrayFunctionsHelper.isAnyIArrayEval(args, f.notArrayArgs()))
 				return f.evaluateArray(args, ec.getRowIndex(), (short) ec.getColumnIndex());

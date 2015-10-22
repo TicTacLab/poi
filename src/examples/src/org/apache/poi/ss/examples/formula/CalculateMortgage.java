@@ -24,6 +24,8 @@ import org.apache.poi.ss.formula.eval.OperandResolver ;
 import org.apache.poi.ss.formula.eval.ValueEval ;
 import org.apache.poi.ss.formula.functions.FreeRefFunction ;
 
+import java.util.Set;
+
 /**
  * A simple user-defined function to calculate principal and interest.
  * 
@@ -70,7 +72,17 @@ public class CalculateMortgage implements FreeRefFunction {
 
         return new NumberEval( result ) ;
     }
-    
+
+    @Override
+    public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+        return evaluate(args, ec);
+    }
+
+    @Override
+    public Set<Integer> notArrayArgs() {
+        return null;
+    }
+
     public double calculateMortgagePayment( double p, double r, double y ) {
         double i = r / 12 ;
         double n = y * 12 ;

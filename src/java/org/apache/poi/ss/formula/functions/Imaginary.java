@@ -111,4 +111,9 @@ public class Imaginary extends Fixed1ArgFunction implements FreeRefFunction {
         }
         return evaluate(ec.getRowIndex(), ec.getColumnIndex(), args[0]);
     }
+
+    @Override
+    public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+        return ErrorEval.VALUE_INVALID;
+    }
 }

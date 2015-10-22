@@ -491,7 +491,7 @@ public final class WorkbookEvaluator {
 						int dist = attrPtg.getData();
 						int i = countTokensToBeSkipped(ptgs, 0, dist) + 1;
 						skipPtgs(ptgs, i);
-						Ptg nextPtg = ptgs.get(1);
+						Ptg nextPtg = ptgs.size() > 1 ? ptgs.get(1) : null;
 						if (ptgs.getFirst() instanceof AttrPtg && nextPtg instanceof FuncVarPtg &&
 								// in order to verify that there is no third param, we need to check
 								// if we really have the IF next or some other FuncVarPtg as third param, e.g. ROW()/COLUMN()!

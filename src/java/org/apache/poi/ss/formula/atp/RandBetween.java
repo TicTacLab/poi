@@ -24,6 +24,8 @@ import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.functions.FreeRefFunction;
 import org.apache.poi.ss.formula.OperationEvaluationContext;
 
+import java.util.Set;
+
 /**
  * Implementation of Excel 'Analysis ToolPak' function RANDBETWEEN()<br/>
  *
@@ -80,5 +82,15 @@ final class RandBetween implements FreeRefFunction{
 		return new NumberEval((bottom + (int)(Math.random() * ((top - bottom) + 1))));
 		
 	}
-		
+
+	@Override
+	public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+		return ErrorEval.VALUE_INVALID;
+	}
+
+	@Override
+	public Set<Integer> notArrayArgs() {
+		return null;
+	}
+
 }

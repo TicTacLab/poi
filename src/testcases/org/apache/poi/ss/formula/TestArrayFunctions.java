@@ -128,14 +128,14 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, 4,  "POWER(2, 2)");
         assertFormulaResult(wb, 32, "POWER(2, D2:D17)");
         assertFormulaResult(wb, 1,  "POWER(A2:A17, 2)");
-        assertFormulaResult(wb, 1,  "POWER(A2:A17, D2:D17)");
+        assertFormulaResult(wb, 1, "POWER(A2:A17, D2:D17)");
     }
 
     public void testPRODUCT() {
         assertFormulaResult(wb, 2,   "PRODUCT(2)");
         assertFormulaResult(wb, 24,  "PRODUCT(A2:A5)");
-        assertFormulaResult(wb, 4,   "PRODUCT(2, 2)");
-        assertFormulaResult(wb, 48,  "PRODUCT(A2:A5, 2)");
+        assertFormulaResult(wb, 4, "PRODUCT(2, 2)");
+        assertFormulaResult(wb, 48, "PRODUCT(A2:A5, 2)");
         assertFormulaResult(wb, 720, "PRODUCT(A2:A4, D2:D4)");
     }
 
@@ -179,6 +179,10 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, 10, "SUM(COLUMN(A2:D17))");
     }
 
+    public void testCOMPLEX() {
+        assertFormulaResult(wb, ErrorEval.VALUE_INVALID, "COMPLEX(A2:A17,F2:F17)");
+    }
+
     public void testROWS() {assertFormulaResult(wb, 16, "ROWS(F2:F17)");}
 
     public void testSEARCH() {
@@ -203,6 +207,8 @@ public class TestArrayFunctions extends TestCase {
     public void testSTDEV() {assertFormulaResult(wb, 4.76, "STDEV(A2:A17)");}
 
     public void testSUMIF() {assertFormulaResult(wb, 86, "SUMIF(A2:A17, \">\"&TEXT(A2:A17,\"0\"),D2:D17)");}
+
+
 
     public void testSUMPRODUCT() {assertFormulaResult(wb, 813, "SUMPRODUCT(A2:A17, D2:D17)");}
 
@@ -267,6 +273,15 @@ public class TestArrayFunctions extends TestCase {
         //assertFormulaResult(wb, 57600.0, "SUM(IF(C2:C17=\"Sedan\", INDEX(F2:F17, ROW(F2:F17), 1), \"\"))");
     }
 
+    public void testIFERROR() {
+        assertFormulaResult(wb, -2813.51, "SUM(IFERROR(F2:F17/(D2:D17-2*A2:A17), E2:E17))");
+    }
+
+    public void testIMREAL() {
+        assertFormulaResult(wb, ErrorEval.VALUE_INVALID, "IMREAL(F2:F17)");
+    }
+
+
     public void testFixed1ArgFunction() {
         assertFormulaResult(wb, -189600,"SUM(-F2:F17)");
         assertFormulaResult(wb, "\u0001", "CHAR(F2:F17/F2:F17)");
@@ -320,7 +335,27 @@ public class TestArrayFunctions extends TestCase {
     }
 
     public void testFactDouble() {
-        assertFormulaResult(wb, 1, "FACTDOUBLE(A2:A17)");
+        assertFormulaResult(wb, ErrorEval.VALUE_INVALID, "FACTDOUBLE(D2:D17)");
+    }
+    public void testFact() {
+        assertFormulaResult(wb, 120, "FACT(D2:D17)");
+    }
+
+    public void testRANDBETWEEN() {
+        assertFormulaResult(wb, ErrorEval.VALUE_INVALID, "RANDBETWEEN(A2:A17,A2:A17)");
+    }
+
+    public void testISEVENT() {
+        assertFormulaResult(wb, ErrorEval.VALUE_INVALID, "ISEVEN(A2:A17)");
+    }
+    public void testISODD() {
+        assertFormulaResult(wb, ErrorEval.VALUE_INVALID, "ISODD(A2:A17)");
+    }
+    public void testNETWORKDAYS() {
+        assertFormulaResult(wb, ErrorEval.VALUE_INVALID, "NETWORKDAYS(G2:G17,G2:G17)");
+    }
+    public void testEDATE() {
+        assertFormulaResult(wb, 2979147, "SUM(EDATE(DATE(E2:E17,D2:D17,A2:A17),A2:A17-A2:A17))");
     }
 
     public void testOffset() {
@@ -334,6 +369,26 @@ public class TestArrayFunctions extends TestCase {
     public void testABSFunc() {assertFormulaResult(wb, 10500, "ABS(F2:F17)");}
 
     public void testACOSFunc() {assertFormulaResult(wb, 1.57, "ACOS(F2:F17-F2:F17)");}
+
+    public void testWORKDAY() {
+        assertFormulaResult(wb, ErrorEval.VALUE_INVALID, "WORKDAY(G2:G17,A2:A17)");
+    }
+
+    public void testYEARFRAC() {
+        assertFormulaResult(wb, ErrorEval.VALUE_INVALID, "YEARFRAC(G2:G17,G2:G17)");
+    }
+
+    public void testEOMONTH() {
+        assertFormulaResult(wb, ErrorEval.VALUE_INVALID, "EOMONTH(G2:G17,A2:A17)");
+    }
+
+    public void testWEEKNUM() {
+        assertFormulaResult(wb, ErrorEval.VALUE_INVALID, "WEEKNUM(F2:F17)");
+    }
+
+    public void testMROUND() {
+        assertFormulaResult(wb, 36501, "SUM(MROUND(F2:F17/A2:A17, 3))");
+    }
 
     public void testACOSHFunc() {assertFormulaResult(wb, 9.95, "ACOSH(F2:F17)");}
 

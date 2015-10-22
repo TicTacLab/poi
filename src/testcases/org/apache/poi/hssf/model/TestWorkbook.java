@@ -31,6 +31,8 @@ import org.apache.poi.ss.formula.functions.FreeRefFunction;
 import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.OperationEvaluationContext;
 
+import java.util.Set;
+
 /**
  * Unit test for the Workbook class.
  *
@@ -99,6 +101,16 @@ public final class TestWorkbook extends TestCase {
         FreeRefFunction NotImplemented = new FreeRefFunction() {
             public ValueEval evaluate(ValueEval[] args, OperationEvaluationContext ec) {
                 throw new RuntimeException("not implemented");
+            }
+
+            @Override
+            public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+                return evaluate(args, ec);
+            }
+
+            @Override
+            public Set<Integer> notArrayArgs() {
+                return null;
             }
         };
 

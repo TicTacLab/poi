@@ -74,4 +74,9 @@ public class Quotient extends Fixed2ArgFunction implements FreeRefFunction {
         }
         return evaluate(ec.getRowIndex(), ec.getColumnIndex(), args[0], args[1]);
     }
+
+    @Override
+    public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+        return evaluateArray(args, ec.getRowIndex(), ec.getColumnIndex());
+    }
 }

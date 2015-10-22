@@ -34,6 +34,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Demonstrates how to use functions provided by third-party add-ins, e.g. Bloomberg Excel Add-in.
@@ -58,6 +59,16 @@ public class SettingExternalFunction {
             FreeRefFunction NA = new FreeRefFunction() {
                 public ValueEval evaluate(ValueEval[] args, OperationEvaluationContext ec) {
                     return ErrorEval.NA;
+                }
+
+                @Override
+                public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+                    return evaluate(args, ec);
+                }
+
+                @Override
+                public Set<Integer> notArrayArgs() {
+                    return null;
                 }
             };
             _functionsByName = new HashMap<String, FreeRefFunction>();

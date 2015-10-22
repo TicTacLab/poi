@@ -273,19 +273,15 @@ public abstract class TextFunction implements Function {
 	public static final Function CONCATENATE = new Function() {
 
 		public ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
-			if (ArrayFunctionsHelper.isAnyIArrayEval(args)) {
-				return evaluateArray(args, srcRowIndex, srcColumnIndex);
-			} else {
-				StringBuilder sb = new StringBuilder();
-				for (int i = 0, iSize = args.length; i < iSize; i++) {
-					try {
-						sb.append(evaluateStringArg(args[i], srcRowIndex, srcColumnIndex));
-					} catch (EvaluationException e) {
-						return e.getErrorEval();
-					}
+			StringBuilder sb = new StringBuilder();
+			for (int i = 0, iSize = args.length; i < iSize; i++) {
+				try {
+					sb.append(evaluateStringArg(args[i], srcRowIndex, srcColumnIndex));
+				} catch (EvaluationException e) {
+					return e.getErrorEval();
 				}
-				return new StringEval(sb.toString());
 			}
+			return new StringEval(sb.toString());
 		}
 
 		public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {

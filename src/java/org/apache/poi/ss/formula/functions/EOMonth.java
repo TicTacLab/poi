@@ -19,6 +19,7 @@ package org.apache.poi.ss.formula.functions;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Set;
 
 import org.apache.poi.ss.formula.OperationEvaluationContext;
 import org.apache.poi.ss.formula.eval.ErrorEval;
@@ -45,6 +46,15 @@ import org.apache.poi.util.LocaleUtil;
 public class EOMonth implements FreeRefFunction {
     public static final FreeRefFunction instance = new EOMonth();
 
+    @Override
+    public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+        return evaluate(args, ec);
+    }
+
+    @Override
+    public Set<Integer> notArrayArgs() {
+        return null;
+    }
     @Override
     public ValueEval evaluate(ValueEval[] args, OperationEvaluationContext ec) {
         if (args.length != 2) {

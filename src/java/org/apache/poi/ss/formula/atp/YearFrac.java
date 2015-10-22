@@ -18,6 +18,7 @@
 package org.apache.poi.ss.formula.atp;
 
 import java.util.Calendar;
+import java.util.Set;
 
 import org.apache.poi.ss.formula.eval.ErrorEval;
 import org.apache.poi.ss.formula.eval.EvaluationException;
@@ -78,6 +79,16 @@ final class YearFrac implements FreeRefFunction {
 		}
 
 		return new NumberEval(result);
+	}
+
+	@Override
+	public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+		return evaluate(args, ec);
+	}
+
+	@Override
+	public Set<Integer> notArrayArgs() {
+		return null;
 	}
 
 	private static double evaluateDateArg(ValueEval arg, int srcCellRow, int srcCellCol) throws EvaluationException {

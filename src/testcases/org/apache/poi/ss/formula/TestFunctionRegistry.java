@@ -23,6 +23,7 @@ import junit.framework.TestCase;
 import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.ss.formula.atp.AnalysisToolPak;
 import org.apache.poi.ss.formula.eval.*;
+import org.apache.poi.ss.formula.functions.ArrayFunctionsHelper;
 import org.apache.poi.ss.formula.functions.FreeRefFunction;
 import org.apache.poi.ss.formula.functions.Function;
 import org.apache.poi.ss.usermodel.CellValue;
@@ -76,6 +77,15 @@ public class TestFunctionRegistry extends TestCase {
         }
 
         AnalysisToolPak.registerFunction("CUBEMEMBERPROPERTY", new FreeRefFunction() {
+            @Override
+            public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+                return evaluateArray(args, ec);
+            }
+
+            @Override
+            public Set<Integer> notArrayArgs() {
+                return null;
+            }
             public ValueEval evaluate(ValueEval[] args, OperationEvaluationContext ec) {
                 return ErrorEval.NUM_ERROR;
             }
@@ -114,6 +124,15 @@ public class TestFunctionRegistry extends TestCase {
         }
 
         FreeRefFunction atpFunc = new FreeRefFunction() {
+            @Override
+            public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+                return evaluateArray(args, ec);
+            }
+
+            @Override
+            public Set<Integer> notArrayArgs() {
+                return null;
+            }
             public ValueEval evaluate(ValueEval[] args, OperationEvaluationContext ec) {
                 return ErrorEval.NUM_ERROR;
             }

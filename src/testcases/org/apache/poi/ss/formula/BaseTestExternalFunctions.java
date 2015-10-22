@@ -29,6 +29,8 @@ import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
+import java.util.Set;
+
 /**
  * Test setting / evaluating of Analysis Toolpack and user-defined functions
  *
@@ -48,6 +50,16 @@ public class BaseTestExternalFunctions extends TestCase {
             StringEval input = (StringEval) args[0];
             return new StringEval(input.getStringValue() + "abc");
         }
+
+        @Override
+        public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+            return evaluate(args, ec);
+        }
+
+        @Override
+        public Set<Integer> notArrayArgs() {
+            return null;
+        }
     }
 
     private static class MyFunc2 implements FreeRefFunction {
@@ -61,6 +73,16 @@ public class BaseTestExternalFunctions extends TestCase {
             }
             StringEval input = (StringEval) args[0];
             return new StringEval(input.getStringValue() + "abc2");
+        }
+
+        @Override
+        public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+            return evaluate(args, ec);
+        }
+
+        @Override
+        public Set<Integer> notArrayArgs() {
+            return null;
         }
     }
 

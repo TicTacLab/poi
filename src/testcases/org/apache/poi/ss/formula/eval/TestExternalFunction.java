@@ -31,6 +31,8 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.formula.OperationEvaluationContext;
 
+import java.util.Set;
+
 /**
  * @author Josh Micich
  * @author Petr Udalau - registering UDFs in workbook and using ToolPacks.
@@ -49,6 +51,16 @@ public final class TestExternalFunction extends TestCase {
 			StringEval input = (StringEval) args[0];
 			return new StringEval(input.getStringValue() + "abc");
 		}
+
+		@Override
+		public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+			return evaluate(args, ec);
+		}
+
+		@Override
+		public Set<Integer> notArrayArgs() {
+			return null;
+		}
 	}
 
 	private static class MyFunc2 implements FreeRefFunction {
@@ -62,6 +74,16 @@ public final class TestExternalFunction extends TestCase {
 			}
 			StringEval input = (StringEval) args[0];
 			return new StringEval(input.getStringValue() + "abc2");
+		}
+
+		@Override
+		public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+			return evaluate(args, ec);
+		}
+
+		@Override
+		public Set<Integer> notArrayArgs() {
+			return null;
 		}
 	}
 

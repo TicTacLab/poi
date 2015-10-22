@@ -25,6 +25,8 @@ import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.functions.FreeRefFunction;
 import org.apache.poi.ss.usermodel.DateUtil;
 
+import java.util.Set;
+
 /**
  * Implementation of Excel 'Analysis ToolPak' function WORKDAY()<br/>
  * Returns the date past a number of workdays beginning at a start date, considering an interval of holidays. A workday is any non
@@ -73,6 +75,16 @@ final class WorkdayFunction implements FreeRefFunction {
         } catch (EvaluationException e) {
             return ErrorEval.VALUE_INVALID;
         }
+    }
+
+    @Override
+    public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+        return evaluate(args, ec);
+    }
+
+    @Override
+    public Set<Integer> notArrayArgs() {
+        return null;
     }
 
 }

@@ -90,4 +90,15 @@ public class WeekNum extends Fixed2ArgFunction implements FreeRefFunction {
         }
         return ErrorEval.VALUE_INVALID;
     }
+
+
+    @Override
+    public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+        return ErrorEval.VALUE_INVALID;
+    }
+
+    @Override
+    public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+        return ErrorEval.VALUE_INVALID;
+    }
 }

@@ -150,6 +150,15 @@ public class Complex extends Var2or3ArgFunction implements FreeRefFunction {
         return ErrorEval.VALUE_INVALID;
     }
 
+    public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+        return ErrorEval.VALUE_INVALID;
+    }
+
+    @Override
+    public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+        return evaluateArray(args, ec.getRowIndex(), ec.getColumnIndex());
+    }
+
     @Override
     public Set<Integer> notArrayArgs() {
         Set<Integer> xs = new HashSet<Integer>();

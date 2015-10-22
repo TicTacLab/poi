@@ -10,12 +10,7 @@
 
 package org.apache.poi.ss.formula.atp;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
-import java.util.TreeSet;
+import java.util.*;
 
 import org.apache.poi.ss.formula.OperationEvaluationContext;
 import org.apache.poi.ss.formula.eval.NotImplementedFunctionException;
@@ -57,6 +52,16 @@ public final class AnalysisToolPak implements UDFFinder {
 
         public ValueEval evaluate(ValueEval[] args, OperationEvaluationContext ec) {
             throw new NotImplementedFunctionException(_functionName);
+        }
+
+        @Override
+        public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+            return evaluate(args, ec);
+        }
+
+        @Override
+        public Set<Integer> notArrayArgs() {
+            return null;
         }
     }
 

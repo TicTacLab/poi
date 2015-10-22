@@ -90,4 +90,9 @@ public final class Delta extends Fixed2ArgFunction implements FreeRefFunction {
 
         return ErrorEval.VALUE_INVALID;
     }
+
+    @Override
+    public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+        return evaluateArray(args, ec.getRowIndex(), ec.getColumnIndex());
+    }
 }

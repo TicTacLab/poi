@@ -25,6 +25,8 @@ import org.apache.poi.ss.formula.eval.NumberEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.functions.FreeRefFunction;
 
+import java.util.Set;
+
 /**
  * Implementation of Excel 'Analysis ToolPak' function NETWORKDAYS()<br/>
  * Returns the number of workdays given a starting and an ending date, considering an interval of holidays. A workday is any non
@@ -80,5 +82,15 @@ final class NetworkdaysFunction implements FreeRefFunction {
         } catch (EvaluationException e) {
             return ErrorEval.VALUE_INVALID;
         }
+    }
+
+    @Override
+    public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+        return ErrorEval.VALUE_INVALID;
+    }
+
+    @Override
+    public Set<Integer> notArrayArgs() {
+        return null;
     }
 }

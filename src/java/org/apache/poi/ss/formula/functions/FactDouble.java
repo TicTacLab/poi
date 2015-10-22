@@ -84,4 +84,14 @@ public class FactDouble extends Fixed1ArgFunction implements FreeRefFunction {
     public ValueEval evaluate(ValueEval[] args, OperationEvaluationContext ec) {
         return evaluate(args, ec.getRowIndex(), ec.getColumnIndex());
     }
+
+    @Override
+    public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
+        return ErrorEval.VALUE_INVALID;
+    }
+
+    @Override
+    public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+        return evaluateArray(args, ec.getRowIndex(), ec.getColumnIndex());
+    }
 }

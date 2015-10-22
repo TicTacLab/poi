@@ -29,6 +29,8 @@ import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.functions.CountUtils.I_MatchPredicate;
 import org.apache.poi.ss.formula.functions.Countif.ErrorMatcher;
 
+import java.util.Set;
+
 /**
  * Implementation for the Excel function SUMIFS<p>
  *
@@ -80,6 +82,16 @@ public final class Sumifs implements FreeRefFunction {
 			return e.getErrorEval();
 		}
 	}
+
+    @Override
+    public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+        return evaluate(args, ec);
+    }
+
+    @Override
+    public Set<Integer> notArrayArgs() {
+        return null;
+    }
 
     /**
      * Verify that each <code>criteriaRanges</code> argument contains the same number of rows and columns

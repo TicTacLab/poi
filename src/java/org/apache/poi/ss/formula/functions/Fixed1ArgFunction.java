@@ -30,16 +30,11 @@ import java.util.Set;
  * @author Josh Micich
  */
 public abstract class Fixed1ArgFunction implements Function1Arg {
-    public abstract Set<Integer> notArrayArgs();
-
 	public final ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
 		if (args.length != 1) {
 			return ErrorEval.VALUE_INVALID;
 		}
-        if (ArrayFunctionsHelper.isAnyIArrayEval(args, notArrayArgs()))
-            return evaluateArray(args, srcRowIndex, srcColumnIndex);
-        else
-            return evaluate(srcRowIndex, srcColumnIndex, args[0]);
+        return evaluate(srcRowIndex, srcColumnIndex, args[0]);
 	}
 
     public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {

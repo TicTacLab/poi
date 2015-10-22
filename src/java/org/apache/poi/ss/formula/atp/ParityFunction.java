@@ -24,6 +24,9 @@ import org.apache.poi.ss.formula.eval.OperandResolver;
 import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.functions.FreeRefFunction;
 import org.apache.poi.ss.formula.OperationEvaluationContext;
+
+import java.util.Set;
+
 /**
  * Implementation of Excel 'Analysis ToolPak' function ISEVEN() ISODD()<br/>
  *
@@ -52,6 +55,16 @@ final class ParityFunction implements FreeRefFunction {
 		}
 
 		return BoolEval.valueOf(val == _desiredParity);
+	}
+
+	@Override
+	public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+		return ErrorEval.VALUE_INVALID;
+	}
+
+	@Override
+	public Set<Integer> notArrayArgs() {
+		return null;
 	}
 
 	private static int evaluateArgParity(ValueEval arg, int srcCellRow, int srcCellCol) throws EvaluationException {

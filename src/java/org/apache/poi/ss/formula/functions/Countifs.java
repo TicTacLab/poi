@@ -23,6 +23,8 @@ import org.apache.poi.ss.formula.eval.ErrorEval;
 import org.apache.poi.ss.formula.eval.NumberEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
+import java.util.Set;
+
 /**
  * Implementation for the function COUNTIFS
  * <p>
@@ -50,6 +52,16 @@ public class Countifs implements FreeRefFunction {
             }
         }
         return new NumberEval(result == null ? 0 : result);
+    }
+
+    @Override
+    public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
+        return evaluate(args, ec);
+    }
+
+    @Override
+    public Set<Integer> notArrayArgs() {
+        return null;
     }
 }
 

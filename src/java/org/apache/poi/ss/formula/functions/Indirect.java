@@ -20,6 +20,8 @@ package org.apache.poi.ss.formula.functions;
 import org.apache.poi.ss.formula.eval.*;
 import org.apache.poi.ss.formula.OperationEvaluationContext;
 
+import java.util.Set;
+
 /**
  * Implementation for Excel function INDIRECT<p/>
  *
@@ -87,9 +89,22 @@ public final class Indirect implements FreeRefFunction {
 		for (int i = 0; i < length; i++) {
 			ValueEval[] newArgs = new ValueEval[args.length];
 			for (int j = 0; j < args.length; j++) newArgs[j] = arargs[j].getValue(i);
-			result[i] = evaluate(newArgs, ec.withNewRow(firstRow + i));
+
+			// freeze args
+			if (notArrayArgs() != null) {
+				for (Integer j : notArrayArgs())
+					if (j < args.length)
+						newArgs[j] = args[j];
+			}
+
+			result[i] = evaluate(newArgs, ec);
 		}
 		return new ArrayEval(result, firstRow, lastRow);
+	}
+
+	@Override
+	public Set<Integer> notArrayArgs() {
+		return null;
 	}
 
 	private static boolean evaluateBooleanArg(ValueEval arg, OperationEvaluationContext ec)

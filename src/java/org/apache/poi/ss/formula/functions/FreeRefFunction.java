@@ -20,6 +20,8 @@ package org.apache.poi.ss.formula.functions;
 import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.OperationEvaluationContext;
 
+import java.util.Set;
+
 
 /**
  * For most Excel functions, involving references ((cell, area), (2d, 3d)), the references are
@@ -48,4 +50,6 @@ public interface FreeRefFunction {
 	 * a specified Excel error (Exceptions are never thrown to represent Excel errors).
 	 */
 	ValueEval evaluate(ValueEval[] args, OperationEvaluationContext ec);
+    ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec);
+    Set<Integer> notArrayArgs();
 }
