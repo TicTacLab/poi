@@ -95,7 +95,7 @@ public final class Index extends BaseFunction implements Function2Arg, Function3
 			// convert to area ref for simpler code in getValueFromArea()
 			return ((RefEval)firstArg).offset(0, 0, 0, 0);
 		}
-		if((firstArg instanceof TwoDEval)) {
+		if(firstArg instanceof TwoDEval) {
 			return (TwoDEval) firstArg;
 		}
 		// else the other variation of this function takes an array as the first argument

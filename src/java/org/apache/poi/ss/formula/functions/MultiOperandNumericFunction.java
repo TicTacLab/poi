@@ -215,6 +215,7 @@ public abstract class MultiOperandNumericFunction implements Function {
 				return;
 			}
 			String s = ((StringValueEval) ve).getStringValue();
+			if (s.length() == 0) return;
 			Double d = OperandResolver.parseDouble(s);
 			if(d == null) {
 				throw new EvaluationException(ErrorEval.VALUE_INVALID);
