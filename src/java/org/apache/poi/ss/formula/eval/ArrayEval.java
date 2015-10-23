@@ -32,9 +32,14 @@ public class ArrayEval implements ValueEval, IArrayEval {
 
     public int getColsNum() { return 1;  }
 
+    @Override
+    public int getFirstRow() {
+        return _firstRow;
+    }
+
     public String toString() {
         return this.getClass().getCanonicalName()
-                + " [" + _values[0]
+                + " [len=" + _values.length + "; " + _values[0]
                 + ", ..., "
                 + _values[_values.length-1]
                 + "]";

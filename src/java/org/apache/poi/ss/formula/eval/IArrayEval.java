@@ -9,4 +9,5 @@ public interface IArrayEval {
     ValueEval[] getValues();
     int getLength();
     int getColsNum();
+    int getFirstRow();
 }
