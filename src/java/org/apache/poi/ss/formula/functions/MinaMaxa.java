@@ -17,6 +17,8 @@
 
 package org.apache.poi.ss.formula.functions;
 
+import java.util.Set;
+
 /**
  * @author Amol S. Deshmukh &lt; amolweb at ya hoo dot com &gt;
  *
@@ -26,6 +28,8 @@ public abstract class MinaMaxa extends MultiOperandNumericFunction {
 	protected MinaMaxa() {
 		super(true, true);
 	}
+
+	public Set<Integer> notArrayArgs() { return null; }
 
 	public static final Function MAXA = new MinaMaxa() {
 		protected double evaluate(double[] values) {

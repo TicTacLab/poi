@@ -77,9 +77,4 @@ public final class Errortype extends Fixed1ArgFunction {
 		}
 		throw new IllegalArgumentException("Invalid error code (" + errorCode + ")");
 	}
-
-	@Override
-	public Set<Integer> notArrayArgs() {
-		return null;
-	}
 }

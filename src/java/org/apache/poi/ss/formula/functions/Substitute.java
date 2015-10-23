@@ -107,9 +107,4 @@ public final class Substitute extends Var3or4ArgFunction {
 			startIndex = nextMatch + searchStr.length();
 		}
 	}
-
-	@Override
-	public Set<Integer> notArrayArgs() {
-		return null;
-	}
 }

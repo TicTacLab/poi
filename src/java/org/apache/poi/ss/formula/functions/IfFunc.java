@@ -103,34 +103,4 @@ public final class IfFunc extends Var2or3ArgFunction {
 				((FuncVarPtg)nextPtg).getFunctionIndex() == FunctionMetadataRegistry.FUNCTION_INDEX_IF);
 
 	}
-
-	@Override
-	public Set<Integer> notArrayArgs() {
-		return null;
-	}
-
-	/*public static ValueEval evaluateOptimized(Ptg[] ptgs, int curPos, AttrPtg attrPtg, ValueEval arg0, OperationEvaluationContext ec) {
-		boolean evaluatedPredicate;
-		try {
-			evaluatedPredicate = IfFunc.evaluateFirstArg(arg0, ec.getRowIndex(), ec.getColumnIndex());
-		} catch (EvaluationException e) {
-			return e.getErrorEval();
-
-		}
-		if (evaluatedPredicate) {
-
-			// nothing to skip - true param follows
-		} else {
-			int dist = attrPtg.getData();
-			curPos += WorkbookEvaluator.countTokensToBeSkipped(ptgs, curPos, dist);
-			Ptg nextPtg = ptgs[curPos+1];
-			if (ptgs[curPos] instanceof AttrPtg && nextPtg instanceof FuncVarPtg &&
-					// in order to verify that there is no third param, we need to check
-					// if we really have the IF next or some other FuncVarPtg as third param, e.g. ROW()/COLUMN()!
-					((FuncVarPtg)nextPtg).getFunctionIndex() == FunctionMetadataRegistry.FUNCTION_INDEX_IF) {
-				// this is an if statement without a false param (as opposed to MissingArgPtg as the false param)
-				return BoolEval.FALSE;
-			}
-		}
-	}*/
 }

@@ -227,7 +227,7 @@ public final class OperationEvaluationContext {
 			case BAD_CELL_OR_NAMED_RANGE:
 				return ErrorEval.REF_INVALID;
 			case NAMED_RANGE:
-                EvaluationName nm = ((FormulaParsingWorkbook)_workbook).getName(refStrPart1, _sheetIndex);
+                EvaluationName nm = _workbook.getName(refStrPart1, _sheetIndex);
                 if(!nm.isRange()){
                     throw new RuntimeException("Specified name '" + refStrPart1 + "' is not a range as expected.");
                 }

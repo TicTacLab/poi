@@ -91,7 +91,7 @@ public abstract class XYNumericFunction extends Fixed2ArgFunction {
 		}
 	}
 
-	protected static interface Accumulator {
+	protected interface Accumulator {
 		double accumulate(double x, double y);
 	}
 

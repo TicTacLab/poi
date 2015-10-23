@@ -41,7 +41,7 @@ import java.util.Set;
  *
  * @author Josh Micich
  */
-public final class Index implements Function2Arg, Function3Arg, Function4Arg {
+public final class Index extends BaseFunction implements Function2Arg, Function3Arg, Function4Arg {
 
 	public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
 		TwoDEval reference = convertFirstArg(arg0);
@@ -106,9 +106,7 @@ public final class Index implements Function2Arg, Function3Arg, Function4Arg {
 	}
 
 	public Set<Integer> notArrayArgs() {
-		Set<Integer> xs = new HashSet<Integer>();
-		xs.add(0);
-		return xs;
+		return ArrayFunctionsHelper.asSet(0);
 	}
 
 	public ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
@@ -121,31 +119,6 @@ public final class Index implements Function2Arg, Function3Arg, Function4Arg {
 				return evaluate(srcRowIndex, srcColumnIndex, args[0], args[1], args[2], args[3]);
 		}
 		return ErrorEval.VALUE_INVALID;
-	}
-
-	public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
-		int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
-		IArrayEval[] arargs = new IArrayEval[args.length];
-		for (int i = 0; i < args.length; i++) arargs[i] = ArrayFunctionsHelper.coerceToIArrayEval(args[i], length);
-		int firstRow = ArrayFunctionsHelper.getFirstRow(args);
-		int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
-
-
-		ValueEval[] result = new ValueEval[length];
-		for (int i = 0; i < length; i++) {
-			ValueEval[] newArgs = new ValueEval[args.length];
-			for (int j = 0; j < args.length; j++) newArgs[j] = arargs[j].getValue(i);
-
-			// freeze args
-			if (notArrayArgs() != null) {
-				for (Integer j : notArrayArgs())
-					if (j < args.length)
-						newArgs[j] = args[j];
-			}
-
-			result[i] = evaluate(newArgs, srcRowIndex, srcColumnIndex);
-		}
-		return new ArrayEval(result, firstRow, lastRow);
 	}
 
 	private static ValueEval getValueFromArea(TwoDEval ae, int pRowIx, int pColumnIx)

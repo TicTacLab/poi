@@ -21,6 +21,7 @@ import org.apache.poi.ss.ITestDataProvider;
 import org.apache.poi.ss.formula.eval.ErrorEval;
 import org.apache.poi.ss.formula.eval.StringEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
+import org.apache.poi.ss.formula.functions.BaseFreeRefFunction;
 import org.apache.poi.ss.formula.functions.FreeRefFunction;
 import org.apache.poi.ss.formula.udf.DefaultUDFFinder;
 import org.apache.poi.ss.formula.udf.UDFFinder;
@@ -62,7 +63,7 @@ public class BaseTestExternalFunctions extends TestCase {
         }
     }
 
-    private static class MyFunc2 implements FreeRefFunction {
+    private static class MyFunc2 extends BaseFreeRefFunction {
         public MyFunc2() {
             //
         }
@@ -78,11 +79,6 @@ public class BaseTestExternalFunctions extends TestCase {
         @Override
         public ValueEval evaluateArray(ValueEval[] args, OperationEvaluationContext ec) {
             return evaluate(args, ec);
-        }
-
-        @Override
-        public Set<Integer> notArrayArgs() {
-            return null;
         }
     }
 

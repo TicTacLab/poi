@@ -314,9 +314,6 @@ public abstract class Ptg {
 		if (ptg instanceof AreaErrPtg) {
 			return true;
 		}
-		if (ptg instanceof RefErrorPtg) {
-			return true;
-		}
-		return false;
+		return ptg instanceof RefErrorPtg;
 	}
 }

@@ -40,9 +40,6 @@ import java.util.Set;
  * If denominator is equals to zero, QUOTIENT returns the #DIV/0! error value.
  */
 public class Quotient extends Fixed2ArgFunction implements FreeRefFunction {
-    public Set<Integer> notArrayArgs() {
-        return null;
-    }
     public static final FreeRefFunction instance = new Quotient();
 
     public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval venumerator, ValueEval vedenominator) {

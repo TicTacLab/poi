@@ -44,11 +44,6 @@ import java.util.Set;
  */
 public final class LinearRegressionFunction extends Fixed2ArgFunction {
 
-	@Override
-	public Set<Integer> notArrayArgs() {
-		return null;
-	}
-
 	private static abstract class ValueArray implements ValueVector {
 		private final int _size;
 		protected ValueArray(int size) {
@@ -113,7 +108,8 @@ public final class LinearRegressionFunction extends Fixed2ArgFunction {
 		}
 	}
 
-	public enum FUNCTION {INTERCEPT, SLOPE};
+	public enum FUNCTION {INTERCEPT, SLOPE}
+
 	public FUNCTION function;
 	
 	public LinearRegressionFunction(FUNCTION function) {

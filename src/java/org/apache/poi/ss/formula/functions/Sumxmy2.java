@@ -34,10 +34,7 @@ import java.util.Set;
 public final class Sumxmy2 extends XYNumericFunction {
     @Override
     public Set<Integer> notArrayArgs() {
-       Set<Integer> xs = new HashSet<Integer>();
-       xs.add(0);
-       xs.add(1);
-       return xs;
+        return ArrayFunctionsHelper.asSet(0, 1);
     }
 
 	private static final Accumulator XMinusYSquaredAccumulator = new Accumulator() {

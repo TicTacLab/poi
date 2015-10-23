@@ -21,6 +21,8 @@ package org.apache.poi.ss.formula.functions;
 import org.apache.poi.ss.formula.eval.ErrorEval;
 import org.apache.poi.ss.formula.eval.EvaluationException;
 
+import java.util.Set;
+
 /**
  * Calculates Modified internal rate of return. Syntax is MIRR(cash_flow_values, finance_rate, reinvest_rate)
  *
@@ -105,5 +107,9 @@ public class Mirr extends MultiOperandNumericFunction {
             value = Math.pow(-fv / pv, 1d / numOfYears) - 1;
         }
         return value;
+    }
+
+    public Set<Integer> notArrayArgs() {
+        return null;
     }
 }

@@ -37,10 +37,6 @@ import java.util.Set;
  */
 public final class Intercept extends Fixed2ArgFunction {
 
-	public Set<Integer> notArrayArgs() {
-		return null;
-	}
-
 	private final LinearRegressionFunction func;
 	public Intercept() {
 		func = new LinearRegressionFunction(FUNCTION.INTERCEPT);

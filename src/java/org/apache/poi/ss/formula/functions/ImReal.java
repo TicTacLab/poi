@@ -46,9 +46,6 @@ import org.apache.poi.ss.formula.eval.ValueEval;
  */
 public class ImReal extends Fixed1ArgFunction implements FreeRefFunction {
 
-    @Override
-    public Set<Integer> notArrayArgs() { return null; }
-
     public static final FreeRefFunction instance = new ImReal();
 
     public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval inumberVE) {

@@ -18,7 +18,6 @@
 package org.apache.poi.ss.formula.functions;
 
 import java.util.Locale;
-import java.util.Set;
 
 import org.apache.poi.ss.formula.OperationEvaluationContext;
 import org.apache.poi.ss.formula.eval.*;
@@ -129,10 +128,6 @@ public final class Dec2Hex extends Var1or2ArgFunction implements FreeRefFunction
 
     public ValueEval evaluateArray(ValueEval args[], int srcRowIndex, int srcColumnIndex) {
         return ErrorEval.NUM_ERROR;
-    }
-
-    public Set<Integer> notArrayArgs() {
-        return null;
     }
 
     public ValueEval evaluate(ValueEval[] args, OperationEvaluationContext ec) {

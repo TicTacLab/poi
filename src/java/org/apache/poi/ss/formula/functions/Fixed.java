@@ -22,15 +22,10 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Locale;
-import java.util.Set;
 
 import org.apache.poi.ss.formula.eval.*;
 
-public final class Fixed implements Function1Arg, Function2Arg, Function3Arg {
-
-    public Set<Integer> notArrayArgs() {
-        return null;
-    }
+public final class Fixed extends BaseFunction implements Function1Arg, Function2Arg, Function3Arg {
     @Override
     public ValueEval evaluate(
             int srcRowIndex, int srcColumnIndex,
@@ -64,23 +59,6 @@ public final class Fixed implements Function1Arg, Function2Arg, Function3Arg {
         return ErrorEval.VALUE_INVALID;
     }
 
-    public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
-        int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
-        IArrayEval[] arargs = new IArrayEval[args.length];
-        for (int i = 0; i < args.length; i++) arargs[i] = ArrayFunctionsHelper.coerceToIArrayEval(args[i], length);
-        int firstRow = ArrayFunctionsHelper.getFirstRow(args);
-        int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
-
-
-        ValueEval[] result = new ValueEval[length];
-        for (int i = 0; i < length; i++) {
-            ValueEval[] newArgs = new ValueEval[args.length];
-            for (int j = 0; j < args.length; j++) newArgs[j] = arargs[j].getValue(i);
-            result[i] = evaluate(newArgs, srcRowIndex, srcColumnIndex);
-        }
-        return new ArrayEval(result, firstRow, lastRow);
-    }
-    
     private ValueEval fixed(
             ValueEval numberParam, ValueEval placesParam,
             ValueEval skipThousandsSeparatorParam,

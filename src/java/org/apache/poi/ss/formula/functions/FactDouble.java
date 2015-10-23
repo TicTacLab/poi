@@ -44,9 +44,6 @@ import java.util.Set;
  */
 public class FactDouble extends Fixed1ArgFunction implements FreeRefFunction {
 
-    @Override
-    public Set<Integer> notArrayArgs() { return null; }
-
     public static final FreeRefFunction instance = new FactDouble();
 
     //Caching of previously calculated factorial for speed

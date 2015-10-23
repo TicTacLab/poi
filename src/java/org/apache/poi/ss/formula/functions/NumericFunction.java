@@ -102,10 +102,6 @@ public abstract class NumericFunction implements Function {
 			// no fields to initialise
 		}
 
-		public Set<Integer> notArrayArgs() {
-			return null;
-		}
-
 		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
 			double result;
 			try {
@@ -176,11 +172,6 @@ public abstract class NumericFunction implements Function {
 	};
 	static final NumberEval DOLLAR_ARG2_DEFAULT = new NumberEval(2.0);
 	public static final Function DOLLAR = new Var1or2ArgFunction() {
-		@Override
-		public Set<Integer> notArrayArgs() {
-			return null;
-		}
-
 		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
 			return evaluate(srcRowIndex, srcColumnIndex, arg0, DOLLAR_ARG2_DEFAULT);
 		}
@@ -421,11 +412,8 @@ public abstract class NumericFunction implements Function {
          */
         private boolean isDefaultResult(double x, double mean) {
 
-            if ( x == 0 && mean == 0 ) {
-                return true;
-            }
-            return false;
-        }
+			return x == 0 && mean == 0;
+		}
 
         private boolean checkArgument(double aDouble) throws EvaluationException {
 

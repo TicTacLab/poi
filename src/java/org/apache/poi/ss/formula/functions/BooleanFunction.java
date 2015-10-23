@@ -157,9 +157,6 @@ public abstract class BooleanFunction implements Function {
 		}
 	};
 	public static final Function NOT = new Fixed1ArgFunction() {
-
-		@Override
-		public Set<Integer> notArrayArgs() { return null; }
 		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
 			boolean boolArgVal;
 			try {

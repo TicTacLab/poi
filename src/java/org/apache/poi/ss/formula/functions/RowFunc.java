@@ -27,8 +27,11 @@ import java.util.Set;
  *
  * @author Josh Micich
  */
-public final class RowFunc implements Function0Arg, Function1Arg {
+public final class RowFunc extends BaseFunction implements Function0Arg, Function1Arg {
 
+    public Set<Integer> notArrayArgs() {
+        return ArrayFunctionsHelper.asSet(0);
+    }
 
     public ValueEval evaluate(int srcRowIndex, int srcColumnIndex) {
         return new NumberEval(srcRowIndex+1);
@@ -55,36 +58,5 @@ public final class RowFunc implements Function0Arg, Function1Arg {
               return new NumberEval(srcRowIndex+1);
         }
         return ErrorEval.VALUE_INVALID;
-    }
-
-    public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
-        int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
-        IArrayEval[] arargs = new IArrayEval[args.length];
-        for (int i = 0; i < args.length; i++) arargs[i] = ArrayFunctionsHelper.coerceToIArrayEval(args[i], length);
-        int firstRow = ArrayFunctionsHelper.getFirstRow(args);
-        int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
-
-
-        ValueEval[] result = new ValueEval[length];
-        for (int i = 0; i < length; i++) {
-            ValueEval[] newArgs = new ValueEval[args.length];
-            for (int j = 0; j < args.length; j++) newArgs[j] = arargs[j].getValue(i);
-
-            // freeze args
-            if (notArrayArgs() != null) {
-                for (Integer j : notArrayArgs())
-                    if (j < args.length)
-                        newArgs[j] = args[j];
-            }
-
-            result[i] = evaluate(newArgs, srcRowIndex, srcColumnIndex);
-        }
-        return new ArrayEval(result, firstRow, lastRow);
-    }
-
-    public Set<Integer> notArrayArgs() {
-        Set<Integer> xs = new HashSet<Integer>();
-        xs.add(0);
-        return xs;
     }
 }

@@ -76,10 +76,6 @@ public abstract class MultiOperandNumericFunction implements Function {
 
 	private static final int DEFAULT_MAX_NUM_OPERANDS = 30;
 
-	public Set<Integer> notArrayArgs() {
-		return null;
-	}
-
 	public final ValueEval evaluate(ValueEval[] args, int srcCellRow, int srcCellCol) {
 
 

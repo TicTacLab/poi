@@ -22,6 +22,6 @@ package org.apache.poi.ss.formula.ptg;
  *  sheet / book references in string form.
  */
 public interface Pxg3D extends Pxg {
-    public String getLastSheetName();
-    public void setLastSheetName(String sheetName);
+    String getLastSheetName();
+    void setLastSheetName(String sheetName);
 }

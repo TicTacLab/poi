@@ -39,13 +39,6 @@ import java.util.Set;
  * @author cedric dot walter @ gmail dot com
  */
 public class Hex2Dec extends Fixed1ArgFunction implements FreeRefFunction {
-    @Override
-    public Set<Integer> notArrayArgs() {
-        Set<Integer> xs = new HashSet<Integer>();
-        xs.add(0);
-        return xs;
-    }
-
     public static final FreeRefFunction instance = new Hex2Dec();
 
     static final int HEXADECIMAL_BASE = 16;

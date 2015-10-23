@@ -73,8 +73,4 @@ public final class Replace extends Fixed4ArgFunction {
 		}
 		return new StringEval(strBuff.toString());
 	}
-
-	public Set<Integer> notArrayArgs() {
-		return null;
-	}
 }

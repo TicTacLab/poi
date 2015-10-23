@@ -18,6 +18,6 @@
 package org.apache.poi.ss.formula;
 
 public interface SheetRange {
-    public int getFirstSheetIndex();
-    public int getLastSheetIndex();
+    int getFirstSheetIndex();
+    int getLastSheetIndex();
 }

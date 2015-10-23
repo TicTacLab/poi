@@ -33,10 +33,6 @@ import java.util.Set;
  * (regardless of the coordinates of the evaluating formula cell).
  */
 public final class T extends Fixed1ArgFunction {
-
-    @Override
-    public Set<Integer> notArrayArgs() { return null; }
-
     public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
         ValueEval arg = arg0;
         if (arg instanceof RefEval) {

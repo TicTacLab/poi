@@ -84,8 +84,6 @@ public abstract class TextFunction implements Function {
      * Returns the character specified by a number.
      */
     public static final Function CHAR = new Fixed1ArgFunction() {
-		@Override
-		public Set<Integer> notArrayArgs() { return null; }
         public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
             int arg;
             try {
@@ -270,7 +268,7 @@ public abstract class TextFunction implements Function {
 	public static final Function LEFT = new LeftRight(true);
 	public static final Function RIGHT = new LeftRight(false);
 
-	public static final Function CONCATENATE = new Function() {
+	public static final Function CONCATENATE = new BaseFunction() {
 
 		public ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
 			StringBuilder sb = new StringBuilder();
@@ -283,34 +281,9 @@ public abstract class TextFunction implements Function {
 			}
 			return new StringEval(sb.toString());
 		}
-
-		public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
-			int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
-			IArrayEval[] arargs = new IArrayEval[args.length];
-			for (int i = 0; i < args.length; i++) arargs[i] = ArrayFunctionsHelper.coerceToIArrayEval(args[i], length);
-						int firstRow = ArrayFunctionsHelper.getFirstRow(args);
-			int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
-
-
-			ValueEval[] result = new ValueEval[length];
-			for (int i = 0; i < length; i++) {
-				ValueEval[] newArgs = new ValueEval[args.length];
-				for (int j = 0; j < args.length; j++) newArgs[j] = arargs[j].getValue(i);
-				result[i] = evaluate(newArgs, firstRow+i, srcColumnIndex);
-			}
-			return new ArrayEval(result, firstRow, lastRow);
-		}
-
-		public Set<Integer> notArrayArgs() {
-			return null;
-		}
 	};
 
 	public static final Function EXACT = new Fixed2ArgFunction() {
-		public Set<Integer> notArrayArgs() {
-			return null;
-		}
-
 		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0,
 				ValueEval arg1) {
 			String s0;
@@ -336,10 +309,6 @@ public abstract class TextFunction implements Function {
 	 * <b>Syntax<b>:<br/> <b>TEXT</b>(<b>value</b>, <b>format_text</b>)<br/>
 	 */
 	public static final Function TEXT = new Fixed2ArgFunction() {
-		public Set<Integer> notArrayArgs() {
-			return null;
-		}
-
 		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1) {
 			double s0;
 			String s1;
@@ -403,11 +372,6 @@ public abstract class TextFunction implements Function {
 				return ErrorEval.VALUE_INVALID;
 			}
 			return new NumberEval(result + 1);
-		}
-
-		@Override
-		public Set<Integer> notArrayArgs() {
-			return null;
 		}
 	}
 	/**

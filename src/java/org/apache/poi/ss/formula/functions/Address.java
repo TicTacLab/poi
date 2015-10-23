@@ -16,44 +16,21 @@
 ==================================================================== */
 package org.apache.poi.ss.formula.functions;
 
-import org.apache.poi.ss.formula.OperationEvaluationContext;
 import org.apache.poi.ss.formula.SheetNameFormatter;
 import org.apache.poi.ss.formula.eval.*;
 import org.apache.poi.ss.util.CellReference;
-
-import java.util.Set;
 
 /**
  * Creates a text reference as text, given specified row and column numbers.
  *
  * @author Aniket Banerjee (banerjee@google.com)
  */
-public class Address implements Function {
+public class Address extends BaseFunction implements Function {
     public static final int REF_ABSOLUTE = 1;
     public static final int REF_ROW_ABSOLUTE_COLUMN_RELATIVE = 2;
     public static final int REF_ROW_RELATIVE_RELATIVE_ABSOLUTE = 3;
     public static final int REF_RELATIVE = 4;
 
-    public Set<Integer> notArrayArgs() {
-        return null;
-    }
-
-    public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
-        int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
-        IArrayEval[] arargs = new IArrayEval[args.length];
-        for (int i = 0; i < args.length; i++) arargs[i] = ArrayFunctionsHelper.coerceToIArrayEval(args[i], length);
-        int firstRow = ArrayFunctionsHelper.getFirstRow(args);
-        int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
-
-
-        ValueEval[] result = new ValueEval[length];
-        for (int i = 0; i < length; i++) {
-            ValueEval[] newArgs = new ValueEval[args.length];
-            for (int j = 0; j < args.length; j++) newArgs[j] = arargs[j].getValue(i);
-            result[i] = evaluate(newArgs, srcRowIndex, srcColumnIndex);
-        }
-        return new ArrayEval(result, firstRow, lastRow);
-    }
 
     public ValueEval evaluate(ValueEval[] args, int srcRowIndex,
                               int srcColumnIndex) {

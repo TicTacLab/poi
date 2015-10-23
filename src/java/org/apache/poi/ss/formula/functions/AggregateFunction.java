@@ -23,7 +23,6 @@ import org.apache.poi.ss.formula.eval.NumberEval;
 import org.apache.poi.ss.formula.eval.OperandResolver;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
-import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -72,9 +71,7 @@ public abstract class AggregateFunction extends MultiOperandNumericFunction {
 
 		@Override
 		public Set<Integer> notArrayArgs() {
-			Set<Integer> xs = new HashSet<Integer>();
-			xs.add(0);
-			return xs;
+			return ArrayFunctionsHelper.asSet(0);
 		}
 	}
 
@@ -159,11 +156,16 @@ public abstract class AggregateFunction extends MultiOperandNumericFunction {
 		protected double evaluate(double[] values) {
 			throw new IllegalStateException("should not be called");
 		}
+		public Set<Integer> notArrayArgs() {
+			return null;
+		}
 	}
 
     protected AggregateFunction() {
         super(false, false);
     }
+
+	public Set<Integer> notArrayArgs() { return null; }
 
     /**
      * Create an instance to use in the {@link Subtotal} function.

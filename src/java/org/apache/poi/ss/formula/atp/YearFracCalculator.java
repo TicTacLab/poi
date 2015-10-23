@@ -288,10 +288,7 @@ final class YearFracCalculator {
 			return true;
 		}
 		// all other centuries are *not* leap years
-		if (i % 100 == 0) {
-			return false;
-		}
-		return true;
+		return i % 100 != 0;
 	}
 
 	private static boolean isGreaterThanOneYear(SimpleDate start, SimpleDate end) {

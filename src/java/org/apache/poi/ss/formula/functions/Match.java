@@ -106,9 +106,7 @@ public final class Match extends Var2or3ArgFunction {
 
 	@Override
 	public Set<Integer> notArrayArgs() {
-		Set<Integer> xs = new HashSet<Integer>();
-		xs.add(1);
-		return xs;
+		return ArrayFunctionsHelper.asSet(1);
 	}
 
 	private static final class SingleValueVector implements ValueVector {

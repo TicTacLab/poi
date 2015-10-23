@@ -131,8 +131,6 @@ public class Rank extends Var2or3ArgFunction {
 
 	@Override
 	public Set<Integer> notArrayArgs() {
-		Set<Integer> xs = new HashSet<Integer>();
-		xs.add(1);
-		return xs;
+		return ArrayFunctionsHelper.asSet(1);
 	}
 }

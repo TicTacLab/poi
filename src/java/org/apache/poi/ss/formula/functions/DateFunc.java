@@ -109,9 +109,4 @@ public final class DateFunc extends Fixed3ArgFunction {
 
 		return year < 1900 ? 1900 + year : year;
 	}
-
-	@Override
-	public Set<Integer> notArrayArgs() {
-		return null;
-	}
 }

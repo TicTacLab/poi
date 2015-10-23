@@ -26,5 +26,5 @@ package org.apache.poi.ss.formula.eval;
  */
 public interface NumericValueEval extends ValueEval {
 
-    public abstract double getNumberValue();
+    double getNumberValue();
 }

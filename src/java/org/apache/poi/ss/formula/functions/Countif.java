@@ -17,7 +17,6 @@
 
 package org.apache.poi.ss.formula.functions;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -48,9 +47,7 @@ public final class Countif extends Fixed2ArgFunction {
 
 	@Override
 	public Set<Integer> notArrayArgs() {
-		Set<Integer> xs = new HashSet<Integer>();
-		xs.add(0);
-		return xs;
+		return ArrayFunctionsHelper.asSet(0);
 	}
 
 	private static final class CmpOp {

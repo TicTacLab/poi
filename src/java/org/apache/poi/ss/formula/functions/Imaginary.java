@@ -43,9 +43,6 @@ import java.util.regex.Pattern;
  */
 public class Imaginary extends Fixed1ArgFunction implements FreeRefFunction {
 
-    @Override
-    public Set<Integer> notArrayArgs() { return null; }
-
     public static final FreeRefFunction instance = new Imaginary();
 
     public static final String GROUP1_REAL_SIGN_REGEX = "([+-]?)";

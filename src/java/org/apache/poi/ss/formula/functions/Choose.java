@@ -19,12 +19,10 @@ package org.apache.poi.ss.formula.functions;
 
 import org.apache.poi.ss.formula.eval.*;
 
-import java.util.Set;
-
 /**
  * @author Josh Micich
  */
-public final class Choose implements Function {
+public final class Choose extends BaseFunction implements Function {
 
 	public ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
 		if (args.length < 2) {
@@ -49,28 +47,6 @@ public final class Choose implements Function {
 				return e.getErrorEval();
 			}
 		}
-	}
-
-	public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
-		IArrayEval a0 = ArrayFunctionsHelper.coerceToIArrayEval(args[0]);
-		int length = a0.getLength();
-		int firstRow = ArrayFunctionsHelper.getFirstRow(args);
-		int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
-
-
-		ValueEval[] result = new ValueEval[length];
-		for (int i = 0; i < length; i++) {
-			ValueEval[] newArgs = new ValueEval[args.length];
-			newArgs[0] = a0.getValue(i);
-			System.arraycopy(args, 1, newArgs, 1, args.length - 1);
-			result[i] = evaluate(newArgs, firstRow+i, srcColumnIndex);
-		}
-		return new ArrayEval(result, firstRow, lastRow);
-	}
-
-	@Override
-	public Set<Integer> notArrayArgs() {
-		return null;
 	}
 
 	public static int evaluateFirstArg(ValueEval arg0, int srcRowIndex, int srcColumnIndex)

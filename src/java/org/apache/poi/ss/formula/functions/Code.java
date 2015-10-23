@@ -33,10 +33,6 @@ import java.util.Set;
  * @author cedric dot walter @ gmail dot com
  */
 public class Code extends Fixed1ArgFunction {
-
-    @Override
-    public Set<Integer> notArrayArgs() { return null; }
-
     public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval textArg) {
 
         ValueEval veText1;

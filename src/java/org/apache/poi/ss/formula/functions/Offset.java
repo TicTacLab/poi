@@ -100,10 +100,7 @@ public final class Offset implements Function {
 			if(_offset < lowValidIx) {
 				return true;
 			}
-			if(getLastIndex() > highValidIx) {
-				return true;
-			}
-			return false;
+			return getLastIndex() > highValidIx;
 		}
 		public String toString() {
 			StringBuffer sb = new StringBuffer(64);

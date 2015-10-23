@@ -39,7 +39,7 @@ import org.apache.poi.ss.formula.ptg.RefPtgBase;
  */
 public final class FormulaShifter {
 
-    static enum ShiftMode {
+    enum ShiftMode {
         Row,
         Sheet
     }

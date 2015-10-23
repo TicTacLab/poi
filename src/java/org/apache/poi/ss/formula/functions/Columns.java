@@ -20,17 +20,12 @@ package org.apache.poi.ss.formula.functions;
 import org.apache.poi.ss.formula.eval.*;
 import org.apache.poi.ss.formula.TwoDEval;
 
-import java.util.Set;
-
 /**
  * Implementation for Excel COLUMNS function.
  *
  * @author Josh Micich
  */
 public final class Columns extends Fixed1ArgFunction {
-
-    @Override
-    public Set<Integer> notArrayArgs() { return null; }
 
 	public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0) {
 

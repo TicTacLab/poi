@@ -129,10 +129,7 @@ final class FormulaUsedBlankCellSet {
 			if (rowIndex < _firstRowIndex) {
 				return false;
 			}
-			if (rowIndex > _lastRowIndex) {
-				return false;
-			}
-			return true;
+			return rowIndex <= _lastRowIndex;
 		}
 
 		public boolean acceptRow(int rowIndex, int firstColumnIndex, int lastColumnIndex) {

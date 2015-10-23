@@ -29,40 +29,11 @@ import java.util.Set;
  *
  * @author Josh Micich
  */
-public abstract class Fixed1ArgFunction implements Function1Arg {
-    public Set<Integer> notArrayArgs() {
-        return null;
-    }
+public abstract class Fixed1ArgFunction extends BaseFunction implements Function1Arg {
 	public final ValueEval evaluate(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
 		if (args.length != 1) {
 			return ErrorEval.VALUE_INVALID;
 		}
         return evaluate(srcRowIndex, srcColumnIndex, args[0]);
 	}
-
-    public ValueEval evaluateArray(ValueEval[] args, int srcRowIndex, int srcColumnIndex) {
-        int length = ArrayFunctionsHelper.getIArrayArg(args).getLength();
-        IArrayEval[] arargs = new IArrayEval[args.length];
-        for (int i = 0; i < args.length; i++) arargs[i] = ArrayFunctionsHelper.coerceToIArrayEval(args[i], length);
-        int firstRow = ArrayFunctionsHelper.getFirstRow(args);
-        int lastRow = ArrayFunctionsHelper.getLastRow(args, length - 1);
-
-
-        ValueEval[] result = new ValueEval[length];
-        for (int i = 0; i < length; i++) {
-            ValueEval[] newArgs = new ValueEval[args.length];
-            for (int j = 0; j < args.length; j++) newArgs[j] = arargs[j].getValue(i);
-
-            // freeze args
-            if (notArrayArgs() != null) {
-                for (Integer j : notArrayArgs())
-                    if (j < args.length)
-                        newArgs[j] = args[j];
-            }
-
-            result[i] = evaluate(newArgs, srcRowIndex, srcColumnIndex);
-        }
-        return new ArrayEval(result, firstRow, lastRow);
-    }
-
 }

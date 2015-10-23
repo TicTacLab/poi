@@ -22,8 +22,8 @@ package org.apache.poi.ss.formula.ptg;
  *  reference in string form.
  */
 public interface Pxg {
-    public int getExternalWorkbookNumber();
-    public String getSheetName();
-    public void setSheetName(String sheetName);
-    public String toFormulaString();
+    int getExternalWorkbookNumber();
+    String getSheetName();
+    void setSheetName(String sheetName);
+    String toFormulaString();
 }

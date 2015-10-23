@@ -36,10 +36,6 @@ import java.util.Set;
  * properly the result is <b>#VALUE!</b> error. Blank string converts to zero.
  */
 public final class Value extends Fixed1ArgFunction {
-
-	@Override
-	public Set<Integer> notArrayArgs() { return null; }
-
 	/** "1,0000" is valid, "1,00" is not */
 	private static final int MIN_DISTANCE_BETWEEN_THOUSANDS_SEPARATOR = 4;
 	private static final Double ZERO = new Double(0.0);

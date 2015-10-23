@@ -135,9 +135,6 @@ public final class Sumif extends Var2or3ArgFunction {
 
 	@Override
 	public Set<Integer> notArrayArgs() {
-		Set<Integer> xs = new HashSet<Integer>();
-		xs.add(0);
-		xs.add(2);
-		return xs;
+		return ArrayFunctionsHelper.asSet(0, 2);
 	}
 }

@@ -21,7 +21,6 @@ import org.apache.poi.ss.formula.OperationEvaluationContext;
 import org.apache.poi.ss.formula.eval.*;
 
 import java.math.BigDecimal;
-import java.util.Set;
 
 /**
  * Implementation for Excel DELTA() function.<p/>
@@ -40,10 +39,6 @@ import java.util.Set;
  * @author cedric dot walter @ gmail dot com
  */
 public final class Delta extends Fixed2ArgFunction implements FreeRefFunction {
-    public Set<Integer> notArrayArgs() {
-        return null;
-    }
-
     public static final FreeRefFunction instance = new Delta();
 
     private final static NumberEval ONE = new NumberEval(1);

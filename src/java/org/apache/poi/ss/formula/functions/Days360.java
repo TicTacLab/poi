@@ -17,7 +17,6 @@
 package org.apache.poi.ss.formula.functions;
 
 import java.util.Calendar;
-import java.util.Set;
 
 import org.apache.poi.ss.formula.eval.EvaluationException;
 import org.apache.poi.ss.formula.eval.NumberEval;
@@ -147,10 +146,5 @@ public class Days360 extends Var2or3ArgFunction {
         int dayOfMonth = date.get(Calendar.DAY_OF_MONTH);
         int lastDayOfMonth = date.getActualMaximum(Calendar.DAY_OF_MONTH);
         return (dayOfMonth == lastDayOfMonth);
-    }
-
-    @Override
-    public Set<Integer> notArrayArgs() {
-        return null;
     }
 }

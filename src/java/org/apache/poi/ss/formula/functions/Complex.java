@@ -17,7 +17,6 @@
 
 package org.apache.poi.ss.formula.functions;
 
-import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
@@ -161,10 +160,6 @@ public class Complex extends Var2or3ArgFunction implements FreeRefFunction {
 
     @Override
     public Set<Integer> notArrayArgs() {
-        Set<Integer> xs = new HashSet<Integer>();
-        xs.add(0);
-        xs.add(1);
-        xs.add(2);
-        return xs;
+        return ArrayFunctionsHelper.asSet(0, 1, 2);
     }
 }

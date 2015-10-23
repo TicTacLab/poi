@@ -46,9 +46,7 @@ public class Oct2Dec extends Fixed1ArgFunction implements FreeRefFunction {
 
     @Override
     public Set<Integer> notArrayArgs() {
-        Set<Integer> xs = new HashSet<Integer>();
-        xs.add(0);
-        return xs;
+        return ArrayFunctionsHelper.asSet(0);
     }
 
     public static final FreeRefFunction instance = new Oct2Dec();

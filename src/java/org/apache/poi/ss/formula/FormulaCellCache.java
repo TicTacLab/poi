@@ -27,7 +27,7 @@ import java.util.Map;
  */
 final class FormulaCellCache {
 
-	static interface IEntryOperation {
+	interface IEntryOperation {
 		void processEntry(FormulaCellCacheEntry entry);
 	}
 
