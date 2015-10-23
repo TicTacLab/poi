@@ -21,6 +21,7 @@ import org.apache.poi.ss.formula.ptg.NamePtg;
 import org.apache.poi.ss.formula.ptg.NameXPtg;
 import org.apache.poi.ss.formula.ptg.Ptg;
 import org.apache.poi.ss.formula.udf.UDFFinder;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 /**
  * Abstracts a workbook for the purpose of formula evaluation.<br/>
@@ -69,6 +70,7 @@ public interface EvaluationWorkbook {
     ExternalName getExternalName(String nameName, String sheetName, int externalWorkbookNumber);
 
     boolean isPartOfArrayFormula(int sheetIndex, int rowIndex, int colIndex);
+    CellRangeAddress getArrayFormulaRangeAddress(int sheetIndex, int rowIndex, int colIndex);
     
     EvaluationName getName(NamePtg namePtg);
     EvaluationName getName(String name, int sheetIndex);

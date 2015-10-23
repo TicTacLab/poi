@@ -31,6 +31,7 @@ import org.apache.poi.ss.formula.ptg.Ref3DPxg;
 import org.apache.poi.ss.formula.udf.IndexedUDFFinder;
 import org.apache.poi.ss.formula.udf.UDFFinder;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.AreaReference;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -294,8 +295,13 @@ public abstract class BaseXSSFEvaluationWorkbook implements FormulaRenderingWork
 
     public boolean isPartOfArrayFormula(int sheetIndex, int srcRowIndex, int srcColumnIndex) {
         Sheet sheet = _uBook.getSheetAt(sheetIndex);
-        Cell cell = sheet.getRow(srcRowIndex).getCell(srcColumnIndex);
-        return cell.isPartOfArrayFormulaGroup();
+        Row row = sheet.getRow(srcRowIndex);
+        Cell cell;
+        if (row != null) {
+            cell = row.getCell(srcColumnIndex);
+            return cell.isPartOfArrayFormulaGroup();
+        }
+        return false;
     }
 
     public CellRangeAddress getArrayFormulaRangeAddress(int sheetIndex, int srcRowIndex, int srcColumnIndex) {

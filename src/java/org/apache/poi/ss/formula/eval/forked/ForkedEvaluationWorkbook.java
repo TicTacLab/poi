@@ -28,9 +28,8 @@ import org.apache.poi.ss.formula.ptg.NamePtg;
 import org.apache.poi.ss.formula.ptg.NameXPtg;
 import org.apache.poi.ss.formula.ptg.Ptg;
 import org.apache.poi.ss.formula.udf.UDFFinder;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 
 /**
  * Represents a workbook being used for forked evaluation. Most operations are delegated to the
@@ -126,6 +125,11 @@ final class ForkedEvaluationWorkbook implements EvaluationWorkbook {
 	@Override
 	public boolean isPartOfArrayFormula(int sheetIndex, int rowIndex, int colIndex) {
 		return _masterBook.isPartOfArrayFormula(sheetIndex, rowIndex, colIndex);
+	}
+
+	@Override
+	public CellRangeAddress getArrayFormulaRangeAddress(int sheetIndex, int rowIndex, int colIndex) {
+		return _masterBook.getArrayFormulaRangeAddress(sheetIndex, rowIndex, colIndex);
 	}
 
 	public int getSheetIndex(EvaluationSheet sheet) {

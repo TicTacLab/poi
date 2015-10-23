@@ -41,6 +41,7 @@ import org.apache.poi.ss.formula.udf.UDFFinder;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.util.AreaReference;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.util.POILogFactory;
 import org.apache.poi.util.POILogger;
@@ -168,6 +169,13 @@ public final class HSSFEvaluationWorkbook implements FormulaRenderingWorkbook, E
         Sheet sheet = _uBook.getSheetAt(sheetIndex);
         Cell cell = sheet.getRow(rowIndex).getCell(colIndex);
         return cell.isPartOfArrayFormulaGroup();
+    }
+
+    @Override
+    public CellRangeAddress getArrayFormulaRangeAddress(int sheetIndex, int rowIndex, int colIndex) {
+        Sheet sheet = _uBook.getSheetAt(sheetIndex);
+        Cell cell = sheet.getRow(rowIndex).getCell(colIndex);
+        return cell.getArrayFormulaRange();
     }
 
     public String resolveNameXText(NameXPtg n) {

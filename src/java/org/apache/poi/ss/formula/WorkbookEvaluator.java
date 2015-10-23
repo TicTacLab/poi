@@ -17,7 +17,6 @@
 
 package org.apache.poi.ss.formula;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 import org.apache.poi.ss.formula.CollaboratingWorkbooksEnvironment.WorkbookNotFoundException;
@@ -33,9 +32,6 @@ import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.util.POILogFactory;
 import org.apache.poi.util.POILogger;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFEvaluationCell;
-import org.apache.poi.xssf.usermodel.XSSFEvaluationWorkbook;
 
 /**
  * Evaluates formula cells.<p/>
@@ -399,6 +395,7 @@ public final class WorkbookEvaluator {
 		Stack<ValueEval> stack = new Stack<ValueEval>();
 		while (!ptgs.isEmpty()) {
 			Ptg ptg = ptgs.peek();
+			System.out.println(stack);
 
 			if (dbgEvaluationOutputIndent > 0) {
 				EVAL_LOG.log(POILogger.INFO, dbgIndentStr + "  * ptg: " + ptg);
@@ -449,7 +446,7 @@ public final class WorkbookEvaluator {
 					if (IfFunc.withElse(ptgs, trueSkip)) {
 						AttrPtg falseAttr = falseOrEndAttr;
 						falseOrEndSkip = countTokensToBeSkipped(ptgs, trueSkip, falseAttr.getData() + 1);
-						falsePtg = ptgs.get(trueSkip - 1 + falseOrEndSkip - 1);
+						falsePtg = ptgs.get(trueSkip - 1 + falseOrEndSkip);
 					}
 
 					Ptg[] ifPtgs;
@@ -465,7 +462,7 @@ public final class WorkbookEvaluator {
 					if (hasArrayArguments) {
 						ptgs.removeFirst();
 						ptgs.remove(trueSkip - 1);
-						ptgs.remove(falseOrEndSkip - 1);
+						ptgs.remove(trueSkip + falseOrEndSkip - 3);
 						stack.push(arg0);
 						continue;
 					}
