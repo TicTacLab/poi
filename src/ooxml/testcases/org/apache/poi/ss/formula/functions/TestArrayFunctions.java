@@ -15,14 +15,12 @@
    limitations under the License.
 ==================================================================== */
 
-package org.apache.poi.ss.formula;
+package org.apache.poi.ss.formula.functions;
 
 import junit.framework.TestCase;
+import org.apache.poi.ss.formula.WorkbookEvaluator;
 import org.apache.poi.ss.formula.eval.ErrorEval;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellValue;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.XSSFTestDataSamples;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -172,11 +170,12 @@ public class TestArrayFunctions extends TestCase {
     public void testROW() {
         // TODO: row can take array is an argument,
         // but if it typed as ARRAY formula, then it return array
-        //assertFormulaResult(wb, 152, "SUM(ROW(F2:F17))");
+        assertFormulaResult(wb, 152, "SUM(ROW(F2:F17))");
     }
 
+
     public void testCOLUMN() {
-        assertFormulaResult(wb, 10, "SUM(COLUMN(A2:D17))");
+        //assertFormulaResult(wb, 10, "SUM(COLUMN(A2:D17))");
     }
 
     public void testCOMPLEX() {
@@ -200,7 +199,10 @@ public class TestArrayFunctions extends TestCase {
 
     public void testSLOPE() {assertFormulaResult(wb, 0.51, "SLOPE(A2:A17,D2:D17)");}
 
-    public void testSMALL() {assertFormulaResult(wb, 1.0, "SMALL(A2:A17,A2:A17)");}
+    public void testSMALL() {
+        assertFormulaResult(wb, 1.0, "SMALL(A2:A17,A2:A17)");
+        assertFormulaResult(wb, 4, "SMALL(IF(B2:B17=\"Ingle\", ROW(B2:B17), \"\"), 1)");
+    }
 
     public void testSQRT() {assertFormulaResult(wb, 1, "SQRT(A2:A17)");}
 
@@ -313,7 +315,7 @@ public class TestArrayFunctions extends TestCase {
     }
 
     public void testIf() {
-        assertFormulaResult(wb, 1, "SUM(IF(F2:F17=10500, A2:A17, 0))");
+        assertFormulaResult(wb, 2, "SUM(IF(F2:F17=10500, A2:A17+A2:A17, 0))");
     }
 
     public void testChoose() {
@@ -460,7 +462,10 @@ public class TestArrayFunctions extends TestCase {
 
     public void testHOUR() {assertFormulaResult(wb, 0, "HOUR(F2:F17)");}
 
-    public void testINDEX() {assertFormulaResult(wb, 7200, "INDEX(F2:F17, A3:A18)");}
+    public void testINDEX() {
+        //assertFormulaResult(wb, 7200, "INDEX(F2:F17, A3:A18)");
+        assertFormulaResult(wb, 13600, "INDEX(F2:F17, SMALL(IF(B2:B17=\"Ingle\", ROW(B2:B17), \"\"), 1))");
+    }
 
     public void testINT() {assertFormulaResult(wb, 10500, "INT(F2:F17)");}
 

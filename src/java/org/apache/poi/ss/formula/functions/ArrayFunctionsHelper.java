@@ -77,6 +77,8 @@ public class ArrayFunctionsHelper {
         for (ValueEval valueEval : valueEvals) {
             if (valueEval instanceof LazyAreaEval)
                 return ((LazyAreaEval) valueEval).getFirstRow();
+            else if (valueEval instanceof ArrayEval)
+                return ((ArrayEval) valueEval).getFirstRow();
         }
         return 0;
     }
@@ -90,7 +92,7 @@ public class ArrayFunctionsHelper {
     }
 
     public static Set<Integer> asSet(Integer... args) {
-        Set<Integer> xs = new HashSet<>(args.length);
+        Set<Integer> xs = new HashSet<Integer>(args.length);
         Collections.addAll(xs, args);
         return xs;
     }
