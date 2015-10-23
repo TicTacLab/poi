@@ -395,7 +395,6 @@ public final class WorkbookEvaluator {
 		Stack<ValueEval> stack = new Stack<ValueEval>();
 		while (!ptgs.isEmpty()) {
 			Ptg ptg = ptgs.peek();
-			System.out.println(stack);
 
 			if (dbgEvaluationOutputIndent > 0) {
 				EVAL_LOG.log(POILogger.INFO, dbgIndentStr + "  * ptg: " + ptg);
