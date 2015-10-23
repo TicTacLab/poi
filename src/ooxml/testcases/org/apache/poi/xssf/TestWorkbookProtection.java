@@ -49,7 +49,7 @@ public class TestWorkbookProtection {
         CellValue result = fe.evaluate(cell);
 
 
-        assertEquals(null, FormulaError.forInt(result.getErrorValue()).getString());
+        assertEquals("#NULL!", FormulaError.forInt(result.getErrorValue()).getString());
 
     }
 
