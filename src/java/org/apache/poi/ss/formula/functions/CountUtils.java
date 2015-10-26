@@ -145,7 +145,13 @@ final class CountUtils {
 
         ThreeDEval areaEval = ranges[0];
 
-        for (int sIx=areaEval.getFirstSheetIndex(); sIx <= areaEval.getLastSheetIndex(); sIx++) {
+		int[] sheetIdxs = new int[ranges.length];
+		for (int i = 0; i < ranges.length; i++) {
+			ThreeDEval r = ranges[i];
+			sheetIdxs[i] = r.getFirstSheetIndex();
+		}
+
+        for (int sIx=0; sIx <= areaEval.getLastSheetIndex() - areaEval.getFirstSheetIndex(); sIx++) {
             int height = areaEval.getHeight();
             int width = areaEval.getWidth();
             for (int rrIx=0; rrIx<height; rrIx++) {
@@ -156,7 +162,7 @@ final class CountUtils {
                     for (int i = 0; i < ranges.length; i++) {
 
                         I_MatchPredicate criteriaPredicate = createCriteriaPredicate(args[i*2+1], rrIx, rcIx);
-                        ValueEval ve = ranges[i].getValue(sIx, rrIx, rcIx);
+                        ValueEval ve = ranges[i].getValue(sheetIdxs[i]+sIx, rrIx, rcIx);
                         if(criteriaPredicate instanceof I_MatchAreaPredicate){
                             I_MatchAreaPredicate areaPredicate = (I_MatchAreaPredicate)criteriaPredicate;
                             if(!areaPredicate.matches(areaEval, rrIx, rcIx)) {
