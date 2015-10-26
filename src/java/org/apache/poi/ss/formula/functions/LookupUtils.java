@@ -289,7 +289,7 @@ final class LookupUtils {
         protected StringLookupComparer(StringEval se, boolean matchExact, boolean isMatchFunction) {
 			super(se);
 			_value = se.getStringValue();
-            _wildCardPattern = Countif.StringMatcher.getWildCardPattern(_value);
+            _wildCardPattern = CountUtils.StringMatcher.getWildCardPattern(_value);
             _matchExact = matchExact;
             _isMatchFunction = isMatchFunction;
 		}
@@ -458,7 +458,7 @@ final class LookupUtils {
 				throw EvaluationException.invalidValue();
 			}
 			// TODO move parseBoolean to OperandResolver
-			Boolean b = Countif.parseBoolean(stringValue);
+			Boolean b = CountUtils.parseBoolean(stringValue);
 			if(b != null) {
 				// string converted to boolean OK
 				return b.booleanValue();

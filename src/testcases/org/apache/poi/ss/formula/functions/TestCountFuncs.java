@@ -142,7 +142,7 @@ public final class TestCountFuncs extends TestCase {
 	}
 
 	public void testCriteriaPredicateNe_Bug46647() {
-		I_MatchPredicate mp = Countif.createCriteriaPredicate(new StringEval("<>aa"), 0, 0);
+		I_MatchPredicate mp = CountUtils.createCriteriaPredicate(new StringEval("<>aa"), 0, 0);
 		StringEval seA = new StringEval("aa"); // this should not match the criteria '<>aa'
 		StringEval seB = new StringEval("bb"); // this should match
 		if (mp.matches(seA) && !mp.matches(seB)) {
@@ -253,7 +253,7 @@ public final class TestCountFuncs extends TestCase {
 	}
 
 	private static I_MatchPredicate createCriteriaPredicate(ValueEval ev) {
-		return Countif.createCriteriaPredicate(ev, 0, 0);
+		return CountUtils.createCriteriaPredicate(ev, 0, 0);
 	}
 
 	/**
@@ -269,17 +269,17 @@ public final class TestCountFuncs extends TestCase {
 		AreaEval ev = EvalFactory.createAreaEval("A10:A12", new ValueEval[] { v0, v1, v2, });
 
 		I_MatchPredicate mp;
-		mp = Countif.createCriteriaPredicate(ev, 9, srcColIx);
+		mp = CountUtils.createCriteriaPredicate(ev, 9, srcColIx);
 		confirmPredicate(true, mp, srcColIx);
 		confirmPredicate(false, mp, "abc");
 		confirmPredicate(false, mp, ErrorEval.DIV_ZERO);
 
-		mp = Countif.createCriteriaPredicate(ev, 10, srcColIx);
+		mp = CountUtils.createCriteriaPredicate(ev, 10, srcColIx);
 		confirmPredicate(false, mp, srcColIx);
 		confirmPredicate(true, mp, "abc");
 		confirmPredicate(false, mp, ErrorEval.DIV_ZERO);
 
-		mp = Countif.createCriteriaPredicate(ev, 11, srcColIx);
+		mp = CountUtils.createCriteriaPredicate(ev, 11, srcColIx);
 		confirmPredicate(false, mp, srcColIx);
 		confirmPredicate(false, mp, "abc");
 		confirmPredicate(true, mp, ErrorEval.DIV_ZERO);
@@ -287,7 +287,7 @@ public final class TestCountFuncs extends TestCase {
 
 		// tricky: indexing outside of A10:A12
 		// even this #VALUE! error gets used by COUNTIF as valid criteria
-		mp = Countif.createCriteriaPredicate(ev, 12, srcColIx);
+		mp = CountUtils.createCriteriaPredicate(ev, 12, srcColIx);
 		confirmPredicate(false, mp, srcColIx);
 		confirmPredicate(false, mp, "abc");
 		confirmPredicate(false, mp, ErrorEval.DIV_ZERO);

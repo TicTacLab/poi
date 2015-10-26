@@ -19,8 +19,10 @@
 package org.apache.poi.ss.formula.functions;
 
 import org.apache.poi.ss.formula.OperationEvaluationContext;
+import org.apache.poi.ss.formula.ThreeDEval;
 import org.apache.poi.ss.formula.eval.ErrorEval;
 import org.apache.poi.ss.formula.eval.NumberEval;
+import org.apache.poi.ss.formula.eval.RefEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 
 import java.util.Set;
@@ -36,11 +38,18 @@ public class Countifs implements FreeRefFunction {
     public static final FreeRefFunction instance = new Countifs();
 
     public ValueEval evaluate(ValueEval[] args, OperationEvaluationContext ec) {
-        Double result = null;
+        Double result;
         if (args.length == 0 || args.length % 2 > 0) {
             return ErrorEval.VALUE_INVALID;
         }
-        for (int i = 0; i < args.length; ) {
+        if (args[0] instanceof RefEval) {
+            result = (double) CountUtils.countMatchingCellsInRef(args);
+        } else if (args[0] instanceof ThreeDEval) {
+            result = (double) CountUtils.countMatchingCellsInArea(args);
+        } else {
+            throw new IllegalArgumentException("Bad range arg type (" + args[0].getClass().getName() + ")");
+        }
+        /*for (int i = 0; i < args.length; ) {
             ValueEval firstArg = args[i];
             ValueEval secondArg = args[i + 1];
             i += 2;
@@ -50,7 +59,7 @@ public class Countifs implements FreeRefFunction {
             } else if (evaluate.getNumberValue() < result) {
                 result = evaluate.getNumberValue();
             }
-        }
+        }*/
         return new NumberEval(result == null ? 0 : result);
     }
 

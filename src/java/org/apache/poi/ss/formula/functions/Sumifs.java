@@ -27,7 +27,7 @@ import org.apache.poi.ss.formula.eval.NumberEval;
 import org.apache.poi.ss.formula.eval.RefEval;
 import org.apache.poi.ss.formula.eval.ValueEval;
 import org.apache.poi.ss.formula.functions.CountUtils.I_MatchPredicate;
-import org.apache.poi.ss.formula.functions.Countif.ErrorMatcher;
+import org.apache.poi.ss.formula.functions.CountUtils.ErrorMatcher;
 
 import java.util.Set;
 
@@ -70,7 +70,7 @@ public final class Sumifs implements FreeRefFunction {
             for(int i = 1, k=0; i < args.length; i += 2, k++){
                 ae[k] = convertRangeArg(args[i]);
                 
-                mp[k] = Countif.createCriteriaPredicate(args[i+1], ec.getRowIndex(), ec.getColumnIndex());
+                mp[k] = CountUtils.createCriteriaPredicate(args[i+1], ec.getRowIndex(), ec.getColumnIndex());
             }
 
             validateCriteriaRanges(ae, sumRange);
