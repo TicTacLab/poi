@@ -438,6 +438,7 @@ public class TestArrayFunctions extends TestCase {
 
     public void testCOUNTIFS() {
         assertFormulaResult(wb, 3, "COUNTIFS(C2:C17, \"Coupe\", D2:D17, 8)");
+        assertFormulaResult(wb, 3, "COUNTIFS(C2:C100, \"Coupe\", D2:D100, 8)");
         assertFormulaResult(wb, 0, "COUNTIFS(C2, \"Coupe\", D2, 8)");
         assertFormulaResult(wb, 3, "COUNTIFS(C2:C17, \"Coupe\", Sheet2!A2:A17, 8)");
     }

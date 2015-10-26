@@ -126,15 +126,6 @@ final class CountUtils {
         return result;
     }
 
-    public static ValueEval[] getPredicates(Object[] args) {
-        int length = args.length/2;
-        ValueEval[] result = new ValueEval[length];
-        for (int i = 0; i < length; i++) {
-            result[i] = (ValueEval) args[i*2+1];
-        }
-        return result;
-    }
-
     /**
      * @return the number of evaluated cells in the range that match the specified criteria
      */
