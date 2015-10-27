@@ -142,22 +142,33 @@ final class CountUtils {
 			sheetIdxs[i] = r.getFirstSheetIndex();
 		}
 
-        for (int sIx=0; sIx <= areaEval.getLastSheetIndex() - areaEval.getFirstSheetIndex(); sIx++) {
-            int height = areaEval.getHeight();
-            int width = areaEval.getWidth();
-            for (int rrIx=0; rrIx<height; rrIx++) {
+		int height = areaEval.getHeight();
+		int width = areaEval.getWidth();
+
+		I_MatchPredicate[][][] predicates = new I_MatchPredicate[height][width][ranges.length];
+
+		for (int rrIx=0; rrIx<height; rrIx++) {
+			for (int rcIx = 0; rcIx < width; rcIx++) {
+				for (int i = 0; i < ranges.length; i++) {
+					predicates[rrIx][rcIx][i] = createCriteriaPredicate(args[i*2+1], rrIx, rcIx);
+				}
+			}
+		}
+
+
+		for (int sIx=0; sIx <= areaEval.getLastSheetIndex() - areaEval.getFirstSheetIndex(); sIx++)
+			for (int rrIx=0; rrIx<height; rrIx++) {
                 for (int rcIx=0; rcIx<width; rcIx++) {
 
                     boolean m = true;
 
                     for (int i = 0; i < ranges.length; i++) {
-
-                        I_MatchPredicate criteriaPredicate = createCriteriaPredicate(args[i*2+1], rrIx, rcIx);
+                        I_MatchPredicate criteriaPredicate = predicates[rrIx][rcIx][i];
                         ValueEval ve = ranges[i].getValue(sheetIdxs[i]+sIx, rrIx, rcIx);
                         if(criteriaPredicate instanceof I_MatchAreaPredicate){
                             I_MatchAreaPredicate areaPredicate = (I_MatchAreaPredicate)criteriaPredicate;
                             if(!areaPredicate.matches(areaEval, rrIx, rcIx)) {
-								m = false;
+                                m = false;
                                 break;
                             }
                         }
@@ -170,7 +181,6 @@ final class CountUtils {
                     if (m) result++;
                 }
             }
-        }
         return result;
     }
 	/**
