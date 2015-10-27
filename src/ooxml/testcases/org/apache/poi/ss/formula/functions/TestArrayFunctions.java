@@ -24,12 +24,6 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.XSSFTestDataSamples;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-/**
- * Tests {@link WorkbookEvaluator}.
- *
- * @author Josh Micich
- */
 public class TestArrayFunctions extends TestCase {
 
     XSSFWorkbook wb;
