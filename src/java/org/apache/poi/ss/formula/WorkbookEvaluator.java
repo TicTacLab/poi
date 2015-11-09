@@ -461,7 +461,7 @@ public final class WorkbookEvaluator {
 					if (hasArrayArguments) {
 						ptgs.removeFirst();
 						ptgs.remove(trueSkip - 1);
-						ptgs.remove(trueSkip + falseOrEndSkip - 3);
+						if (falseOrEndSkip != 0) ptgs.remove(trueSkip + falseOrEndSkip - 3);
 						stack.push(arg0);
 						continue;
 					}

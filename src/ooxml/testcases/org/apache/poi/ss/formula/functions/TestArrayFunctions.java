@@ -310,6 +310,7 @@ public class TestArrayFunctions extends TestCase {
 
     public void testIf() {
         assertFormulaResult(wb, 2, "SUM(IF(F2:F17=10500, A2:A17+A2:A17, 0))");
+        assertFormulaResult(wb, 32, "SUM(IF(E2:E17+A2:A17>10, 2))");
     }
 
     public void testChoose() {
