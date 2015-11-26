@@ -108,4 +108,29 @@ public class TestPoisson extends TestCase {
 
         assertEquals(myResult.getNumberValue(), result, DELTA);
     }
+
+    public void testXGreaterThen20Cumulative()
+    {
+        double x = 21;
+        double mean = 0.3;
+        double result = 1;
+
+        NumberEval myResult = (NumberEval)invokePoisson(x,mean,true);
+
+        assertEquals(myResult.getNumberValue(), result, DELTA);
+
+    }
+
+    public void testXGreaterThen20NonCumulative()
+    {
+        double x = 21;
+        double mean = 0.3;
+        double result = 1.51675e-31;
+
+        NumberEval myResult = (NumberEval)invokePoisson(x,mean,false);
+
+        assertEquals(myResult.getNumberValue(), result, DELTA);
+
+    }
+
 }

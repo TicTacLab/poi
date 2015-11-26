@@ -410,9 +410,11 @@ public abstract class NumericFunction implements Function {
          * @param mean The mean.
          * @return If a default value should be returned.
          */
-        private boolean isDefaultResult(double x, double mean) {
-
-			return x == 0 && mean == 0;
+        private boolean isDefaultResult(double x, double mean, boolean isCumulative) {
+			if((x == 0 && mean == 0) || (isCumulative && x > 20))
+				return true;
+			else
+			    return false;
 		}
 
         private boolean checkArgument(double aDouble) throws EvaluationException {
@@ -451,10 +453,15 @@ public abstract class NumericFunction implements Function {
 
 
         public long factorial(final int n) {
-            if (n < 0 || n > 20) {
-                throw new IllegalArgumentException("Valid argument should be in the range [0..20]");
-            }
-            return FACTORIALS[n];
+            if (n < 0 && n > 170) {
+                throw new IllegalArgumentException("Valid argument should be in range [0..170]");
+            } else {
+				if(n > 20) {
+					return (long) MathX.factorial(n);
+				} else {
+					return FACTORIALS[n];
+				}
+			}
         }
 
 		public ValueEval evaluate(int srcRowIndex, int srcColumnIndex, ValueEval arg0, ValueEval arg1, ValueEval arg2) {
@@ -471,7 +478,7 @@ public abstract class NumericFunction implements Function {
 
                 // check for default result : excel implementation for 0,0
                 // is different to Math Common.
-                if (isDefaultResult(x,mean)) {
+                if (isDefaultResult(x,mean, cumulative)) {
                     return new NumberEval(DEFAULT_RETURN_RESULT); 
                 }
                 // check the arguments : as per excel function def
