@@ -462,10 +462,11 @@ public abstract class NumericFunction implements Function {
             // arguments/result for this function
             double mean=0;
             double x=0;
-            boolean cumulative = ((BoolEval)arg2).getBooleanValue();
+            boolean cumulative;
             double result=0;
 
             try {
+				cumulative = OperandResolver.coerceValueToBoolean(arg2, true);
 				x = NumericFunction.singleOperandEvaluate(arg0, srcRowIndex, srcColumnIndex);
 				mean = NumericFunction.singleOperandEvaluate(arg1, srcRowIndex, srcColumnIndex);
 
