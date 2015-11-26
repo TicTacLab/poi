@@ -114,6 +114,8 @@ public class TestArrayFunctions extends TestCase {
         assertFormulaResult(wb, 0.04, "POISSON(A2:A17, D2, TRUE)");
         assertFormulaResult(wb, 0.04, "POISSON(A2:A17, D2:D17, TRUE)");
         assertFormulaResult(wb, 0.04, "POISSON(A2:A17, D2:D17, IF(MOD(A2:A17, 2)=0, TRUE, FALSE))");
+        assertFormulaResult(wb, 1.51675e-31, "POISSON(21, 0.3, FALSE)");
+        assertFormulaResult(wb, 1.0, "POISSON(21, 0.3, TRUE)");
     }
 
     public void testPOWER() {
